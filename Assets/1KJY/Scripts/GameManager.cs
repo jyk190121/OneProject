@@ -6,6 +6,25 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// 게임 흐름제어만
+/// 1. 분리작업 - 적 패턴 / 아이템 효과 
+/// 2. 적 유형별 HP / Shild / 공격 패턴 만들기
+///  - 스테이지(층) 1 : 일반몹 : 4마리 -> 보스
+///  - 스테이지(층) 2 : 일반몹 : 4마리 -> 보스 ...
+///  3. 몬스터 죽이면 보상 (현재 모든 아이템 갖고 시작)
+///   - 3개 선택하여 시작
+///   - 보상 : 골드
+///   4. 업그레이드 상점
+///   - 골드사용 : 아이템 구매 및 강화
+///   5. 진행정보
+///   - 아이템 수집 리스트
+///   6. 플레이어 중도 사망 / 최종층 클리어
+///   - 시작씬으로 ..
+///   - 최종층 클리어보상 : ???(아레나 모드 오픈)
+///   7. 아레나 모드
+///   - 랭킹전 : 점수 높을수록 높은 등수
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     public SlotSpinner[] slotSpinner; //���� �迭

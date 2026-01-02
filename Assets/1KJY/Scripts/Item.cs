@@ -14,12 +14,14 @@ public class Item : ScriptableObject
     private int id;
 
     // 읽기 전용 프로퍼티
-    public int ID => id;
-    public string NAME;
-    public int PRICE;
-    public int COUNT;
-    public int ATK;
-    public int MATK;
+    public int ID => id;        //아이템 ID
+    public string NAME;         //아이템 이름
+    public int PRICE;           //아이탬 가격 (업그레이드 상점용)
+    public int COUNT;           //강화 횟수
+    public int ATK;             //물리공격력
+    public int MATK;            //마법공격력
+    public float HP;            //체력회복
+    public float Shild;         //방어도회복
 
 
     public void SetID(int newID)

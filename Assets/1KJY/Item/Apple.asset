@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6d532ca2d8cc404aa62d69c70f64573, type: 3}
-  m_Name: New Item
+  m_Name: Apple
   m_EditorClassIdentifier: 
   id: 0
-  NAME: 
+  NAME: "\uC0AC\uACFC"
   PRICE: 0
   COUNT: 0
   ATK: 0
   MATK: 0
+  HP: 0
+  Shild: 0

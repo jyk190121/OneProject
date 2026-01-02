@@ -23,7 +23,7 @@ using UnityEngine.UI;
 ///   - 시작씬으로 ..
 ///   - 최종층 클리어보상 : ???(아레나 모드 오픈)
 ///   7. 아레나 모드
-///   - 랭킹전 : 점수 높을수록 높은 등수
+///   - 점수 표시
 /// </summary>
 public class GameManager : MonoBehaviour
 {
@@ -800,7 +800,7 @@ public class GameManager : MonoBehaviour
         else
         {
             int r = Random.Range(0, 10); //0~9
-            print("적 행동 확률 " + r);
+            print("적 행동 " + r);
             //공격확률(0~6)
             if (r < 7)
             {
@@ -1092,11 +1092,6 @@ public class GameManager : MonoBehaviour
         //}
         //AudioManager.audioManager.SetBGMOnlyVol(AudioManager.audioManager.bgmSource.volume);
 
-        float value = AudioManager.audioManager.bgmVolume;
-
-        print("볼륨값" + value);
-        AudioManager.audioManager.PlayBGM("Battle", value);
-
         // UI 다시 찾기
         stopBtn = GameObject.FindWithTag("StopBtn")?.GetComponent<Button>();
         statusTxt = GameObject.FindWithTag("StatusTxt")?.GetComponent<TextMeshProUGUI>();
@@ -1149,6 +1144,13 @@ public class GameManager : MonoBehaviour
         // 플레이어 턴부터 시작
         playerTurn = true;
         playerSlotCheck = true;
+
+        //전체 매니저 관리가 없어 임시용
+        if (AudioManager.audioManager == null) return;
+        float value = AudioManager.audioManager.bgmVolume;
+
+        print("볼륨값" + value);
+        AudioManager.audioManager.PlayBGM("Battle", value);
 
         Debug.Log("씬 오브젝트들 초기화 완료");
     }

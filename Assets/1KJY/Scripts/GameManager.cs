@@ -27,6 +27,7 @@ using UnityEngine.UI;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    Item item;
     public SlotSpinner[] slotSpinner; //���� �迭
     SlotSpinner[] spawnedSlots;       //�ű� �迭
 
@@ -93,7 +94,6 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
         //slotCount = 5;
         //spawnedSlots = new SlotSpinner[slotCount];
         //items = new string[slotCount];

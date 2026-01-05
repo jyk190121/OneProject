@@ -9,6 +9,8 @@ public class SlotSpinner : MonoBehaviour
 
     public List<Sprite> slotSprites;
 
+    public List<Item> items;        //아이템 리스트
+
     [HideInInspector]
     public SpriteRenderer spriteRenderer;
 
@@ -43,7 +45,11 @@ public class SlotSpinner : MonoBehaviour
         {
             // 스프라이트 변경
             slotItemCount = (slotItemCount + 1) % slotSprites.Count;
-            spriteRenderer.sprite = slotSprites[slotItemCount];
+            //spriteRenderer.sprite = slotSprites[slotItemCount];
+            foreach(Item item in items)
+            {
+                item.img = slotSprites[slotItemCount];
+            }
 
             yield return new WaitForSeconds(speed * Time.deltaTime);
         }

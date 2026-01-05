@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975329562487152566}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -432, y: -254.87999, z: 0}
   m_LocalScale: {x: 32.4, y: 32.4, z: 108}
   m_ConstrainProportionsScale: 0
@@ -115,6 +115,18 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f167c13c149130645b7533b6ad55253b, type: 3}
   - {fileID: 21300000, guid: 8d6b7005c0b907c418e96c6394be40f2, type: 3}
   - {fileID: 21300000, guid: 3971c5b0624abbd469aa40f9d8818232, type: 3}
+  items:
+  - {fileID: 11400000, guid: 5eb868dcef44c2b47b2e2d52ab17b892, type: 2}
+  - {fileID: 11400000, guid: cdfd67e566d9c8941814d70113d1611f, type: 2}
+  - {fileID: 11400000, guid: 3a8eada8d3166534b847d399b70a2542, type: 2}
+  - {fileID: 11400000, guid: 6edc468fe9d6d5a459c4f47ac871ae49, type: 2}
+  - {fileID: 11400000, guid: 8919bbc8000cc7647be152850bc42f5c, type: 2}
+  - {fileID: 11400000, guid: 66e47e81093b1a44ead2195fab444430, type: 2}
+  - {fileID: 11400000, guid: d29d7c9a7742e004bae93169b60a0561, type: 2}
+  - {fileID: 11400000, guid: ab731145b99f9c74595b54029fd1ea94, type: 2}
+  - {fileID: 11400000, guid: 640ea582d4748534184a204573ef5a72, type: 2}
+  - {fileID: 11400000, guid: e6ff62d6d63a1824fb0e21c0358943c7, type: 2}
+  - {fileID: 11400000, guid: dc87f8d14aa5bda4cad1ed333a2a2011, type: 2}
   spriteRenderer: {fileID: 0}
 --- !u!1 &6555458241841382068
 GameObject:

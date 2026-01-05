@@ -352,12 +352,12 @@ public class GameManager : MonoBehaviour
                                 Grape(30, 0);
                                 break;
                             case 2:
-                                action = $"{item} 치명타!\n최대 방어 30 + 방어도 30 회복";
+                                action = $"{item} 치명타!\n최대 방어 30증가 + 방어도 30 회복";
                                 Grape(30, 30);
                                 cri1 = false;
                                 break;
                             case 3:
-                                action = $"{item} 메가치명타!\n최대 방어 100 + 방어도 50 회복";
+                                action = $"{item} 메가치명타!\n최대 방어 100증가 + 방어도 50 회복";
                                 Grape(50, 100);
                                 cri2 = false;
                                 break;
@@ -381,24 +381,23 @@ public class GameManager : MonoBehaviour
                         {
                             // 일반
                             case 1:
-                                action = "에너지 10 증가";
+                                action = "물공 10 증가";
                                 Energy(10, 0);
                                 break;
 
                             case 2:
-                                action = $"{item} 치명타!\n공격/방어 10 증가";
+                                action = $"{item} 치명타!\n물공/마공 10 증가";
                                 Energy(10, 10);
                                 cri1 = false;
                                 break;
 
                             case 3:
-                                action = $"{item} 메가치명타!\n공격/방어 30 증가";
+                                action = $"{item} 메가치명타!\n물공/마공 30 증가";
                                 Energy(30, 30);
                                 cri2 = false;
                                 break;
                         }
                     }
-                    // 여기서부터 추가~
 
                     if (item.Equals("독약"))
                     {
@@ -409,19 +408,19 @@ public class GameManager : MonoBehaviour
                         {
                             //일반
                             case 1:
-                                action = "독 발동 12";
+                                action = "독 중독 12";
                                 //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
                                 player.poison += 12;
                                 player.UpdatePosion();
                                 break;
                             case 2:
-                                action = $"{item} 치명타!\n독 발동 36";
+                                action = $"{item} 치명타!\n독 중독 36";
                                 player.poison += 36;
                                 player.UpdatePosion();
                                 cri1 = false;
                                 break;
                             case 3:
-                                action = $"{item} 메가치명타!\n독 발동 100";
+                                action = $"{item} 메가치명타!\n독 중독 100";
                                 player.poison += 100;
                                 player.UpdatePosion();
                                 cri2 = false;
@@ -438,16 +437,16 @@ public class GameManager : MonoBehaviour
                         {
                             case 1:
                                 att = 30;
-                                action = $"공격 {player.att2 + att}";
+                                action = $"마공 {player.att2 + att}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n공격 {player.att2 + att}";
+                                action = $"치명타!\n마공 {player.att2 + att}";
                                 cri1 = false;
                                 break;
                             case 3:
                                 att *= 10;
-                                action = $"메가치명타!\n공격 {player.att2 + att}";
+                                action = $"메가치명타!\n마공 {player.att2 + att}";
                                 cri2 = false;
                                 break;
                         }
@@ -472,18 +471,18 @@ public class GameManager : MonoBehaviour
                             case 1:
                                 //att1 = 20;
                                 //att2 = 20;
-                                action = $"공격 {player.att1 + att1} , 공격 {player.att2 + att2}";
+                                action = $"물공 {player.att1 + att1} , 마공 {player.att2 + att2}";
                                 break;
                             case 2:
                                 att1 *= 3;
                                 att2 *= 3;
-                                action = $"치명타!\n공격 {player.att1 + att1} , 공격 {player.att2 + att2}";
+                                action = $"치명타!\n물공 {player.att1 + att1} , 마공 {player.att2 + att2}";
                                 cri1 = false;
                                 break;
                             case 3:
                                 att1 *= 10;
                                 att2 *= 10;
-                                action = $"메가치명타!\n공격 {player.att1 + att1} , 공격 {player.att2 + att2}";
+                                action = $"메가치명타!\n물공 {player.att1 + att1} , 마공 {player.att2 + att2}";
                                 cri2 = false;
                                 break;
                         }
@@ -497,9 +496,6 @@ public class GameManager : MonoBehaviour
                         //마법데미지 적용
                         enemy.hp -= (player.att2 + att2);
                         enemy.UpdateHpShildSet();
-
-
-
                     }
                     if (item.Equals("마법봉"))
                     {
@@ -510,16 +506,16 @@ public class GameManager : MonoBehaviour
                         {
                             case 1:
                                 att = 10;
-                                action = $"공격 {player.att2 + att}";
+                                action = $"마공 {player.att2 + att}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n공격 {player.att2 + att}";
+                                action = $"치명타!\n마공 {player.att2 + att}";
                                 cri1 = false;
                                 break;
                             case 3:
                                 att *= 10;
-                                action = $"메가치명타\n공격 {player.att2 + att}";
+                                action = $"메가치명타\n마공 {player.att2 + att}";
                                 cri2 = false;
                                 break;
                         }
@@ -533,22 +529,22 @@ public class GameManager : MonoBehaviour
                     }
                     if (item.Equals("일반검"))
                     {
-                        //print("공격 10");
+                        //print("물공 10");
                         int att = 10;
                         switch (itemActions[item])
                         {
                             case 1:
                                 att = 10;
-                                action = $"공격 {player.att1 + att}";
+                                action = $"물공 {player.att1 + att}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n공격 {player.att1 + att}";
+                                action = $"치명타!\n물공 {player.att1 + att}";
                                 cri1 = false;
                                 break;
                             case 3:
                                 att *= 10;
-                                action = $"메가치명타!\n공격 {player.att1 + att}";
+                                action = $"메가치명타!\n물공 {player.att1 + att}";
                                 cri2 = false;
                                 break;
                         }
@@ -572,16 +568,16 @@ public class GameManager : MonoBehaviour
                         {
                             case 1:
                                 //att = 20;
-                                action = $"공격 {player.att1 + att}";
+                                action = $"물공 {player.att1 + att}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n공격 {player.att1 + att}";
+                                action = $"치명타!\n물공 {player.att1 + att}";
                                 cri1 = false;
                                 break;
                             case 3:
                                 att *= 10;
-                                action = $"메가치명타!\n공격 {player.att1 + att}";
+                                action = $"메가치명타!\n물공 {player.att1 + att}";
                                 cri2 = false;
                                 break;
                         }
@@ -604,17 +600,17 @@ public class GameManager : MonoBehaviour
                         {
                             case 1:
                                 att = 30;
-                                action = $"공격 {player.att1 + att}";
+                                action = $"물공 {player.att1 + att}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n공격 {player.att1 + att}";
+                                action = $"치명타!\n물공 {player.att1 + att}";
                                 cri1 = false;
                                 r = 99;
                                 break;
                             case 3:
                                 att *= 10;
-                                action = $"메가치명타!\n공격 {player.att1 + att}";
+                                action = $"메가치명타!\n물공 {player.att1 + att}";
                                 cri2 = false;
                                 r = 99;
                                 break;
@@ -622,6 +618,7 @@ public class GameManager : MonoBehaviour
 
                         print($"스턴체크 + {r > 90}");
 
+                        //이미 스턴 상태이면 해제되지 않도록
                         if (!stuned1)
                         {
                             if (r > 90)
@@ -653,17 +650,17 @@ public class GameManager : MonoBehaviour
                         {
                             case 1:
                                 //att = 40;
-                                action = $"공격 {player.att1 + att}";
+                                action = $"물공 {player.att1 + att}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n공격 {player.att1 + att}";
+                                action = $"치명타!\n물공 {player.att1 + att}";
                                 cri1 = false;
                                 r = Random.Range(85, 100);
                                 break;
                             case 3:
                                 att *= 10;
-                                action = $"메가치명타!\n공격 {player.att1 + att}";
+                                action = $"메가치명타!\n물공 {player.att1 + att}";
                                 cri2 = false;
                                 r = 99;
                                 break;
@@ -700,7 +697,7 @@ public class GameManager : MonoBehaviour
                     //itemArray[num].GetComponent<SpriteRenderer>().sortingOrder = 11;
 
                     //적 앞에 소환
-                    var effectRender = itemArray[num].GetComponent<ParticleSystemRenderer>();
+                    ParticleSystemRenderer effectRender = itemArray[num].GetComponent<ParticleSystemRenderer>();
                     if (effectRender != null)
                     {
                         effectRender.sortingOrder = 11;
@@ -843,7 +840,7 @@ public class GameManager : MonoBehaviour
         if (player.poison > 0)
         {
             enemy.hp -= player.poison;
-            Status($"<color=yellow>{player.poison} 독데미지 중");
+            Status($"<color=yellow> 독 피해 : {player.poison}");
             player.poison -= 2f;
             enemy.AnimDamage();
 
@@ -902,6 +899,7 @@ public class GameManager : MonoBehaviour
         {
             //플레이어 사망 (패배)
             StartCoroutine(playerDeath());
+            return;
         }
     }
     private void EnemySpecialAttack()
@@ -909,7 +907,7 @@ public class GameManager : MonoBehaviour
         enemy.SpecialAttack();
         StartCoroutine(SpecialEffect());
 
-        string action = $"공격 {enemy.att2}";
+        string action = $"특수공격 {enemy.att2}";
         Status(action);
 
         player.hp -= enemy.att2;
@@ -918,6 +916,7 @@ public class GameManager : MonoBehaviour
         {
             //플레이어 사망 (패배)
             StartCoroutine(playerDeath());
+            return;
         }
     }
     private void EnemyShildRecover()
@@ -1001,7 +1000,7 @@ public class GameManager : MonoBehaviour
         //적 죽음 애니메이션
         enemy.Death();
 
-        yield return new WaitForSeconds(3f);
+        //yield return new WaitForSeconds(3f);
 
         playerTurn = false;
         enemyTurn = false;
@@ -1014,10 +1013,12 @@ public class GameManager : MonoBehaviour
         Destroy(enemyEffect);
 
         yield return new WaitForSeconds(3f);
-        AudioManager.audioManager.StopBGM();
+        //AudioManager.audioManager.StopBGM();
 
         //Destroy(gameObject);
         SceneManager.LoadScene("StartScene", LoadSceneMode.Single);
+
+        yield return null;
     }
 
     IEnumerator playerDeath()

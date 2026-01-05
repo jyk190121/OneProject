@@ -7,7 +7,7 @@ public class SlotSpinner : MonoBehaviour
     public float speed;
     public bool isSpinning;
 
-    public List<Sprite> slotSprites;
+    //public List<Sprite> slotSprites;
 
     public List<Item> items;        //아이템 리스트
 
@@ -44,12 +44,9 @@ public class SlotSpinner : MonoBehaviour
         while (isSpinning)
         {
             // 스프라이트 변경
-            slotItemCount = (slotItemCount + 1) % slotSprites.Count;
+            slotItemCount = (slotItemCount + 1) % items.Count;
             //spriteRenderer.sprite = slotSprites[slotItemCount];
-            foreach(Item item in items)
-            {
-                item.img = slotSprites[slotItemCount];
-            }
+            spriteRenderer.sprite = items[slotItemCount].IMAGE;
 
             yield return new WaitForSeconds(speed * Time.deltaTime);
         }
@@ -60,7 +57,8 @@ public class SlotSpinner : MonoBehaviour
     {
 
         // 결과적으로 멈춘 시점의 이미지로 설정
-        spriteRenderer.sprite = slotSprites[slotItemCount];
+        //spriteRenderer.sprite = slotSprites[slotItemCount];
+        items[slotItemCount].IMAGE = spriteRenderer.sprite;
 
         // 정지 시 통통 튀는 효과 (바운스)
         float bounceTime = 1f;

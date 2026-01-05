@@ -16,7 +16,7 @@ public class Item : ScriptableObject
     // 읽기 전용 프로퍼티
     public int ID => id;        //아이템 ID (오브젝트 생성 시 자동부여, 쓸일이 있을지는..)
     public string NAME;         //아이템 이름
-    public Sprite img;          //아이템 이미지
+    public Sprite IMAGE;          //아이템 이미지
     public int PRICE;           //아이탬 가격 (업그레이드 상점용)
     public int COUNT;           //강화 횟수(최대 3강)
     public int ATK;             //물리공격력 증가 스텟

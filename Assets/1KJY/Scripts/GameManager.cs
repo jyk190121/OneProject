@@ -27,14 +27,14 @@ using UnityEngine.UI;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    Item item;
+    //List<Item> items;
     public SlotSpinner[] slotSpinner; //���� �迭
     SlotSpinner[] spawnedSlots;       //�ű� �迭
 
     public Player player;
     public GameObject[] itemEffects;//���������Ѹ���
     public GameObject itemPrefab;   //�ӽ������� 1����
-    public GameObject[] itemArray;
+    public GameObject[] currentEffects;
     public Enemy enemy;
     public GameObject enemyObj;
 
@@ -59,7 +59,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI turnTxt;
     public TextMeshProUGUI statusTxt;
 
-    Dictionary<string, int> itemActions = new Dictionary<string, int>()
+    //아이템 이름, 콤보카운트 가져오기~(낼)
+    Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
         {"사과", 0},
         {"마법봉", 0},
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
         {"일반도끼", 0},
         {"대검", 0},
         {"고급도끼", 0},
+
     };
 
     public static GameManager instance;
@@ -171,15 +173,15 @@ public class GameManager : MonoBehaviour
 
         foreach (string item in itmes)
         {
-            if (itemActions.TryGetValue(item, out int equalsCount))
+            if (itemDict.TryGetValue(item, out int equalsCount))
             {
                 if (item == lastItem && lastItem != null)
                 {
-                    itemActions[item]++;
+                    itemDict[item]++;
                 }
                 else
                 {
-                    itemActions[item] = 1;
+                    itemDict[item] = 1;
                 }
             }
             lastItem = item;
@@ -188,7 +190,7 @@ public class GameManager : MonoBehaviour
         // 치명타, 메가치명타 여부 확인
         for (int i = 0; i < items.Length; i++)
         {
-            if (itemActions.TryGetValue(items[i], out int equalsCount))
+            if (itemDict.TryGetValue(items[i], out int equalsCount))
             {
                 if (equalsCount >= 3 && equalsCount != 5)
                 {
@@ -209,7 +211,7 @@ public class GameManager : MonoBehaviour
         // 콤보 횟수 초기화
         for (int i = 0; i < items.Length; i++)
         {
-            itemActions[items[i]] = 1;
+            itemDict[items[i]] = 1;
         }
 
         return null;
@@ -219,11 +221,11 @@ public class GameManager : MonoBehaviour
     {
         if (cri1 == true)
         {
-            itemActions[item] = 2;
+            itemDict[item] = 2;
         }
         else if (cri2 == true)
         {
-            itemActions[item] = 3;
+            itemDict[item] = 3;
         }
     }
 
@@ -308,7 +310,7 @@ public class GameManager : MonoBehaviour
         {
             foreach (string item in items)
             {
-                if (itemActions.TryGetValue(item, out int equalsCount))
+                if (itemDict.TryGetValue(item, out int equalsCount))
                 {
                     // 이펙트 생성 위치
                     Vector3 itemPos = Vector3.zero;
@@ -318,7 +320,7 @@ public class GameManager : MonoBehaviour
                     {
                         itemPrefab = itemEffects[0];
                         itemPos = player.hpBar.transform.position;
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             // 일반
                             case 1:
@@ -344,7 +346,7 @@ public class GameManager : MonoBehaviour
                     {
                         itemPrefab = itemEffects[1];
                         itemPos = player.shildBar.transform.position;
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             // 일반
                             case 1:
@@ -377,7 +379,7 @@ public class GameManager : MonoBehaviour
                             }
                         }
 
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             // 일반
                             case 1:
@@ -404,7 +406,7 @@ public class GameManager : MonoBehaviour
                         itemPrefab = itemEffects[3];
                         itemPos = Vector3.up * 2;
                         //print("독 데미지 12");
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             //일반
                             case 1:
@@ -433,7 +435,7 @@ public class GameManager : MonoBehaviour
                         //print("마법 공격 30");
                         int att = 30;
 
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             case 1:
                                 att = 30;
@@ -466,7 +468,7 @@ public class GameManager : MonoBehaviour
                         int att1 = Random.Range(5, 35);
                         int att2 = Random.Range(5, 35);
 
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             case 1:
                                 //att1 = 20;
@@ -502,7 +504,7 @@ public class GameManager : MonoBehaviour
                         //print("공격 10");
                         int att = 10;
 
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             case 1:
                                 att = 10;
@@ -531,7 +533,7 @@ public class GameManager : MonoBehaviour
                     {
                         //print("물공 10");
                         int att = 10;
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             case 1:
                                 att = 10;
@@ -564,7 +566,7 @@ public class GameManager : MonoBehaviour
                         //print("공격20 물리");
                         int att = Random.Range(5, 15);
 
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             case 1:
                                 //att = 20;
@@ -596,7 +598,7 @@ public class GameManager : MonoBehaviour
                         int att = 30;
                         int r = Random.Range(40, 100);
 
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             case 1:
                                 att = 30;
@@ -646,7 +648,7 @@ public class GameManager : MonoBehaviour
                         int att = Random.Range(20, 60);
                         int r = Random.Range(80, 100);
 
-                        switch (itemActions[item])
+                        switch (itemDict[item])
                         {
                             case 1:
                                 //att = 40;
@@ -688,22 +690,22 @@ public class GameManager : MonoBehaviour
 
                     }
 
-                    itemActions[item] = 1;
+                    itemDict[item] = 1;
 
                     energy++;
 
-                    itemArray[num] = Instantiate(itemPrefab);
-                    itemArray[num].transform.position = itemPos;
+                    currentEffects[num] = Instantiate(itemPrefab);
+                    currentEffects[num].transform.position = itemPos;
                     //itemArray[num].GetComponent<SpriteRenderer>().sortingOrder = 11;
 
                     //적 앞에 소환
-                    ParticleSystemRenderer effectRender = itemArray[num].GetComponent<ParticleSystemRenderer>();
+                    ParticleSystemRenderer effectRender = currentEffects[num].GetComponent<ParticleSystemRenderer>();
                     if (effectRender != null)
                     {
                         effectRender.sortingOrder = 11;
                     }
 
-                    if (num < itemArray.Length)
+                    if (num < currentEffects.Length)
                     {
                         num++;
                         Status($"{item}\n{action}");
@@ -713,7 +715,7 @@ public class GameManager : MonoBehaviour
                     yield return new WaitForSeconds(1.5f);
 
                     //아이템이 한바퀴 돌았을 때
-                    if (num == itemArray.Length)
+                    if (num == currentEffects.Length)
                     {
 
                         //턴 넘기기
@@ -722,11 +724,11 @@ public class GameManager : MonoBehaviour
                     }
 
                     //아이템 오브젝트 파괴
-                    for (int i = 0; i < itemArray.Length; i++)
+                    for (int i = 0; i < currentEffects.Length; i++)
                     {
-                        if (itemArray[i] != null)
+                        if (currentEffects[i] != null)
                         {
-                            Destroy(itemArray[i]);
+                            Destroy(currentEffects[i]);
                         }
                     }
                 }
@@ -1112,8 +1114,9 @@ public class GameManager : MonoBehaviour
         //초기 배열 및 카운트 재설정
         slotCount = 5;
         items = new string[slotCount];
+       
         itemPrefab = GetComponent<GameObject>();
-        itemArray = new GameObject[slotCount];
+        currentEffects = new GameObject[slotCount];
         isEnemyturnning = false;
         cri1 = false;
         cri2 = false;

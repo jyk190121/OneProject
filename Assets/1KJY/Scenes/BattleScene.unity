@@ -2633,7 +2633,7 @@ MonoBehaviour:
   - {fileID: 9017484664307500583, guid: 13db347bb43126f4e93ee4ca57bd0c7a, type: 3}
   - {fileID: 5034656251238326012, guid: f7caac1f0f5474e48b3fd2b4bfa8ab64, type: 3}
   itemPrefab: {fileID: 0}
-  itemArray: []
+  currentEffects: []
   enemy: {fileID: 5280798323150781652}
   enemyObj: {fileID: 3676971076677257608, guid: 0b5757230de2ac846926c905719e30e3, type: 3}
   stopBtn: {fileID: 1724835878}

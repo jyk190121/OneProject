@@ -2563,7 +2563,7 @@ MonoBehaviour:
   att1: 0
   att2: 0
   death: 0
-  animator: {fileID: 3676971076677257610, guid: 0b5757230de2ac846926c905719e30e3, type: 3}
+  animator: {fileID: 0}
 --- !u!4 &6300810757127734352
 Transform:
   m_ObjectHideFlags: 0

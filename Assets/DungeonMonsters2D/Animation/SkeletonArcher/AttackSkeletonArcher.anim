@@ -7,7 +7,7 @@ AnimationClip:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AttackSkeletonArcher
-  serializedVersion: 6
+  serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
@@ -1553,7 +1553,8 @@ AnimationClip:
       m_RotationOrder: 4
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
   m_FloatCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -1590,7 +1591,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -1618,7 +1621,9 @@ AnimationClip:
     path: SkeletonArcherPSB/LeftHand
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -1700,6 +1705,7 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 212
     script: {fileID: 0}
+    flags: 16
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 0
@@ -1715,6 +1721,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3397963200
       attribute: 1
@@ -1722,6 +1730,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3052858555
       attribute: 1
@@ -1729,6 +1739,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 2370708819
       attribute: 1
@@ -1736,6 +1748,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 848443577
       attribute: 1
@@ -1743,6 +1757,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 892860453
       attribute: 4
@@ -1750,6 +1766,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 2058560145
       attribute: 4
@@ -1757,6 +1775,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 105771178
       attribute: 4
@@ -1764,6 +1784,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 328427924
       attribute: 4
@@ -1771,6 +1793,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3704185908
       attribute: 4
@@ -1778,6 +1802,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3753421438
       attribute: 4
@@ -1785,6 +1811,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 2370708819
       attribute: 4
@@ -1792,6 +1820,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 848443577
       attribute: 4
@@ -1799,6 +1829,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3856195586
       attribute: 4
@@ -1806,6 +1838,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 902293517
       attribute: 4
@@ -1813,6 +1847,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3845380025
       attribute: 4
@@ -1820,6 +1856,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3052858555
       attribute: 4
@@ -1827,6 +1865,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 2899229111
       attribute: 4
@@ -1834,6 +1874,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 903657266
       attribute: 3
@@ -1841,6 +1883,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3845380025
       attribute: 3
@@ -1848,6 +1892,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3052858555
       attribute: 3
@@ -1855,6 +1901,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 2370708819
       attribute: 3
@@ -1862,6 +1910,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 848443577
       attribute: 304273561
@@ -1869,6 +1919,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 38777289
       attribute: 1
@@ -1876,6 +1928,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 2058560145
       attribute: 1
@@ -1883,6 +1937,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 892860453
       attribute: 1
@@ -1890,6 +1946,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 2741686133
       attribute: 4
@@ -1897,6 +1955,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3482975903
       attribute: 4
@@ -1904,6 +1964,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 903657266
       attribute: 4
@@ -1911,6 +1973,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 370724004
       attribute: 4
@@ -1918,6 +1982,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 764676337
       attribute: 4
@@ -1925,6 +1991,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3397963200
       attribute: 4
@@ -1932,6 +2000,8 @@ AnimationClip:
       typeID: 4
       customType: 4
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 764676337
       attribute: 3
@@ -1939,6 +2009,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3397963200
       attribute: 3
@@ -1946,6 +2018,8 @@ AnimationClip:
       typeID: 4
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3052858555
       attribute: 304273561
@@ -1953,6 +2027,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 3942380730
       attribute: 304273561
@@ -1960,6 +2036,8 @@ AnimationClip:
       typeID: 212
       customType: 0
       isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping: []
   m_AnimationClipSettings:
     serializedVersion: 2
@@ -1982,7 +2060,8 @@ AnimationClip:
     m_HeightFromFeet: 0
     m_Mirror: 0
   m_EditorCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2019,7 +2098,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2056,7 +2137,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2093,7 +2176,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2148,7 +2233,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2203,7 +2290,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2258,7 +2347,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2322,7 +2413,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2386,7 +2479,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2450,7 +2545,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2487,7 +2584,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2524,7 +2623,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2561,7 +2662,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2598,7 +2701,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2635,7 +2740,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2672,7 +2779,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2709,7 +2818,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2746,7 +2857,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2783,7 +2896,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2811,7 +2926,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg/BoneLeftBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2839,7 +2956,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg/BoneLeftBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2867,7 +2986,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg/BoneLeftBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2895,7 +3016,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg/BoneLeftBoot/BoneLeftFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2923,7 +3046,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg/BoneLeftBoot/BoneLeftFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2951,7 +3076,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg/BoneLeftBoot/BoneLeftFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -2979,7 +3106,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot/BoneRightFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3007,7 +3136,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot/BoneRightFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3035,7 +3166,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot/BoneRightFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3108,7 +3241,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3181,7 +3316,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3254,7 +3391,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3309,7 +3448,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3364,7 +3505,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3419,7 +3562,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3492,7 +3637,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3565,7 +3712,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3638,7 +3787,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3675,7 +3826,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3802,7 +3955,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -3929,7 +4084,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4056,7 +4213,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4138,7 +4297,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4220,7 +4381,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4302,7 +4465,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4330,7 +4495,9 @@ AnimationClip:
     path: SkeletonArcherPSB/LeftHand
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4412,7 +4579,9 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 212
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4512,7 +4681,9 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4612,7 +4783,9 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4712,7 +4885,9 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4794,7 +4969,9 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4876,7 +5053,9 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4958,7 +5137,9 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -4986,7 +5167,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead/BoneEyes
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5014,7 +5197,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead/BoneEyes
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5042,7 +5227,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead/BoneEyes
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5106,7 +5293,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead/BoneEyes
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5170,7 +5359,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead/BoneEyes
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5234,7 +5425,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead/BoneEyes
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5298,7 +5491,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1/BoneRope1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5362,7 +5557,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1/BoneRope1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5426,7 +5623,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1/BoneRope1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5490,7 +5689,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5554,7 +5755,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5618,7 +5821,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5682,7 +5887,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2/BoneRope2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5746,7 +5953,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2/BoneRope2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5810,7 +6019,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2/BoneRope2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5847,7 +6058,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2/BoneRope2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5884,7 +6097,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2/BoneRope2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5921,7 +6136,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2/BoneRope2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -5994,7 +6211,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6067,7 +6286,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6140,7 +6361,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6204,7 +6427,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6268,7 +6493,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6332,7 +6559,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6396,7 +6625,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6460,7 +6691,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6524,7 +6757,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6561,7 +6796,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6598,7 +6835,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6635,7 +6874,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6654,7 +6895,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6673,7 +6916,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6692,7 +6937,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6711,7 +6958,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6730,7 +6979,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6749,7 +7000,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6768,7 +7021,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6787,7 +7042,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6806,7 +7063,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6825,7 +7084,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder/BoneLeftHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6844,7 +7105,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder/BoneLeftHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6863,7 +7126,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder/BoneLeftHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6882,7 +7147,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder/BoneLeftHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6901,7 +7168,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder/BoneLeftHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6920,7 +7189,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder/BoneLeftHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6939,7 +7210,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6958,7 +7231,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6977,7 +7252,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -6996,7 +7273,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -7015,7 +7294,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -7034,8 +7315,10 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
+    flags: 16
   m_EulerEditorCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7045,7 +7328,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7055,7 +7340,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7065,7 +7352,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7075,7 +7364,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7085,7 +7376,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7095,7 +7388,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7105,7 +7400,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1/BoneRope1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7115,7 +7412,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1/BoneRope1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7125,7 +7424,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow1/BoneRope1
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7135,7 +7436,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7145,7 +7448,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7155,7 +7460,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7165,7 +7472,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder/BoneLeftHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7175,7 +7484,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder/BoneLeftHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7185,7 +7496,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder/BoneLeftHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7195,7 +7508,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7205,7 +7520,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7215,7 +7532,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7225,7 +7544,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7235,7 +7556,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7245,7 +7568,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7255,7 +7580,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead/BoneEyes
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7265,7 +7592,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead/BoneEyes
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7275,7 +7604,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead/BoneEyes
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7285,7 +7616,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2/BoneRope2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7295,7 +7628,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2/BoneRope2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7305,7 +7640,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder/BoneRightHand/BoneRightWrist/BoneBow2/BoneRope2
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7315,7 +7652,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7325,7 +7664,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7335,7 +7676,9 @@ AnimationClip:
     path: SkeletonArcherPSB/AttackHand
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7345,7 +7688,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot/BoneRightFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7355,7 +7700,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot/BoneRightFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7365,7 +7712,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot/BoneRightFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7375,7 +7724,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg/BoneLeftBoot/BoneLeftFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7385,7 +7736,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg/BoneLeftBoot/BoneLeftFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7395,7 +7748,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneLeftLeg/BoneLeftBoot/BoneLeftFeet
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7405,7 +7760,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7415,7 +7772,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7425,7 +7784,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneHead
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7435,7 +7796,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7445,7 +7808,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7455,7 +7820,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7465,7 +7832,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7475,7 +7844,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7485,7 +7856,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneRightShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7495,7 +7868,9 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7505,7 +7880,9 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7515,7 +7892,9 @@ AnimationClip:
     path: SkeletonArcherPSB/ArrowProjectile
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7525,7 +7904,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7535,7 +7916,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7545,7 +7928,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneNeck/BoneLeftShoulder
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7555,7 +7940,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7565,7 +7952,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7575,7 +7964,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7585,7 +7976,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7595,7 +7988,9 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
-  - curve:
+    flags: 16
+  - serializedVersion: 2
+    curve:
       serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
@@ -7605,13 +8000,7 @@ AnimationClip:
     path: SkeletonArcherPSB/BoneBody/BoneRightLeg/BoneRightBoot
     classID: 4
     script: {fileID: 0}
+    flags: 16
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0.16666667
-    functionName: 
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

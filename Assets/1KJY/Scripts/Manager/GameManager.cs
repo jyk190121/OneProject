@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI turnTxt;
     public TextMeshProUGUI statusTxt;
 
-    //아이템 이름, 콤보카운트 가져오기~(낼)
+    //아이템 이름, 콤보카운트 가져오기
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
         {"사과", 0},
@@ -74,7 +74,6 @@ public class GameManager : MonoBehaviour
         {"일반도끼", 0},
         {"대검", 0},
         {"고급도끼", 0},
-
     };
 
     public static GameManager instance;
@@ -1002,7 +1001,7 @@ public class GameManager : MonoBehaviour
         //적 죽음 애니메이션
         enemy.Death();
 
-        //yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
 
         playerTurn = false;
         enemyTurn = false;

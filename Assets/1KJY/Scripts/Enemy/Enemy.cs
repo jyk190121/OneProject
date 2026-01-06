@@ -86,6 +86,6 @@ public class Enemy : MonoBehaviour
     public void Death()
     { 
         Animator animator = GetComponentInChildren<Animator>();
-        animator.SetBool("DeathBool" , death);
+        animator.SetTrigger("DeathTrigger");
     }
 }

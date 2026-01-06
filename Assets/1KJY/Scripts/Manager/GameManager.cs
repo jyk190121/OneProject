@@ -28,23 +28,23 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     //List<Item> items;
-    public SlotSpinner[] slotSpinner; //���� �迭
-    SlotSpinner[] spawnedSlots;       //�ű� �迭
+    public SlotSpinner[] slotSpinner; 
+    SlotSpinner[] spawnedSlots;       
 
     public Player player;
-    public GameObject[] itemEffects;//���������Ѹ���
-    public GameObject itemPrefab;   //�ӽ������� 1����
+    public GameObject[] itemEffects;
+    public GameObject itemPrefab;   
     public GameObject[] currentEffects;
     public Enemy enemy;
-    public GameObject enemyObj;
+    public GameObject[] enemyObjects;   //적 프리팹
 
 
-    public Button stopBtn;          //�������� ��ư
+    public Button stopBtn;              //�������� ��ư
 
-    public GameObject slotParent;   //���� ������ġ
-    int slotCount;                  //�� ���� ���԰���
+    public GameObject slotParent;       //���� ������ġ
+    int slotCount;                      //�� ���� ���԰���
 
-    string[] items;                 // ���� ���� ������ ���
+    string[] items;                     // ���� ���� ������ ���
     public bool playerTurn;
     public bool enemyTurn;
     bool playerSlotCheck;
@@ -764,10 +764,13 @@ public class GameManager : MonoBehaviour
     }
 
     //적 캐릭터 생성
-    void EnemyCreate()
+    void EnemyCreate(int r)
     {
-        GameObject newObj = Instantiate(enemyObj, enemy.transform);
+        Transform enemyPos = GameObject.FindWithTag("Enemy").transform;
+        GameObject newObj = Instantiate(enemyObjects[r], enemyPos);
+        enemy = newObj.GetComponent<Enemy>();
         newObj.transform.position = Vector3.zero;
+        if (r == 1 || r == 2) { newObj.transform.position = Vector3.down; }
         newObj.transform.localScale = new Vector3(-1, 1, 1);
         print("적 생성 완료");
     }
@@ -925,9 +928,9 @@ public class GameManager : MonoBehaviour
         enemy.ShildRecover();
         StartCoroutine(ShildEffect());
 
-        string action = "방어도 200회복";
+        string action = $"방어도 {enemy.ShildRecover()}회복";
         Status(action);
-        enemy.shild += 200f;
+        enemy.shild += enemy.ShildRecover();
         if (enemy.shild >= enemy.maxSh)
         {
             enemy.shild = enemy.maxSh;
@@ -940,9 +943,9 @@ public class GameManager : MonoBehaviour
         enemy.Healing();
         StartCoroutine(HealEffect());
 
-        string action = "체력 300회복";
+        string action = $"체력 {enemy.Healing()}회복";
         Status(action);
-        enemy.hp += 300f;
+        enemy.hp += enemy.Healing();
         if (enemy.hp >= enemy.maxHp)
         {
             enemy.hp = enemy.maxHp;
@@ -996,7 +999,7 @@ public class GameManager : MonoBehaviour
         //Animator anim = enemy.GetComponent<Animator>();
         //anim.Play("Death");
         if (enemy.death) yield break;
-        enemy.death = true;
+        //enemy.death = true;
 
         //적 죽음 애니메이션
         enemy.Death();
@@ -1100,13 +1103,22 @@ public class GameManager : MonoBehaviour
         turnTxt = GameObject.FindWithTag("TurnTxt")?.GetComponent<TextMeshProUGUI>();
         slotParent = GameObject.FindWithTag("Slot");
 
+        int r = Random.Range(0, enemyObjects.Length);
+
         // Player / Enemy 다시 찾기
         player = FindFirstObjectByType<Player>();
-        enemy = FindFirstObjectByType<Enemy>();
 
+        //Enemy[] enemies = new Enemy[enemyObjects.Length];
+
+        //enemies[r] = FindAnyObjectByType<Enemy>();
+
+        //enemy = enemies[r];
+
+        EnemyCreate(r);
+         
         if (player == null || enemy == null || stopBtn == null)
         {
-            //Debug.LogWarning("필수 오브젝트 없음!!");
+            Debug.LogWarning("필수 오브젝트 없음!!");
             return;
         }
 
@@ -1134,7 +1146,6 @@ public class GameManager : MonoBehaviour
             SpinSlotCreate();
         }
 
-        EnemyCreate();
 
         SpinStart();
 

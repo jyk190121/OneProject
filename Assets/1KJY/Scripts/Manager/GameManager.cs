@@ -766,6 +766,7 @@ public class GameManager : MonoBehaviour
     //적 캐릭터 생성
     void EnemyCreate(int r)
     {
+        if (GameObject.FindWithTag("Enemy") == null) return;
         Transform enemyPos = GameObject.FindWithTag("Enemy").transform;
         GameObject newObj = Instantiate(enemyObjects[r], enemyPos);
         enemy = newObj.GetComponent<Enemy>();

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8015881309170186290}
   - component: {fileID: 2643148553989666045}
   - component: {fileID: 506800973762143671}
+  - component: {fileID: -8059858962110930500}
   m_Layer: 6
   m_Name: Bat
   m_TagString: Untagged
@@ -27,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 5840038882737305133}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.89, y: -0.29, z: -75.36}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalPosition: {x: 5.89, y: 0, z: -75.36}
+  m_LocalScale: {x: -0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8556592980924431912}
@@ -111,6 +112,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8059858962110930500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5840038882737305133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 579d3449de9087545adbfa78633815f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBar: {fileID: 0}
+  shildBar: {fileID: 0}
+  hp: 0
+  maxHp: 0
+  shild: 0
+  maxSh: 0
+  att1: 0
+  att2: 0
+  death: 0
+  animator: {fileID: 0}
 --- !u!1001 &7030341051584612342
 PrefabInstance:
   m_ObjectHideFlags: 0

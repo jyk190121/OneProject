@@ -19,8 +19,8 @@ public class Player : MonoBehaviour
     public float maxHp;    //�ִ�ü��
     public float shild;    //��
     public float maxSh;    //�ִ��
-    public float att1;     //�������ݷ�
-    public float att2;     //�������ܷ�
+    public float att1;     //물리공격력
+    public float att2;     //마법공격력
     public float poison;   //�� ����������
     public int gold;
 

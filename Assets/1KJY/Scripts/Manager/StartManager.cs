@@ -6,11 +6,11 @@ using UnityEngine.UI;
 //[RequireComponent(typeof(Image))]
 public class StartManager : MonoBehaviour
 {
-    public Button gameStartBtn;     // 게임 시작 버튼
-    public Button endBtn;           // 종료 팝업 호출 버튼
-    public Button endY;             // 종료 확인 버튼 (예)
-    public Button endN;             // 종료 취소 버튼 (아니오)
-    public Button settingBtn;       // 설정 버튼
+    public Button gameStartBtn;         // 게임 시작 버튼
+    public Button endBtn;               // 종료 팝업 호출 버튼
+    public Button endY;                 // 종료 확인 버튼 (예)
+    public Button endN;                 // 종료 취소 버튼 (아니오)
+    public Button settingBtn;           // 설정 버튼
     public static StartManager start;
     //public GameManager gameManagerPrefab;
     public Image EndImg;                // 종료 확인 창 이미지
@@ -19,6 +19,8 @@ public class StartManager : MonoBehaviour
     public Slider volumeSlider;
     public bool restart;
 
+    public Texture2D cursorTexture;        // 변경할 커서 이미지
+    public Vector2 hotSpot = Vector2.zero; // 클릭 위치 (좌상단이 0,0)
     private void Awake()
     {
         //if (start == null)
@@ -35,6 +37,10 @@ public class StartManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // 커서 변경 실행
+        // CursorMode.Auto는 시스템이 자동으로 하드웨어/소프트웨어 커서를 결정하게 합니다.
+        Cursor.SetCursor(cursorTexture, hotSpot, CursorMode.ForceSoftware);
+
         if (gameStartBtn != null)
         {
             gameStartBtn.onClick.AddListener(GameStart);

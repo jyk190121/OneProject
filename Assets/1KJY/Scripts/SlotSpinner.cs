@@ -16,12 +16,11 @@ public class SlotSpinner : MonoBehaviour
 
     int slotItemCount;
 
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         slotItemCount = items.Count;
-        speed = 50f;
+        speed = 5f;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -50,7 +49,7 @@ public class SlotSpinner : MonoBehaviour
 
             yield return new WaitForSeconds(speed * Time.deltaTime);
         }
-
+            
     }
 
     IEnumerator StopWithBounce()
@@ -68,7 +67,7 @@ public class SlotSpinner : MonoBehaviour
         while (elapsed < bounceTime)
         {
             elapsed += Time.deltaTime;
-            float bounce = Mathf.Sin(elapsed * Mathf.PI * 3) * 3f; // 3회 진동
+            float bounce = Mathf.Sin(elapsed * Mathf.PI * 3) * 10f; // 3회 진동
             transform.localPosition = new Vector3(transform.localPosition.x, -254.88f + bounce, 0);
             yield return null;
         }

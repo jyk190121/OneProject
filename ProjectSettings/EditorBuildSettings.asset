@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/1KJY/Scenes/BattleScene.unity
     guid: 2c81c41971f82324182a75104b597683
   - enabled: 1
+    path: Assets/1KJY/Scenes/StageScene.unity
+    guid: 536fc761503682c44a9aaa9166e8598a
+  - enabled: 1
     path: Assets/1KJY/Scenes/GameOverScene.unity
     guid: 0282dd93d06ad824f94c0f47d6ac0288
   m_configObjects:

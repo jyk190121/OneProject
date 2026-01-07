@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 //[RequireComponent(typeof(TextMeshPro))]
@@ -84,30 +83,31 @@ public class StartManager : MonoBehaviour
         //currentScene = SceneManager.GetActiveScene().buildIndex;
         //SceneManager.LoadScene(currentScene + 1);
         //SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
+        //SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
+        GameSceneManager.Scene.LoadScene("StageScene");
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "BattleScene")
-        {
-            if (GameManager.instance == null)
-            {
-                GameManager gameManager = FindFirstObjectByType<GameManager>();
-                if (gameManager != null)
-                {
-                    GameManager.instance = gameManager;
-                    DontDestroyOnLoad(gameManager.gameObject);
-                    SceneManager.sceneLoaded -= OnSceneLoaded; // 다시 호출되지 않도록 구독 해제
-                }
-                else
-                {
-                    Debug.LogError("GameManager가 존재하지 않습니다!");
-                }
-            }
-        }
-    }
+    //void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //{
+    //    if (scene.name == "BattleScene")
+    //    {
+    //        if (GameManager.instance == null)
+    //        {
+    //            GameManager gameManager = FindFirstObjectByType<GameManager>();
+    //            if (gameManager != null)
+    //            {
+    //                GameManager.instance = gameManager;
+    //                DontDestroyOnLoad(gameManager.gameObject);
+    //                SceneManager.sceneLoaded -= OnSceneLoaded; // 다시 호출되지 않도록 구독 해제
+    //            }
+    //            else
+    //            {
+    //                Debug.LogError("GameManager가 존재하지 않습니다!");
+    //            }
+    //        }
+    //    }
+    //}
 
     void GameEndYorN()
     {

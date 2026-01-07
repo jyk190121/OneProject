@@ -24,7 +24,7 @@ public class Item : ScriptableObject
     public float HP;            //체력회복 스텟
     public float SHILD;         //방어도회복 스텟
     public float POISON;        //독 누적
-    public int COUNT;           //치명타, 메가치명타
+    //public int COUNT;           //치명타, 메가치명타
 
     public void SetID(int newID)
     {

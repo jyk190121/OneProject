@@ -19,6 +19,34 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        //씬 로드 완료 이벤트 구축
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        //이벤트 구축 해제(메모리 누수 및 에러 방지)
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void InitializeBattle()
+    {
+        //StageManager에서 넘겨준 스테이지 번호 확인
+        int stage = StageManager.CurrentStage;
+
+        //MonsterSpawnerManager.Instance.Spawn(stage)
+    }
+
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if(scene.name == "BattleScene")
+        {
+            InitializeBattle();
+        }
+    }
+
     // 기본 로드 방식 (동기)
     public void LoadScene(string sceneName)
     {

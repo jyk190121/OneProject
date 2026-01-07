@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -83,7 +82,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            InitializeSceneObjects();
         }
         else
         {
@@ -1021,7 +1020,8 @@ public class GameManager : MonoBehaviour
         //AudioManager.audioManager.StopBGM();
 
         //Destroy(gameObject);
-        SceneManager.LoadScene("StartScene", LoadSceneMode.Single);
+        //나중엔 UpgradeStore로 이동예정
+        GameSceneManager.Scene.LoadScene("StageScene");
 
         yield return null;
     }
@@ -1039,7 +1039,7 @@ public class GameManager : MonoBehaviour
 
         //AudioManager.audioManager.StopBGM();
         //AudioManager.audioManager.PlayBGM("Intro");
-        SceneManager.LoadScene("GameOverScene");
+        GameSceneManager.Scene.LoadScene("GameOverScene");
         //SceneManager.LoadScene("StartScene");
     }
 
@@ -1080,14 +1080,6 @@ public class GameManager : MonoBehaviour
         {
             enemy.hp -= (player.att1 + att1);
         }
-    }
-
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        // 씬이 바뀌면 UI와 연결된 parent를 찾아서 다시 세팅하는 함수
-        InitializeSceneObjects();
-
     }
 
     void InitializeSceneObjects()

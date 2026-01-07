@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class OverManager : MonoBehaviour
 {
@@ -13,6 +12,6 @@ public class OverManager : MonoBehaviour
     IEnumerator SceneLoad()
     {
         yield return new WaitForSeconds(0.5f);
-        SceneManager.LoadScene("StartScene", LoadSceneMode.Single);
+        GameSceneManager.Scene.LoadScene("StartScene");
     }
 }

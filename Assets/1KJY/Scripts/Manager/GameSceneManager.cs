@@ -71,21 +71,51 @@ public class GameSceneManager : MonoBehaviour
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false; // 90%에서 멈춰두기
 
+        float startValue = LoadingProgress; // 현재 값 저장
+        float fakeProgress = 0f;            // 연출용 변수
+
+        //float timer = 0f;
         while (!op.isDone)
         {
-            // 진행률 계산 (0~1)
-            LoadingProgress = Mathf.Clamp01(op.progress / 0.9f);
+            //// 진행률 계산 (0~1)
+            //LoadingProgress = Mathf.Clamp01(op.progress / 0.9f);
+            //print($"현재 씬 로드 진행률 : {LoadingProgress}");
 
-            // 로딩 완료 조건
-            if (op.progress >= 0.9f)
-            {
-                yield return new WaitForSeconds(0.1f);
+            //// 로딩 완료 조건
+            //if (op.progress >= 0.9f)
+            //{
+            //    yield return new WaitForSeconds(0.1f);
 
-                // 연출을 위해 약간의 지연을 주거나 바로 전환
-                op.allowSceneActivation = true;
-            }
+            //    // 연출을 위해 약간의 지연을 주거나 바로 전환
+            //    op.allowSceneActivation = true;
+            //}
+
+            //yield return null;
 
             yield return null;
+
+            // 1. 유니티의 실제 로딩 수치 (0.9가 최대)
+            float realTarget = op.progress / 0.9f;
+
+            // 2. 가짜 진행률을 실제 진행률을 따라가게 함 (부드럽게)
+            // MoveTowards는 일정한 속도로 증가시켜서 Lerp보다 제어가 쉽습니다.
+            fakeProgress = Mathf.MoveTowards(fakeProgress, realTarget, Time.unscaledDeltaTime * 0.5f);
+
+            LoadingProgress = fakeProgress;
+
+            // 3. 90% 완료 시 100%까지 강제 연출
+            if (op.progress >= 0.9f)
+            {
+                fakeProgress = Mathf.MoveTowards(fakeProgress, 1f, Time.unscaledDeltaTime * 0.5f);
+                LoadingProgress = fakeProgress;
+
+                if (LoadingProgress >= 1f)
+                {
+                    op.allowSceneActivation = true;
+                }
+            }
+
+            Debug.Log($"보정된 로딩 진행률 : {LoadingProgress * 100}%");
         }
     }
 

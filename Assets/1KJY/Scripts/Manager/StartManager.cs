@@ -85,7 +85,7 @@ public class StartManager : MonoBehaviour
         //SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
         //SceneManager.sceneLoaded += OnSceneLoaded;
         //SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
-        GameSceneManager.Scene.LoadScene("StageScene");
+        GameSceneManager.Instance.LoadSceneAsync("StageScene");
     }
 
     //void OnSceneLoaded(Scene scene, LoadSceneMode mode)

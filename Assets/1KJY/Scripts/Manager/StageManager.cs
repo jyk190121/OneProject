@@ -142,7 +142,7 @@ public class StageManager : MonoBehaviour
         {
             CurrentStage = stageNum;
             Debug.Log($"{stageNum}번 스테이지로 진입합니다.");
-            GameSceneManager.Scene.LoadScene("BattleScene");
+            GameSceneManager.Instance.LoadSceneAsync("BattleScene");
         }
         //잠긴 스테이지 선택 시 이동불가
         else

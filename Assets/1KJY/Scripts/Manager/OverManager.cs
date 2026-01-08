@@ -12,6 +12,6 @@ public class OverManager : MonoBehaviour
     IEnumerator SceneLoad()
     {
         yield return new WaitForSeconds(0.5f);
-        GameSceneManager.Scene.LoadScene("StartScene");
+        GameSceneManager.Instance.LoadScene("StartScene");
     }
 }

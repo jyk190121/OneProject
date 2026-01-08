@@ -1021,7 +1021,7 @@ public class GameManager : MonoBehaviour
 
         //Destroy(gameObject);
         //나중엔 UpgradeStore로 이동예정
-        GameSceneManager.Scene.LoadScene("StageScene");
+        GameSceneManager.Instance.LoadScene("StageScene");
 
         yield return null;
     }
@@ -1039,7 +1039,7 @@ public class GameManager : MonoBehaviour
 
         //AudioManager.audioManager.StopBGM();
         //AudioManager.audioManager.PlayBGM("Intro");
-        GameSceneManager.Scene.LoadScene("GameOverScene");
+        GameSceneManager.Instance.LoadScene("GameOverScene");
         //SceneManager.LoadScene("StartScene");
     }
 

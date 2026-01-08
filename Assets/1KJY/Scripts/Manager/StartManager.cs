@@ -21,6 +21,8 @@ public class StartManager : MonoBehaviour
     public Slider volumeSlider;
     public bool restart;
     public Button infoBtn;
+    public Image infoImg;
+    public Button infoCloseBtn;
 
     public Texture2D cursorTexture;                     // 변경할 커서 이미지
     public Vector2 hotSpot = Vector2.zero;              // 클릭 위치 (좌상단이 0,0)
@@ -64,13 +66,21 @@ public class StartManager : MonoBehaviour
         settingBtn.onClick.AddListener(AudioSet);
         setCloseBtn.onClick.AddListener(EnterGame);
         infoBtn.onClick.AddListener(ShowInfo);
+        infoCloseBtn.onClick.AddListener(EnterGame);
 
         EndImg.gameObject.SetActive(false);
         volSetImg.gameObject.SetActive(false);
+        infoImg.gameObject.SetActive(false);
 
         AudioManager.audioManager.PlayBGM("Intro");
         //SetBGMVol(volumeSlider.value);
-        // 현재 이벤트 시스템에서 포커스된 오브젝트를 가져옵니다.
+        // 배경 버튼 클릭 시 취소 함수 실행
+        if (backgroundCancelBtn != null)
+        {
+            backgroundCancelBtn.onClick.AddListener(CancelSelection);
+
+            //print("배경 클릭!");
+        }
     }
 
     private void Update()
@@ -197,6 +207,7 @@ public class StartManager : MonoBehaviour
     {
         EndImg.gameObject.SetActive(false);
         volSetImg.gameObject.SetActive(false);
+        infoImg.gameObject.SetActive(false);
         //gameStartBtn.Select();
         GameSceneManager.Instance.RestartScene();
     }
@@ -214,6 +225,7 @@ public class StartManager : MonoBehaviour
         else
         {
             volSetImg.gameObject.SetActive(false);
+            EnterGame();
         }
     }
 
@@ -266,7 +278,7 @@ public class StartManager : MonoBehaviour
     {
         if (currentObj != null && currentObj.TryGetComponent<RectTransform>(out RectTransform targetRect))
         {
-            if (selectionOutline != null)
+            if (selectionOutline != null && currentObj != backgroundCancelBtn )
             {
                 selectionOutline.gameObject.SetActive(true);
                 selectionOutline.position = targetRect.position;
@@ -307,6 +319,8 @@ public class StartManager : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(gameStartBtn.gameObject);
             else if (currentObj == infoBtn.gameObject)
                 EventSystem.current.SetSelectedGameObject(settingBtn.gameObject);
+            else if (currentObj == null)
+                EventSystem.current.SetSelectedGameObject(gameStartBtn.gameObject);
         }
         else if (key.dKey.wasPressedThisFrame || key.rightArrowKey.wasPressedThisFrame)
         {
@@ -318,12 +332,29 @@ public class StartManager : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(endBtn.gameObject);
             else if (currentObj == settingBtn.gameObject)
                 EventSystem.current.SetSelectedGameObject(infoBtn.gameObject);
+            else if (currentObj == null)
+                EventSystem.current.SetSelectedGameObject(gameStartBtn.gameObject);
         }
        
     }
 
     void ShowInfo()
     {
-        print("아직 안만듬 인포창");
+        if (!infoImg.gameObject.activeSelf)
+        {
+            infoImg.gameObject.SetActive(true);
+            infoCloseBtn.Select();
+            return;
+        }
+        else
+        {
+            infoImg.gameObject.SetActive(false);
+            EnterGame();
+        }
+    }
+
+    void CancelSelection()
+    {
+        if (selectionOutline != null) selectionOutline.gameObject.SetActive(false);
     }
 }

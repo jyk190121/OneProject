@@ -180,6 +180,7 @@ public class StartManager : MonoBehaviour
     void GameEndYorN()
     {
         volSetImg.gameObject.SetActive(false);
+        infoImg.gameObject.SetActive(false);
 
         if (!EndImg.gameObject.activeSelf)
         {
@@ -309,6 +310,7 @@ public class StartManager : MonoBehaviour
         //}
 
         // 이동 로직 (Navigation이 None일 때만 정상 작동)
+        // isPressed 상태일때는 한번 선택에도 빠르게 이동
         if (key.aKey.wasPressedThisFrame || key.leftArrowKey.wasPressedThisFrame)
         {
             if (currentObj == gameStartBtn.gameObject)

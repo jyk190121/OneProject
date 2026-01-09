@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Energy
   m_EditorClassIdentifier: 
   id: 0
-  NAME: Energy
+  NAME: "\uC5D0\uB108\uC9C0"
   IMAGE: {fileID: 21300000, guid: 418152f2e573fad478023cdb8c92206c, type: 3}
   PRICE: 0
-  COUNT: 0
+  ENHANCE: 0
   ATK: 10
   MATK: 0
   HP: 0
-  Shild: 0
-  poison: 0
+  SHILD: 0
+  POISON: 0
+  EXPLAIN: "\uBB3C\uB9AC\uACF5\uACA9 10\uC99D\uAC00"

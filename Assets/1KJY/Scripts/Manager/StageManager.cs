@@ -18,8 +18,8 @@ public class StageManager : MonoBehaviour
     //[Header("Stage Settings")]
     //public Transform[] stagePositions;                 // 기즈모를 표시할 스테이지별 위치
 
-    private int selectedStageIndex = -1;                 // 현재 선택된 스테이지 (-1은 선택 없음)
-    private int unlockedStageIndex;                      // 현재 해금된 최대 스테이지
+    int selectedStageIndex = -1;                         // 현재 선택된 스테이지 (-1은 선택 없음)
+    int unlockedStageIndex;                              // 현재 해금된 최대 스테이지
     public static int CurrentStage { get; private set; } // 다른 씬(BattleScene)에서 참조할 정적 변수
 
     //public TextMeshProUGUI stageText;

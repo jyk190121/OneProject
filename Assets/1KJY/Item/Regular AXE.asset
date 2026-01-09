@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Regular AXE
   m_EditorClassIdentifier: 
   id: 0
-  NAME: RegularAXE
+  NAME: "\uC77C\uBC18\uB3C4\uB07C"
   IMAGE: {fileID: 21300000, guid: f167c13c149130645b7533b6ad55253b, type: 3}
   PRICE: 0
-  COUNT: 0
+  ENHANCE: 0
   ATK: 5
   MATK: 0
   HP: 0
-  Shild: 0
-  poison: 0
+  SHILD: 0
+  POISON: 0
+  EXPLAIN: "\uBB3C\uB9AC\uACF5\uACA9 5~15"

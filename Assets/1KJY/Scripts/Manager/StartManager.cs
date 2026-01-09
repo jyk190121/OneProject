@@ -7,22 +7,20 @@ using UnityEngine.UI;
 //[RequireComponent(typeof(Image))]
 public class StartManager : MonoBehaviour
 {
-    //public static StartManager start;
-
     public Button gameStartBtn;                         // 게임 시작 버튼
     public Button endBtn;                               // 종료 팝업 호출 버튼
     public Button endY;                                 // 종료 확인 버튼 (예)
     public Button endN;                                 // 종료 취소 버튼 (아니오)
     public Button settingBtn;                           // 설정 버튼
-    //public GameManager gameManagerPrefab;
-    public Image EndImg;                                // 종료 확인 창 이미지
+    public Image endImg;                                // 종료 확인 창 이미지
     public Image volSetImg;                             // 볼륨 설정 창 이미지
     public Button setCloseBtn;                          // 설정 창 닫기 버튼
     public Slider volumeSlider;
-    public bool restart;
     public Button infoBtn;
     public Image infoImg;
     public Button infoCloseBtn;
+    public Button itemListBtn;                          // 진행정보 진입 버튼
+
 
     public Texture2D cursorTexture;                     // 변경할 커서 이미지
     public Vector2 hotSpot = Vector2.zero;              // 클릭 위치 (좌상단이 0,0)
@@ -31,19 +29,6 @@ public class StartManager : MonoBehaviour
     public Button backgroundCancelBtn;                  // 배경 클릭 감지용 버튼 추가
     //private int selectedBtnIndex = -1;                // 현재 선택된 스테이지 (-1은 선택 없음)
     GameObject currentObj;
-
-    private void Awake()
-    {
-        //if (start == null)
-        //{
-        //    start = this;
-        //    DontDestroyOnLoad(gameObject);
-        //}
-        //else
-        //{
-        //    Destroy(gameObject);
-        //}
-    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -68,7 +53,7 @@ public class StartManager : MonoBehaviour
         infoBtn.onClick.AddListener(ShowInfo);
         infoCloseBtn.onClick.AddListener(EnterGame);
 
-        EndImg.gameObject.SetActive(false);
+        endImg.gameObject.SetActive(false);
         volSetImg.gameObject.SetActive(false);
         infoImg.gameObject.SetActive(false);
 
@@ -78,8 +63,6 @@ public class StartManager : MonoBehaviour
         if (backgroundCancelBtn != null)
         {
             backgroundCancelBtn.onClick.AddListener(CancelSelection);
-
-            //print("배경 클릭!");
         }
     }
 
@@ -144,31 +127,6 @@ public class StartManager : MonoBehaviour
         //선택된 버튼 확인
         UpdateSelectionOutline();
 
-        // WASD와 화살표 입력을 하나로 합침
-        //Vector2 moveInput = Vector2.zero;
-
-        //if (key.wKey.wasPressedThisFrame || key.upArrowKey.wasPressedThisFrame) moveInput.y = 1;
-        //else if (key.sKey.wasPressedThisFrame || key.downArrowKey.wasPressedThisFrame) moveInput.y = -1;
-
-        //// Update 함수 내의 입력 부분 수정
-        //if (key.aKey.wasPressedThisFrame == true || key.leftArrowKey.wasPressedThisFrame == true)
-        //{
-        //    // 왼쪽 끝(StartBtn)에서 왼쪽 입력 시 -> 오른쪽 끝(EndBtn)으로 이동
-        //    if (current == gameStartBtn.gameObject)
-        //    {
-        //        EventSystem.current.SetSelectedGameObject(endBtn.gameObject);
-        //        return; // 직접 이동시켰으므로 이후 로직 중단
-        //    }
-        //}
-        //else if (key.dKey.wasPressedThisFrame == true || key.rightArrowKey.wasPressedThisFrame == true)
-        //{
-        //    // 오른쪽 끝(EndBtn)에서 오른쪽 입력 시 -> 왼쪽 끝(StartBtn)으로 이동
-        //    if (current == endBtn.gameObject)
-        //    {
-        //        EventSystem.current.SetSelectedGameObject(gameStartBtn.gameObject);
-        //        return; // 직접 이동시켰으므로 이후 로직 중단
-        //    }
-        //}
         HandleLoopNavigation(key);
     }
 
@@ -182,15 +140,15 @@ public class StartManager : MonoBehaviour
         volSetImg.gameObject.SetActive(false);
         infoImg.gameObject.SetActive(false);
 
-        if (!EndImg.gameObject.activeSelf)
+        if (!endImg.gameObject.activeSelf)
         {
-            EndImg.gameObject.SetActive(true);
+            endImg.gameObject.SetActive(true);
             endN.Select();
             return;
         }
         else
         {
-            //EndImg.gameObject.SetActive(false);
+            //endImg.gameObject.SetActive(false);
             EnterGame();
         }
     }
@@ -206,7 +164,7 @@ public class StartManager : MonoBehaviour
 
     public void EnterGame()
     {
-        EndImg.gameObject.SetActive(false);
+        endImg.gameObject.SetActive(false);
         volSetImg.gameObject.SetActive(false);
         infoImg.gameObject.SetActive(false);
         //gameStartBtn.Select();
@@ -215,7 +173,7 @@ public class StartManager : MonoBehaviour
 
     public void AudioSet()
     {
-        EndImg.gameObject.SetActive(false);
+        if (endImg.gameObject.activeSelf || infoImg.gameObject.activeSelf) return;
 
         if (!volSetImg.gameObject.activeSelf)
         {
@@ -226,6 +184,22 @@ public class StartManager : MonoBehaviour
         else
         {
             volSetImg.gameObject.SetActive(false);
+            EnterGame();
+        }
+    }
+    void ShowInfo()
+    {
+        if (endImg.gameObject.activeSelf || volSetImg.gameObject.activeSelf) return;
+
+        if (!infoImg.gameObject.activeSelf)
+        {
+            infoImg.gameObject.SetActive(true);
+            infoCloseBtn.Select();
+            return;
+        }
+        else
+        {
+            infoImg.gameObject.SetActive(false);
             EnterGame();
         }
     }
@@ -338,21 +312,6 @@ public class StartManager : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(gameStartBtn.gameObject);
         }
        
-    }
-
-    void ShowInfo()
-    {
-        if (!infoImg.gameObject.activeSelf)
-        {
-            infoImg.gameObject.SetActive(true);
-            infoCloseBtn.Select();
-            return;
-        }
-        else
-        {
-            infoImg.gameObject.SetActive(false);
-            EnterGame();
-        }
     }
 
     void CancelSelection()

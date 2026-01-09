@@ -15,9 +15,6 @@ EditorBuildSettings:
     path: Assets/1KJY/Scenes/StageScene.unity
     guid: 536fc761503682c44a9aaa9166e8598a
   - enabled: 1
-    path: Assets/1KJY/Scenes/ItemSelectScene.unity
-    guid: 3b71a5cdb8fec754a8a6d4960147a908
-  - enabled: 1
     path: Assets/1KJY/Scenes/BattleScene.unity
     guid: 2c81c41971f82324182a75104b597683
   - enabled: 1
@@ -25,7 +22,10 @@ EditorBuildSettings:
     guid: 49264247b9c62ce49b7f593a8251fab0
   - enabled: 1
     path: Assets/1KJY/Scenes/GameOverScene.unity
-    guid: 0282dd93d06ad824f94c0f47d6ac0288
+    guid: bb18ef3cc30f60042993dac8698e4cae
+  - enabled: 1
+    path: Assets/1KJY/Scenes/ItemSelectScene.unity
+    guid: 3b71a5cdb8fec754a8a6d4960147a908
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

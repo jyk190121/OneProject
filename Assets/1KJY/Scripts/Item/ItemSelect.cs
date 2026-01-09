@@ -10,8 +10,8 @@ public class ItemSelect : MonoBehaviour
     public TextMeshProUGUI itemDescriptionText;          // 선택하 아이템 설명
     public Button[] itemButtons;                         // 10개 아이템 버튼을 인스펙터에서 할당
     public RectTransform[] selectionOutlines;            // 유저에게 보여줄 테두리 이미지
-    List<int> selectedIndexs = new List<int>();          //선택된 아이템의 인덱스를 순서대로 저장 (최대 3개)
-
+    List<int> selectedIndexs = new List<int>();          // 선택된 아이템의 인덱스를 순서대로 저장 (최대 3개)
+    public Button nextBtn;                               // 배틀 씬으로 이동(1) or 업그레이드 상점으로 이동(2이상)
     int itemSelectedCount = 3;                           // 반드시 3개 선택
 
     public Item[] items;                                 // 현재 내가 가지고 있는 아이템
@@ -51,6 +51,8 @@ public class ItemSelect : MonoBehaviour
 
         itemNameText.text = "";
         itemDescriptionText.text = "";
+        int stageNum = StageManager.CurrentStage;
+        nextBtn.onClick.AddListener(() => NextSceneSelect(stageNum));
     }
 
 
@@ -121,6 +123,28 @@ public class ItemSelect : MonoBehaviour
             selectionOutlines[i].gameObject.SetActive(true);
             selectionOutlines[i].position = targetBtn.position;
             selectionOutlines[i].sizeDelta = targetBtn.sizeDelta;
+        }
+    }
+
+    void NextSceneSelect(int stageNum)
+    {
+        // Item을 반드시 3개 선택
+        if (selectedIndexs.Count != itemSelectedCount)
+        {
+            itemNameText.text = "3개 선택!";
+            itemDescriptionText.text = "";
+            return;
+        }
+        if (stageNum == 1)
+        {
+            // 배틀씬으로 바로이동(stage1)
+            print("스테이지 1");
+            GameSceneManager.Instance.LoadSceneAsync("BattleScene");
+        }
+        else
+        {
+            // 업그레이드 상점으로 이동
+            GameSceneManager.Instance.LoadSceneAsync("UpgradeStoreScene");
         }
     }
 }

@@ -17,8 +17,13 @@ MonoBehaviour:
   IMAGE: {fileID: 21300000, guid: 418152f2e573fad478023cdb8c92206c, type: 3}
   PRICE: 0
   ENHANCE: 0
-  ATK: 10
+  GOLD: 0
+  MINATK: 0
+  MINMATK: 0
+  ATK: 0
   MATK: 0
+  PLUSATK: 10
+  PLUSMATK: 0
   HP: 0
   SHILD: 0
   POISON: 0

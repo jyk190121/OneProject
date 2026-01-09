@@ -65,7 +65,6 @@ public class StageManager : MonoBehaviour
         if (backgroundCancelBtn != null)
         {
             backgroundCancelBtn.onClick.AddListener(CancelSelection);
-
             //print("배경 클릭!");
         }
     }

@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1KJY/Scenes/ItemSelectScene.unity
     guid: 3b71a5cdb8fec754a8a6d4960147a908
+  - enabled: 1
+    path: Assets/1KJY/Scenes/ItemListScene.unity
+    guid: 8ed49cc3e4eda104399b5cc4ab8741da
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

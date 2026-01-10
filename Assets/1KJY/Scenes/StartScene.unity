@@ -262,10 +262,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 0
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnDown: {fileID: 1540552823}
     m_SelectOnLeft: {fileID: 813770490}
     m_SelectOnRight: {fileID: 726973153}
   m_Transition: 1
@@ -602,14 +602,14 @@ MonoBehaviour:
   endY: {fileID: 2126348807}
   endN: {fileID: 783262513}
   settingBtn: {fileID: 726973153}
-  EndImg: {fileID: 1052637084}
+  endImg: {fileID: 1052637084}
   volSetImg: {fileID: 1436100661}
   setCloseBtn: {fileID: 575526496}
   volumeSlider: {fileID: 1407792689}
-  restart: 0
   infoBtn: {fileID: 1711030722}
   infoImg: {fileID: 827768688}
   infoCloseBtn: {fileID: 2022926614}
+  itemListBtn: {fileID: 1540552823}
   cursorTexture: {fileID: 2800000, guid: 42ec8a0e710138343a271d732299cfb6, type: 3}
   hotSpot: {x: 0, y: 0}
   selectionOutline: {fileID: 1349118010}
@@ -2103,8 +2103,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -727, y: -268.53}
-  m_SizeDelta: {x: 160, y: 40.57}
+  m_AnchoredPosition: {x: -732.98, y: -268.53}
+  m_SizeDelta: {x: 171.96, y: 40.57}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1540552823
 MonoBehaviour:
@@ -2119,9 +2119,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 180019910}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
@@ -3091,7 +3091,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1970298682}
-  - {fileID: 1683839215}
   - {fileID: 249184131}
-  - {fileID: 11033876}
   - {fileID: 418214103}
+  - {fileID: 11033876}
+  - {fileID: 1683839215}

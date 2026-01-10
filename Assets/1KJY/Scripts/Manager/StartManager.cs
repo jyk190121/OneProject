@@ -52,6 +52,7 @@ public class StartManager : MonoBehaviour
         setCloseBtn.onClick.AddListener(EnterGame);
         infoBtn.onClick.AddListener(ShowInfo);
         infoCloseBtn.onClick.AddListener(EnterGame);
+        itemListBtn.onClick.AddListener(EnterItemList);
 
         endImg.gameObject.SetActive(false);
         volSetImg.gameObject.SetActive(false);
@@ -162,13 +163,18 @@ public class StartManager : MonoBehaviour
 #endif
     }
 
-    public void EnterGame()
+    void EnterGame()
     {
         endImg.gameObject.SetActive(false);
         volSetImg.gameObject.SetActive(false);
         infoImg.gameObject.SetActive(false);
         //gameStartBtn.Select();
         GameSceneManager.Instance.RestartScene();
+    }
+
+    void EnterItemList()
+    {
+        GameSceneManager.Instance.LoadSceneAsync("ItemListScene");
     }
 
     public void AudioSet()

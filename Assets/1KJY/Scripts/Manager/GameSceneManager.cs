@@ -115,7 +115,7 @@ public class GameSceneManager : MonoBehaviour
                 }
             }
 
-            Debug.Log($"보정된 로딩 진행률 : {LoadingProgress * 100}%");
+            //Debug.Log($"보정된 로딩 진행률 : {LoadingProgress * 100}%");
         }
     }
 

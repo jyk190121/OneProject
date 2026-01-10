@@ -1,6 +1,7 @@
+using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 /// <summary>
 /// 수집된 아이템 생성하여 보여주기
@@ -14,12 +15,23 @@ public class CollectItemList : MonoBehaviour
     public GameObject itemListParent;   //가지고 있는 아이템 프리펩 부모 오브젝트
     int itemCollectCount = 28;
 
+    ItemManager itemManager;
+
     void Awake() // Start보다 먼저 실행되어 배경 슬롯을 미리 준비합니다.
     {
+        itemManager = FindAnyObjectByType<ItemManager>();
+
+        items = itemManager.CurrentItems();
+
         for (int i = 0; i < itemCollectCount; i++)
         {
             GameObject bg = Instantiate(itemBGPrefab, itemListParent.transform);
             itemsBG.Add(bg);
+        }
+
+        for(int i =0; i< items.Count; i++)
+        {
+            UpdateSlot(i, items[i]);
         }
     }
 
@@ -34,8 +46,8 @@ public class CollectItemList : MonoBehaviour
         //수집한 아이템 리스트에 추가
         items.Add(newItem);
 
-        // 새로 추가된 아이템만 해당 순서의 슬롯에 그려줍니다.
-        UpdateSlot(items.Count - 1, newItem);
+        //// 새로 추가된 아이템만 해당 순서의 슬롯에 그려줍니다.
+        //UpdateSlot(items.Count - 1, newItem);
     }
 
     //void ShowCollectItemList(int index)

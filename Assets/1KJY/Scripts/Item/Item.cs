@@ -30,9 +30,12 @@ public class Item : ScriptableObject
     public int MATK;            //(최대)마법공격력 스텟
     public int PLUSATK;         //물리공격력 증가 스텟
     public int PLUSMATK;        //마법공격력 증가 스텟
+    public float PLUS_HP;       //(최대) 체력증가 스텟
+    public float PLUS_SHILD;    //(최대) 방어도증가 스텟
     public float HP;            //체력회복 스텟
     public float SHILD;         //방어도회복 스텟
     public float POISON;        //독 누적
+    public float BLOOD;         //흡열 수치(HP 강탈)
     //public int COUNT;           //치명타, 메가치명타
 
     [Header("기절확률")]

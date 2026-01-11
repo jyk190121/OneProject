@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6d532ca2d8cc404aa62d69c70f64573, type: 3}
-  m_Name: Grape
+  m_Name: MagicHelmet
   m_EditorClassIdentifier: 
   id: 0
-  NAME: "\uD3EC\uB3C4"
-  IMAGE: {fileID: 21300000, guid: 5a7df0053a9067643afaf8e89db76f2a, type: 3}
+  NAME: "\uB9C8\uBC95\uD22C\uAD6C"
+  IMAGE: {fileID: 21300000, guid: 5b0758303c2217140b27779e0aa96f90, type: 3}
   PRICE: 0
   ENHANCE: 0
   GOLD: 0
@@ -22,12 +22,15 @@ MonoBehaviour:
   MINMATK: 0
   ATK: 0
   MATK: 0
-  PLUSATK: 0
-  PLUSMATK: 0
-  PLUS_HP: 10
-  PLUS_SHILD: 0
-  HP: 0
-  SHILD: 0
+  PLUSATK: 5
+  PLUSMATK: 5
+  PLUS_HP: 50
+  PLUS_SHILD: 50
+  HP: 50
+  SHILD: 50
   POISON: 0
+  BLOOD: 0
   STUNED: 0
-  EXPLAIN: "\uCD5C\uB300 \uCCB4\uB825 10 \uC99D\uAC00"
+  EXPLAIN: "\uBB3C\uB9AC\uACF5\uACA9 5 \uC99D\uAC00\n\uB9C8\uBC95\uACF5\uACA9 5 \uC99D\uAC00\n\n\uCCB4\uB825,
+    \uBC29\uC5B4\uB3C4 50\uC529 \uD68C\uBCF5\n\n\uCD5C\uB300 \uCCB4\uB825, \uBC29\uC5B4\uB3C4
+    50\uC529 \uC99D\uAC00"

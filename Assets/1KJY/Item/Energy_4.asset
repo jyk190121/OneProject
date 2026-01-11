@@ -10,26 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6d532ca2d8cc404aa62d69c70f64573, type: 3}
-  m_Name: Skull AX
+  m_Name: Energy_4
   m_EditorClassIdentifier: 
   id: 0
-  NAME: "\uD574\uACE8\uB3C4\uB07C"
-  IMAGE: {fileID: 21300000, guid: 20ce9165a8ece6c40b0f6ba038e05511, type: 3}
+  NAME: "\uB9C8\uBC95\uC5D0\uB108\uC9C0_\uB300"
+  IMAGE: {fileID: 21300000, guid: 4e9677621fcb7df4c8fbcac3242e4c2d, type: 3}
   PRICE: 0
   ENHANCE: 0
   GOLD: 0
-  MINATK: 5
-  MINMATK: 5
-  ATK: 35
-  MATK: 35
+  MINATK: 0
+  MINMATK: 0
+  ATK: 0
+  MATK: 0
   PLUSATK: 0
-  PLUSMATK: 0
+  PLUSMATK: 50
   PLUS_HP: 0
   PLUS_SHILD: 0
   HP: 0
   SHILD: 0
   POISON: 0
-  BLOOD: 10
+  BLOOD: 0
   STUNED: 0
-  EXPLAIN: "\uD761\uD608 10\n\n\uBB3C\uB9AC\uACF5\uACA9 5~35\n\n\uB9C8\uBC95\uACF5\uACA9
-    5~35"
+  EXPLAIN: "\uB9C8\uBC95\uACF5\uACA9 50 \uC99D\uAC00"

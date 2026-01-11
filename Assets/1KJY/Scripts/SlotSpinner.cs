@@ -15,10 +15,15 @@ public class SlotSpinner : MonoBehaviour
     public SpriteRenderer spriteRenderer;
 
     int slotItemCount;
+    ItemManager itemManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        itemManager = FindAnyObjectByType<ItemManager>();
+
+        items = itemManager.CurrentItems();
+
         slotItemCount = items.Count;
         speed = 5f;
 

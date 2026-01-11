@@ -35,7 +35,8 @@ public class GameSceneManager : MonoBehaviour
     void InitializeBattle()
     {
         //StageManager에서 넘겨준 스테이지 번호 확인
-        int stage = StageManager.CurrentStage;
+        StageManager stageManager = FindAnyObjectByType<StageManager>();
+        int stage = stageManager.SelectedStage;
 
         //MonsterSpawnerManager.Instance.Spawn(stage)
     }

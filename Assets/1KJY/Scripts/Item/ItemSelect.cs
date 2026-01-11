@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class ItemSelect : MonoBehaviour
@@ -18,6 +17,7 @@ public class ItemSelect : MonoBehaviour
     List<Item> items;                                   // 현재 내가 가지고 있는 아이템 (최대 10개까지 불러오기)
 
     ItemManager itemManager;
+    StageManager stageManager;
 
     void Awake()
     {
@@ -60,7 +60,10 @@ public class ItemSelect : MonoBehaviour
 
         itemNameText.text = "";
         itemDescriptionText.text = "";
-        int stageNum = StageManager.CurrentStage;
+
+        stageManager = FindAnyObjectByType<StageManager>();
+        int stageNum = stageManager.SelectedStage;
+
         nextBtn.onClick.AddListener(() => NextSceneSelect(stageNum));
     }
 
@@ -147,7 +150,6 @@ public class ItemSelect : MonoBehaviour
         if (stageNum == 1)
         {
             // 배틀씬으로 바로이동(stage1)
-            print("스테이지 1");
             GameSceneManager.Instance.LoadSceneAsync("BattleScene");
         }
         else
@@ -155,6 +157,7 @@ public class ItemSelect : MonoBehaviour
             // 업그레이드 상점으로 이동
             GameSceneManager.Instance.LoadSceneAsync("UpgradeStoreScene");
         }
+        print(stageNum);
     }
 }
 

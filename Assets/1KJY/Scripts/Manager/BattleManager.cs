@@ -24,7 +24,7 @@ using UnityEngine.UI;
 ///   7. 아레나 모드
 ///   - 점수 표시
 /// </summary>
-public class GameManager : MonoBehaviour
+public class BattleManager : MonoBehaviour
 {
     //List<Item> items;
     public SlotSpinner[] slotSpinner; 
@@ -58,36 +58,46 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI turnTxt;
     public TextMeshProUGUI statusTxt;
 
+
+
     //아이템 이름, 콤보카운트 가져오기
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
-        {"사과", 0},
-        {"마법봉", 0},
-        {"해골도끼", 0},
-        {"포도", 0},
-        {"마법검", 0},
-
-        {"독약", 0},
-        {"에너지", 0},
-        {"일반검", 0},
-        {"일반도끼", 0},
-        {"대검", 0},
         {"고급도끼", 0},
+        {"사과", 0},
+        {"에너지", 0},
+        {"물리에너지", 0},
+        {"물리에너지_대", 0},
+        {"마법에너지", 0},
+        {"마법에너지_대", 0},
+        {"특수에너지", 0},
+        {"화염방패", 0},
+        {"골드", 0},
+        {"포도", 0},
+        {"대검", 0},
+        {"마법투구", 0},
+        {"마법검", 0},
+        {"마법봉", 0},
+        {"고기", 0},
+        {"독약", 0},
+        {"독검", 0},
+        {"일반도끼", 0},
+        {"일반검", 0},
+        {"마법반지", 0},
+        {"흡혈반지", 0},
+        {"독반지", 0},
+        {"해골도끼", 0},
+        {"해골방패", 0},
+        {"원석", 0},
+        {"딸기", 0},
+        {"천둥망치", 0},
+
     };
 
-    public static GameManager instance;
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-            InitializeSceneObjects();
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //스테이지 값 받아서 해당 스테이지 몬스터만 출현
+        InitializeSceneObjects();
     }
 
 
@@ -766,9 +776,12 @@ public class GameManager : MonoBehaviour
     void EnemyCreate(int r)
     {
         if (GameObject.FindWithTag("Enemy") == null) return;
+
         Transform enemyPos = GameObject.FindWithTag("Enemy").transform;
         GameObject newObj = Instantiate(enemyObjects[r], enemyPos);
+
         enemy = newObj.GetComponent<Enemy>();
+
         newObj.transform.position = Vector3.zero;
         if (r == 1 || r == 2) { newObj.transform.position = Vector3.down; }
         newObj.transform.localScale = new Vector3(-1, 1, 1);
@@ -1021,7 +1034,7 @@ public class GameManager : MonoBehaviour
 
         //Destroy(gameObject);
         //나중엔 UpgradeStore로 이동예정
-        GameSceneManager.Instance.LoadScene("StageScene");
+        GameSceneManager.Instance.LoadScene("UpgradeStore");
 
         yield return null;
     }
@@ -1138,7 +1151,6 @@ public class GameManager : MonoBehaviour
             spawnedSlots = new SlotSpinner[slotCount];
             SpinSlotCreate();
         }
-
 
         SpinStart();
 

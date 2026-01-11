@@ -393,8 +393,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00000095367, y: 3.1531}
-  m_SizeDelta: {x: 341.6608, y: 336.46}
+  m_AnchoredPosition: {x: 0.00000095367, y: -28.2156}
+  m_SizeDelta: {x: 341.6608, y: 273.7225}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &259227298
 MonoBehaviour:
@@ -482,7 +482,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 1.4590149, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1627,8 +1627,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.3609, y: 126.48}
-  m_SizeDelta: {x: 341.6608, y: 89.809}
+  m_AnchoredPosition: {x: -2.3609, y: 140.02}
+  m_SizeDelta: {x: 341.6608, y: 62.739}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1175705760
 MonoBehaviour:
@@ -2049,19 +2049,6 @@ MonoBehaviour:
   - {fileID: 1946370223}
   - {fileID: 719458219}
   nextBtn: {fileID: 354197537}
-  items:
-  - {fileID: 11400000, guid: 5eb868dcef44c2b47b2e2d52ab17b892, type: 2}
-  - {fileID: 11400000, guid: a6e45486d48922a4a9f91d41f4cabc59, type: 2}
-  - {fileID: 11400000, guid: ab731145b99f9c74595b54029fd1ea94, type: 2}
-  - {fileID: 11400000, guid: 640ea582d4748534184a204573ef5a72, type: 2}
-  - {fileID: 11400000, guid: 66e47e81093b1a44ead2195fab444430, type: 2}
-  - {fileID: 11400000, guid: 6edc468fe9d6d5a459c4f47ac871ae49, type: 2}
-  - {fileID: 11400000, guid: cdfd67e566d9c8941814d70113d1611f, type: 2}
-  - {fileID: 11400000, guid: e6ff62d6d63a1824fb0e21c0358943c7, type: 2}
-  - {fileID: 11400000, guid: d29d7c9a7742e004bae93169b60a0561, type: 2}
-  - {fileID: 11400000, guid: 3a8eada8d3166534b847d399b70a2542, type: 2}
-  - {fileID: 11400000, guid: 8919bbc8000cc7647be152850bc42f5c, type: 2}
-  - {fileID: 11400000, guid: dc87f8d14aa5bda4cad1ed333a2a2011, type: 2}
 --- !u!1 &1891740196
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.EventSystems; // 마우스 이벤트를 위해 필요
+using UnityEngine.EventSystems;
 
 public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {

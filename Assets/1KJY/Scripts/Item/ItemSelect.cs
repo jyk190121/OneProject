@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class ItemSelect : MonoBehaviour
@@ -14,12 +15,20 @@ public class ItemSelect : MonoBehaviour
     public Button nextBtn;                               // 배틀 씬으로 이동(1) or 업그레이드 상점으로 이동(2이상)
     int itemSelectedCount = 3;                           // 반드시 3개 선택
 
-    public Item[] items;                                 // 현재 내가 가지고 있는 아이템
+    List<Item> items;                                   // 현재 내가 가지고 있는 아이템 (최대 10개까지 불러오기)
+
+    ItemManager itemManager;
+
+    void Awake()
+    {
+        itemManager = FindAnyObjectByType<ItemManager>();
+
+        items = itemManager.CurrentItems();
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
         // 처음엔 테두리를 숨김
         if (selectionOutlines != null)
         {
@@ -36,7 +45,7 @@ public class ItemSelect : MonoBehaviour
             Image btnImage = itemButtons[i].GetComponent<Image>();
 
             // 해금되지 않은 아이템 처리
-            if (i > items.Length - 1)
+            if (i > items.Count - 1)
             {
                 itemButtons[i].gameObject.SetActive(false);
             }
@@ -56,7 +65,7 @@ public class ItemSelect : MonoBehaviour
     }
 
 
-    void SelectItem(Item[] items, int index)
+    void SelectItem(List<Item> items, int index)
     {
         // --- 유저용 UI 테두리 처리 ---
         //if (selectionOutlines != null)

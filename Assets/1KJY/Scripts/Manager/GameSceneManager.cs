@@ -38,7 +38,7 @@ public class GameSceneManager : MonoBehaviour
         StageManager stageManager = FindAnyObjectByType<StageManager>();
         int stage = stageManager.SelectedStage;
 
-        //MonsterSpawnerManager.Instance.Spawn(stage)
+        MonsterSpawnerManager.Instance.Spawn(stage)
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)

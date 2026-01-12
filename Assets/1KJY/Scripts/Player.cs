@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     public float att1;     //물리공격력
     public float att2;     //마법공격력
     public float poison;   //�� ����������
-    public int gold;
+    public int gold;       //보유골드
 
     //�ʱ⼳��
     public void HpShildSet()

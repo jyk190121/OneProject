@@ -1,7 +1,8 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 /// <summary>
 /// 1. Stage 버튼 선택 시 해당 스테이지로 이동
 ///  - 한번 선택 시 스테이지 명 노출
@@ -43,25 +44,70 @@ public class StageUI : MonoBehaviour
         //    int index = i + 1; // 스테이지 번호 (1~10)
         //    stageButtons[i].onClick.AddListener(() => OnStageButtonClick(index));
         //}
+
         // 버튼 초기 설정
         for (int i = 0; i < stageButtons.Length; i++)
         {
             int stageNum = i + 1;
-            Image btnImage = stageButtons[i].GetComponent<Image>();
+
+            // 기본 onClick은 제거하고 커스텀 이벤트를 등록합니다.
+            stageButtons[i].onClick.RemoveAllListeners();
+
+            EventTrigger trigger = stageButtons[i].gameObject.GetComponent<EventTrigger>();
+            if (trigger == null) trigger = stageButtons[i].gameObject.AddComponent<EventTrigger>();
+
+            // 1. 키보드 방향키로 "포커스"가 옮겨졌을 때 (선택 상태 업데이트)
+            EventTrigger.Entry selectEntry = new EventTrigger.Entry();
+            selectEntry.eventID = EventTriggerType.Select;
+            selectEntry.callback.AddListener((data) => {
+                // 마우스 클릭 중이 아닐 때만 (즉, 키보드/패드 이동일 때만) 인덱스 즉시 갱신
+                if (!(Input.GetMouseButton(0) || Input.GetMouseButton(1)))
+                {
+                    SelectStage(stageNum);
+                }
+            });
+            trigger.triggers.Add(selectEntry);
+
+
+            // 2. 마우스로 "클릭"했을 때 (기존 로직: 선택 or 진입)
+            EventTrigger.Entry clickEntry = new EventTrigger.Entry();
+            clickEntry.eventID = EventTriggerType.PointerClick;
+            clickEntry.callback.AddListener((data) =>
+            {
+            PointerEventData p = data as PointerEventData;
+                if (p != null && p.button == PointerEventData.InputButton.Left)
+                {
+                    OnMouseClick(stageNum);
+                }
+            });
+
+            trigger.triggers.Add(clickEntry);
+
+            // 3. 키보드로 "엔터(Submit)"를 눌렀을 때 (즉시 진입)
+            EventTrigger.Entry submitEntry = new EventTrigger.Entry();
+            submitEntry.eventID = EventTriggerType.Submit;
+            submitEntry.callback.AddListener((data) => { EnterStage(stageNum); });
+            trigger.triggers.Add(submitEntry);
+
 
             // 해금되지 않은 스테이지 처리
             if (stageNum > unlockedStageIndex)
             {
+                Image btnImage = stageButtons[i].GetComponent<Image>();
+
                 // 알파값을 약 100/255 (0.4f) 정도로 낮춤
                 Color color = btnImage.color;
                 color.a = 0.4f;
                 btnImage.color = color;
             }
 
-            // 모든 버튼은 일단 '클릭'은 가능하게 둠 (선택은 되어야 하므로)
-            stageButtons[i].interactable = true;
-            stageButtons[i].onClick.AddListener(() => OnStageButtonClick(stageNum));
+            //// 모든 버튼은 일단 '클릭'은 가능하게 둠 (선택은 되어야 하므로)
+            //stageButtons[i].interactable = true;
+            //stageButtons[i].onClick.AddListener(() => OnStageButtonClick(stageNum));
         }
+
+        //스테이지 진입 시 포커스될 버튼
+        stageButtons[0].Select();
 
         // 배경 버튼 클릭 시 취소 함수 실행
         if (backgroundCancelBtn != null)
@@ -71,8 +117,27 @@ public class StageUI : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        // 현재 선택된 오브젝트가 없는지 확인 (배경 클릭으로 인해)
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            Keyboard key = Keyboard.current;
+            if (key == null) return;
 
-    void OnStageButtonClick(int stageNum)
+            if (key.aKey.wasPressedThisFrame || key.dKey.wasPressedThisFrame || 
+                key.leftArrowKey.wasPressedThisFrame || key.rightArrowKey.wasPressedThisFrame)
+            {
+                // 이전에 선택했던 스테이지가 있다면 그곳으로, 없다면 0번으로
+                int resumeIndex = (selectedStageIndex != -1) ? selectedStageIndex - 1 : 0;
+                stageButtons[Mathf.Clamp(resumeIndex, 0, stageButtons.Length - 1)].Select();
+            }
+        }
+    }
+
+
+    // 마우스 클릭 시 호출
+    void OnMouseClick(int stageNum)
     {
         // 1. 이미 선택된 스테이지를 다시 눌렀을 때 (진입)
         if (selectedStageIndex == stageNum)
@@ -100,7 +165,9 @@ public class StageUI : MonoBehaviour
 
     void SelectStage(int stageNum)
     {
-        selectedStageIndex = stageNum;
+        //중복 호출 방지
+        if (selectedStageIndex == stageNum) return;
+        
         bool isLocked = stageNum > unlockedStageIndex;
 
         //받아온 스테이지 선택된 상태
@@ -134,6 +201,8 @@ public class StageUI : MonoBehaviour
             // 테두리 크기를 버튼 크기에 맞춤
             selectionOutline.sizeDelta = btnRect.sizeDelta;
         }
+
+        selectedStageIndex = stageNum;
     }
 
     void EnterStage(int stageNum)
@@ -143,7 +212,7 @@ public class StageUI : MonoBehaviour
         if (!isLocked)
         {
             stageManager.SelectedStage = stageNum;
-            //Debug.Log($"{stageNum}번 스테이지로 진입합니다.");
+            Debug.Log($"{stageManager.SelectedStage}번 스테이지로 진입합니다.");
             GameSceneManager.Instance.LoadSceneAsync("ItemSelectScene");
         }
         //잠긴 스테이지 선택 시 이동불가
@@ -152,6 +221,5 @@ public class StageUI : MonoBehaviour
             stageText.text = "진입 불가!";
         }
     }
-
 }
 

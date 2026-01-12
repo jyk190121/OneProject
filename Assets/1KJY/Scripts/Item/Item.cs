@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
 /// 아이템
@@ -36,7 +37,20 @@ public class Item : ScriptableObject
     public float SHILD;         //방어도회복 스텟
     public float POISON;        //독 누적
     public float BLOOD;         //흡열 수치(HP 강탈)
-    //public int COUNT;           //치명타, 메가치명타
+    public int COUNT;           //치명타, 메가치명타 (콤보카운트)
+
+    [Header("아이템 기능")]
+    public GameObject effect;
+
+    //public List<ItemEffect> effects; // 이 아이템이 가진 기능들 (여러 개 가능)
+
+    //public void Use(GameObject user)
+    //{
+    //    foreach (ItemEffect effect in effects)
+    //    {
+    //        effect.Execute(user, this);
+    //    }
+    //}
 
     [Header("기절확률")]
     [Range(0, 1)]

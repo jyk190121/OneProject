@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 /// <summary>
@@ -58,9 +59,9 @@ public class BattleManager : MonoBehaviour
     public TextMeshProUGUI turnTxt;
     public TextMeshProUGUI statusTxt;
 
+    StageManager stageManager;              //현재 진입한 스테이지
+    int currentStageIndex;
 
-
-    //아이템 이름, 콤보카운트 가져오기
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
         {"고급도끼", 0},
@@ -91,59 +92,45 @@ public class BattleManager : MonoBehaviour
         {"원석", 0},
         {"딸기", 0},
         {"천둥망치", 0},
-
     };
 
     void Awake()
     {
+        if (stageManager != null)
+        {
+            currentStageIndex = stageManager.SelectedStage;
+        }
+        print($"{currentStageIndex}");
+
         //스테이지 값 받아서 해당 스테이지 몬스터만 출현
         InitializeSceneObjects();
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        //slotCount = 5;
-        //spawnedSlots = new SlotSpinner[slotCount];
-        //items = new string[slotCount];
-        //itemPrefab = GetComponent<GameObject>();
-        //itemArray = new GameObject[slotCount];
-        //isEnemyturnning = false;
-        //cri1 = false;
-        //cri2 = false;
-
-        //player.HpShildSet();
-        //enemy.HpShildSet();
-
-        //SpinSlotCreate();
-
-        //EnemyCreate();
-
-        //SpinStart();
-
-        //stopBtn.onClick.AddListener(SpinSlotbySlotStop);
-    }
     void Update()
     {
         if (player != null && enemy != null && stopBtn != null)
         {
             StatusTurn();
 
-            if (Input.GetKeyDown(KeyCode.Space) && playerSlotCheck ||
-                Input.GetKeyDown(KeyCode.Return) && playerSlotCheck)
+            Keyboard key = Keyboard.current;
+            if (key == null) return;
+
+            if (key.enterKey.wasPressedThisFrame && playerSlotCheck ||
+                key.spaceKey.wasPressedThisFrame && playerSlotCheck)
             {
                 SpinSlotbySlotStop();
             }
 
-            foreach (SlotSpinner s in spawnedSlots)
-            {
-                if (s.isSpinning) s.StartSpin();
-            }
+            //foreach (SlotSpinner s in spawnedSlots)
+            //{
+            //    if (s.isSpinning) s.StartSpin();
+            //}
 
             // 플레이어 턴
             if (spawnedSlots[spawnedSlots.Length - 1].isSpinning == false && playerSlotCheck)
             {
+                //SpinStart();
+
                 // ComboCount 계산
                 ComboCri(ComboCount(items));
 
@@ -155,6 +142,19 @@ public class BattleManager : MonoBehaviour
 
                 // 스톱 버튼 비활성화
                 stopBtn.gameObject.SetActive(false);
+
+                // 모든 슬롯이 멈췄는지 체크하는 로직
+                bool allStopped = true;
+                foreach (SlotSpinner s in spawnedSlots)
+                {
+                    if (s.isSpinning) { allStopped = false; break; }
+                }
+
+                if (allStopped && playerSlotCheck)
+                {
+                    // 결과 처리 로직...
+                    playerSlotCheck = false;
+                }
             }
 
             // 적 턴
@@ -269,7 +269,11 @@ public class BattleManager : MonoBehaviour
         // 슬롯 회전 시작
         foreach (SlotSpinner s in spawnedSlots)
         {
-            if (s != null) s.isSpinning = true;
+            if (s != null)
+            {
+                s.isSpinning = true;
+                s.StartSpin();
+            }
         }
     }
 
@@ -776,6 +780,11 @@ public class BattleManager : MonoBehaviour
     void EnemyCreate(int r)
     {
         if (GameObject.FindWithTag("Enemy") == null) return;
+        if (r < 0 || r > enemyObjects.Length)
+        {
+            print("enemy 생성못함");
+            return;
+        }
 
         Transform enemyPos = GameObject.FindWithTag("Enemy").transform;
         GameObject newObj = Instantiate(enemyObjects[r], enemyPos);
@@ -881,10 +890,7 @@ public class BattleManager : MonoBehaviour
         Status(" ");
 
         //슬롯 재시작
-        foreach (SlotSpinner s in spawnedSlots)
-        {
-            if (s != null) s.isSpinning = true;
-        }
+        SpinStart();
 
     }
 
@@ -1033,7 +1039,6 @@ public class BattleManager : MonoBehaviour
         //AudioManager.audioManager.StopBGM();
 
         //Destroy(gameObject);
-        //나중엔 UpgradeStore로 이동예정
         GameSceneManager.Instance.LoadScene("UpgradeStore");
 
         yield return null;
@@ -1109,7 +1114,9 @@ public class BattleManager : MonoBehaviour
         turnTxt = GameObject.FindWithTag("TurnTxt")?.GetComponent<TextMeshProUGUI>();
         slotParent = GameObject.FindWithTag("Slot");
 
-        int r = Random.Range(0, enemyObjects.Length);
+        //int r = Random.Range(0, enemyObjects.Length);
+        int r = currentStageIndex;
+
 
         // Player / Enemy 다시 찾기
         player = FindFirstObjectByType<Player>();

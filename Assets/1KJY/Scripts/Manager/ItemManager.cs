@@ -34,4 +34,5 @@ public class ItemManager : MonoBehaviour
         initialItems.Add(item);
         Debug.Log($"{item}아이템 추가");
     }
+
 }

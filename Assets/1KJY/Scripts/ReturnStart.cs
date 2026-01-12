@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ReturnStart : MonoBehaviour
 {
-   public void StartSceneCall()
+    public void StartSceneCall()
     {
         GameSceneManager.Instance.LoadScene("StartScene");
     }

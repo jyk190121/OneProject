@@ -17,9 +17,21 @@ MonoBehaviour:
   IMAGE: {fileID: 21300000, guid: 5d9ba4e7d0964044ea54abe409d81dfd, type: 3}
   PRICE: 0
   ENHANCE: 0
+  GOLD: 0
+  MINATK: 0
+  MINMATK: 0
   ATK: 0
   MATK: 0
+  PLUSATK: 0
+  PLUSMATK: 0
+  PLUS_HP: 0
+  PLUS_SHILD: 0
   HP: 10
   SHILD: 0
   POISON: 0
+  BLOOD: 0
+  COUNT: 0
+  effects:
+  - {fileID: 11400000, guid: b3953c1e229c7204f97332096b50405f, type: 2}
+  STUNED: 0
   EXPLAIN: "\uCCB4\uB825 10 \uD68C\uBCF5"

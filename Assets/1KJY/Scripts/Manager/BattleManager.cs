@@ -138,18 +138,6 @@ public class BattleManager : MonoBehaviour
                 // 스톱 버튼 비활성화
                 stopBtn.gameObject.SetActive(false);
 
-                // 모든 슬롯이 멈췄는지 체크하는 로직
-                bool allStopped = true;
-                foreach (SlotSpinner s in spawnedSlots)
-                {
-                    if (s.isSpinning) { allStopped = false; break; }
-                }
-
-                if (allStopped && playerSlotCheck)
-                {
-                    // 결과 처리 로직...
-                    playerSlotCheck = false;
-                }
             }
 
             // 적 턴
@@ -331,7 +319,9 @@ public class BattleManager : MonoBehaviour
 
         int num = 0;
         string action = "";
-        int energy = 0;
+        int energy1 = 0;
+        int energy2 = 0;
+        int energy3 = 0;
 
         // 슬롯 아이템에 따른 효과 적용
 
@@ -376,7 +366,7 @@ public class BattleManager : MonoBehaviour
                     if (item.NAME.Equals("포도"))
                     {
                         itemPrefab = item.EFFECT;
-                        itemPos = player.shildBar.transform.position;
+                        itemPos = player.hpBar.transform.position;
                         switch (itemDict[item.NAME])
                         {
                             // 일반
@@ -402,7 +392,7 @@ public class BattleManager : MonoBehaviour
                         {
                             if (item == matchedItems[i])
                             {
-                                int slotIndex = energy % spawnedSlots.Length;
+                                int slotIndex = energy1 % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
                                 itemPrefab = item.EFFECT;
@@ -438,7 +428,7 @@ public class BattleManager : MonoBehaviour
                         {
                             if (item == matchedItems[i])
                             {
-                                int slotIndex = energy % spawnedSlots.Length;
+                                int slotIndex = energy2 % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
                                 itemPrefab = item.EFFECT;
@@ -474,7 +464,7 @@ public class BattleManager : MonoBehaviour
                         {
                             if (item == matchedItems[i])
                             {
-                                int slotIndex = energy % spawnedSlots.Length;
+                                int slotIndex = energy3 % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
                                 itemPrefab = item.EFFECT;
@@ -752,24 +742,24 @@ public class BattleManager : MonoBehaviour
                     if (item.NAME.Equals("고급도끼"))
                     {
                         //print("공격40 물리");
-                        int att = Random.Range(20, 60);
-                        int r = Random.Range(80, 100);
+                        float att = 0;
+                        float r = (Random.Range(item.STUNED, 1)) * 100;
 
                         switch (itemDict[item.NAME])
                         {
                             case 1:
-                                //att = 40;
-                                action = $"물공 {player.att1 + att}";
+                                att = Random.Range(item.MINATK,item.ATK) + player.att1;
+                                action = $"물공 {att}";
                                 break;
                             case 2:
-                                att *= 3;
-                                action = $"치명타!\n물공 {player.att1 + att}";
+                                att = (Random.Range(item.MINATK, item.ATK) * 3) + player.att1;
+                                action = $"{item.NAME}치명타!\n물공 {att}";
                                 cri1 = false;
                                 r = Random.Range(85, 100);
                                 break;
                             case 3:
-                                att *= 10;
-                                action = $"메가치명타!\n물공 {player.att1 + att}";
+                                att = (Random.Range(item.MINATK, item.ATK) * 9) + player.att1;
+                                action = $"{item.NAME}메가치명타!\n물공 {att}";
                                 cri2 = false;
                                 r = 99;
                                 break;
@@ -797,9 +787,137 @@ public class BattleManager : MonoBehaviour
 
                     }
 
+                    if (item.NAME.Equals("화염방패"))
+                    {
+                        float shild = item.SHILD;
+                        float plus_sh = item.PLUS_SHILD;
+                        switch (itemDict[item.NAME])
+                        {
+                            case 1:
+                                action = $"방어도 {shild} 회복\n최대 방어도 {plus_sh}";
+                                FlameShield(shild , plus_sh);
+                                break;
+                            case 2:
+                                shild *= 3;
+                                plus_sh *= 3;
+                                action = $"{item.NAME}치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
+                                FlameShield(shild, plus_sh);
+                                cri1 = false;
+                                break;
+                            case 3:
+                                shild *= 9;
+                                plus_sh *= 9;
+                                action = $"{item.NAME}메가치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
+                                FlameShield(shild, plus_sh);
+                                cri2 = false;
+                                break;
+                        }
+
+                     
+                        itemPrefab = item.EFFECT;
+                        itemPos = player.shildBar.transform.position;
+
+                    }
+
+                    if (item.NAME.Equals("골드"))
+                    {
+                        int gold = item.GOLD;
+                        switch (itemDict[item.NAME])
+                        {
+                            case 1:
+                                action = $"{gold}골드 획득";
+                                break;
+                            case 2:
+                                gold *= 3;
+                                action = $"{item.NAME}치명타!\n{gold}골드 획득";
+                                cri1 = false;
+                                break;
+                            case 3:
+                                gold *= 9;
+                                action = $"{item.NAME}메가치명타!\n{gold}골드 획득";
+                                cri2 = false;
+                                break;
+                        }
+
+
+                        itemPrefab = item.EFFECT;
+
+                        //골드 획득 시 Enemy 좌측으로 이동
+                        //획득 시 애니메이션 추가(Prefabs)
+                        itemPos = Vector3.up * 2;
+
+                        player.gold += gold;
+                    }
+
+                    if (item.NAME.Equals("마법투구"))
+                    {
+                        //증가치
+                        float att1 = item.PLUSATK;
+                        float att2 = item.PLUSMATK;
+
+                        float hp = item.HP;
+                        float plus_hp = item.PLUS_HP;
+                        float shild = item.SHILD;
+                        float plus_sh = item.PLUS_SHILD;
+
+                        switch (itemDict[item.NAME])
+                        {
+                            case 1:
+                                action = $"물공 {att1},마공 {att2} 증가\n" +
+                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}\n" +
+                                         $"체력{hp}, 방어도{shild} 회복";
+
+                                MagicHelmet(att1, att2, hp, plus_hp, shild, plus_sh);
+
+                                break;
+                            case 2:
+                                att1 *= 3;
+                                att2 *= 3;
+                                hp *= 3;
+                                plus_hp *= 3;
+                                shild *= 3;
+                                plus_sh *= 3;
+
+                                action = $"{item.NAME}치명타!\n"+
+                                         $"물공 {att1},마공 {att2} 증가\n" +
+                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}\n" +
+                                         $"체력{hp}, 방어도{shild} 회복"; ;
+
+                                MagicHelmet(att1, att2, hp, plus_hp, shild, plus_sh);
+
+                                cri1 = false;
+                                break;
+                            case 3:
+                                att1 *= 9;
+                                att2 *= 9;
+                                hp *= 9;
+                                plus_hp *= 9;
+                                shild *= 9;
+                                plus_sh *= 9;
+                                action = $"{item.NAME}메가치명타!\n"+
+                                         $"물공 {att1},마공 {att2} 증가\n" +
+                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}\n" +
+                                         $"체력{hp}, 방어도{shild} 회복";
+
+                                MagicHelmet(att1, att2, hp, plus_hp, shild, plus_sh);
+
+                                cri2 = false;
+                                break;
+                        }
+
+
+                        itemPrefab = item.EFFECT;
+
+                        //에너지처럼 자기 위치가 나을듯
+                        itemPos = player.shildBar.transform.position;
+                    }
+
+
                     itemDict[item.NAME] = 1;
 
-                    energy++;
+                    energy1++;
+                    energy2++;
+                    energy3++;
 
                     currentEffects[num] = Instantiate(itemPrefab);
                     currentEffects[num].transform.position = itemPos;
@@ -815,12 +933,12 @@ public class BattleManager : MonoBehaviour
                     if (num < currentEffects.Length)
                     {
                         num++;
-                        Status($"{item}\n{action}");
+                        Status($"{item.NAME}\n{action}");
 
                     }
 
                     yield return new WaitForSeconds(1.5f);
-
+                    //print($"{num} , {currentEffects.Length} ");
                     //아이템이 한바퀴 돌았을 때
                     if (num == currentEffects.Length)
                     {
@@ -1169,10 +1287,9 @@ public class BattleManager : MonoBehaviour
         player.UpdateHpShildSet();
     }
 
-    void Grape(float playerMaxSh)
+    void Grape(float playerMaxHp)
     {
-        player.maxSh += playerMaxSh;
-        if (player.shild >= player.maxSh) player.shild = player.maxSh;
+        player.maxHp += playerMaxHp;
         player.UpdateHpShildSet();
     }
 
@@ -1180,6 +1297,28 @@ public class BattleManager : MonoBehaviour
     {
         player.att1 += att1;
         player.att2 += att2;
+    }
+
+    void FlameShield(float playerSh, float playerMaxSh)
+    {
+        player.maxSh += playerMaxSh;
+        player.shild += playerSh;
+        if(player.shild > player.maxSh) player.shild = player.maxSh;
+        player.UpdateHpShildSet();
+    }
+
+    void MagicHelmet(float att1, float att2, float hp,float plus_hp,float shild,float plus_sh)
+    {
+        player.att1 += att1;
+        player.att2 += att2;
+        player.maxHp += plus_hp;
+        player.maxSh += plus_sh;
+
+        player.hp += hp;
+        player.shild += shild;
+        if (player.hp >= player.maxHp) player.hp = player.maxHp;
+        if (player.shild > player.maxSh) player.shild = player.maxSh;
+        player.UpdateHpShildSet();
     }
 
     void AttDamage(float att1)

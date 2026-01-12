@@ -32,7 +32,7 @@ public class BattleManager : MonoBehaviour
     SlotSpinner[] spawnedSlots;       
 
     public Player player;
-    public GameObject[] itemEffects;
+    //public GameObject[] itemEffects;
     public GameObject itemPrefab;   
     public GameObject[] currentEffects;
     public Enemy enemy;
@@ -96,13 +96,6 @@ public class BattleManager : MonoBehaviour
 
     void Awake()
     {
-        if (stageManager != null)
-        {
-            currentStageIndex = stageManager.SelectedStage;
-        }
-        print($"{currentStageIndex}");
-
-        //스테이지 값 받아서 해당 스테이지 몬스터만 출현
         InitializeSceneObjects();
     }
 
@@ -309,261 +302,352 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    // 애니메이션 효과 or 파티클 생성
+    // 애니메이션 효과 or 파티클 생성 + 데미지 계산
     IEnumerator ItemEffect(string[] items)
     {
+        //아이템 리스트에 뽑은 아이템 담기
+        List<Item> itemList = new List<Item>();
+
+        foreach (Item itemData in itemList)
+        {
+            for(int i=0; i<items.Length; i++)
+            {
+                if(items != null && items[i] == itemData.NAME)
+                {
+                    itemList.Add(itemData);
+                }
+            }
+        }
+
         int num = 0;
         string action = "";
         int energy = 0;
-
+        
         // 슬롯 아이템에 따른 효과 적용
 
-        if (items != null)
+        if (itemList != null)
         {
-            foreach (string item in items)
+            foreach (Item item in itemList)
             {
-                if (itemDict.TryGetValue(item, out int equalsCount))
+                if (itemDict.TryGetValue(item.NAME, out int equalsCount))
                 {
                     // 이펙트 생성 위치
                     Vector3 itemPos = Vector3.zero;
 
                     // 각 아이템에 맞는 애니메이션
-                    if (item.Equals("사과"))
+                    if (item.NAME.Equals("사과"))
                     {
-                        itemPrefab = itemEffects[0];
+                        itemPrefab = item.EFFECT;
+
                         itemPos = player.hpBar.transform.position;
-                        switch (itemDict[item])
+
+                        switch (itemDict[item.NAME])
                         {
                             // 일반
                             case 1:
-                                action = "체력 10 회복";
-                                Apple(10, 0);
+                                action = $"체력 {item.HP} 회복";
+                                Apple(item.HP);
                                 break;
 
                             // 치명타
                             case 2:
-                                action = $"치명타!\nMAX 체력 10증가 + 10회복";
-                                Apple(10, 10);
+                                action = $"{item.NAME} 치명타!\n체력 {item.HP * 3} 회복";
+                                Apple(item.HP * 3);
                                 cri1 = false;
                                 break;
                             // 메가치명타
                             case 3:
-                                action = $"메가치명타!\nMAX 체력 30증가 + 30회복";
-                                Apple(30, 30);
+                                action = $"{item.NAME} 메가치명타!\n체력 {item.HP * 9} 회복";
+                                Apple(item.HP * 9);
                                 cri2 = false;
                                 break;
                         }
                     }
-                    if (item.Equals("포도"))
+                    if (item.NAME.Equals("포도"))
                     {
-                        itemPrefab = itemEffects[1];
+                        itemPrefab = item.EFFECT;
                         itemPos = player.shildBar.transform.position;
-                        switch (itemDict[item])
+                        switch (itemDict[item.NAME])
                         {
                             // 일반
                             case 1:
-                                action = "방어도 30 회복";
-                                Grape(30, 0);
+                                action = $"최대 체력 {item.PLUS_HP} 증가";
+                                Grape(item.PLUS_HP);
                                 break;
                             case 2:
-                                action = $"{item} 치명타!\n최대 방어 30증가 + 방어도 30 회복";
-                                Grape(30, 30);
+                                action = $"{item.NAME} 치명타!\n최대 체력 {item.PLUS_HP * 3} 증가";
+                                Grape(item.PLUS_HP * 3);
                                 cri1 = false;
                                 break;
                             case 3:
-                                action = $"{item} 메가치명타!\n최대 방어 100증가 + 방어도 50 회복";
-                                Grape(50, 100);
+                                action = $"{item.NAME} 메가치명타!\n최대 체력 {item.PLUS_HP * 9} 증가";
+                                Grape(item.PLUS_HP * 9);
                                 cri2 = false;
                                 break;
                         }
                     }
-                    if (item.Equals("에너지"))
+                    if (item.NAME.Equals("에너지") || item.NAME.Equals("특수에너지"))
                     {
-                        for (int i = 0; i < items.Length; i++)
+                        for (int i = 0; i < itemList.Count; i++)
                         {
-                            if (item == items[i])
+                            if (item == itemList[i])
                             {
                                 int slotIndex = energy % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = itemEffects[2]; // 효과 프리팹
+                                itemPrefab = item.EFFECT; 
                                 break;
                             }
                         }
 
-                        switch (itemDict[item])
+                        switch (itemDict[item.NAME])
                         {
                             // 일반
                             case 1:
-                                action = "물공 10 증가";
-                                Energy(10, 0);
+                                action = $"물공 {item.PLUSATK}\n마공 {item.PLUSMATK} 증가";
+                                Energy(item.PLUSATK, item.PLUSMATK);
                                 break;
 
                             case 2:
-                                action = $"{item} 치명타!\n물공/마공 10 증가";
-                                Energy(10, 10);
+                                action = $"{item.NAME} 치명타!\n물공 {item.PLUSATK * 3}\n마공 {item.PLUSMATK * 3} 증가";
+                                Energy(item.PLUSATK * 3, item.PLUSMATK * 3);
                                 cri1 = false;
                                 break;
 
                             case 3:
-                                action = $"{item} 메가치명타!\n물공/마공 30 증가";
-                                Energy(30, 30);
+                                action = $"{item.NAME} 메가치명타!\nn물공 {item.PLUSATK * 9}\n마공 {item.PLUSMATK * 9} 증가";
+                                Energy(item.PLUSATK * 9, item.PLUSMATK * 9);
                                 cri2 = false;
                                 break;
                         }
                     }
 
-                    if (item.Equals("독약"))
+                    if (item.NAME.Equals("물리에너지") || item.NAME.Equals("물리에너지_대"))
                     {
-                        itemPrefab = itemEffects[3];
+                        for (int i = 0; i < itemList.Count; i++)
+                        {
+                            if (item == itemList[i])
+                            {
+                                int slotIndex = energy % spawnedSlots.Length;
+                                // 슬롯의 위치에 이펙트 인덱스 설정
+                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                itemPrefab = item.EFFECT;
+                                break;
+                            }
+                        }
+
+                        switch (itemDict[item.NAME])
+                        {
+                            // 일반
+                            case 1:
+                                action = $"물공 {item.PLUSATK} 증가";
+                                Energy(item.PLUSATK, 0);
+                                break;
+
+                            case 2:
+                                action = $"{item.NAME} 치명타!\n물공 {item.PLUSATK * 3} 증가";
+                                Energy(item.PLUSATK * 3, 0);
+                                cri1 = false;
+                                break;
+
+                            case 3:
+                                action = $"{item.NAME} 메가치명타!\nn물공 {item.PLUSATK * 9} 증가";
+                                Energy(item.PLUSATK * 9, 0);
+                                cri2 = false;
+                                break;
+                        }
+                    }
+
+                    if (item.NAME.Equals("마법에너지") || item.NAME.Equals("마법에너지_대"))
+                    {
+                        for (int i = 0; i < itemList.Count; i++)
+                        {
+                            if (item == itemList[i])
+                            {
+                                int slotIndex = energy % spawnedSlots.Length;
+                                // 슬롯의 위치에 이펙트 인덱스 설정
+                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                itemPrefab = item.EFFECT;
+                                break;
+                            }
+                        }
+
+                        switch (itemDict[item.NAME])
+                        {
+                            // 일반
+                            case 1:
+                                action = $"마공 {item.PLUSMATK} 증가";
+                                Energy(0, item.PLUSMATK);
+                                break;
+
+                            case 2:
+                                action = $"{item.NAME} 치명타!\n마공 {item.PLUSMATK * 3} 증가";
+                                Energy(0, item.PLUSMATK * 3);
+                                cri1 = false;
+                                break;
+
+                            case 3:
+                                action = $"{item.NAME} 메가치명타!\nn마공 {item.PLUSMATK * 9} 증가";
+                                Energy(0, item.PLUSMATK * 9);
+                                cri2 = false;
+                                break;
+                        }
+                    }
+
+
+                    if (item.NAME.Equals("독약"))
+                    {
+                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up * 2;
                         //print("독 데미지 12");
-                        switch (itemDict[item])
+                        switch (itemDict[item.NAME])
                         {
                             //일반
                             case 1:
-                                action = "독 중독 12";
+                                action = $"독 중독 {item.POISON}";
                                 //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
-                                player.poison += 12;
+                                player.poison += item.POISON;
                                 player.UpdatePosion();
                                 break;
                             case 2:
-                                action = $"{item} 치명타!\n독 중독 36";
-                                player.poison += 36;
+                                action = $"{item.NAME} 치명타!\n독 중독 {item.POISON * 3}";
+                                player.poison += (item.POISON * 3);
                                 player.UpdatePosion();
                                 cri1 = false;
                                 break;
                             case 3:
-                                action = $"{item} 메가치명타!\n독 중독 100";
-                                player.poison += 100;
+                                action = $"{item.NAME} 메가치명타!\n독 중독  {item.POISON * 9}";
+                                player.poison += (item.POISON * 9);
                                 player.UpdatePosion();
                                 cri2 = false;
                                 break;
                         }
                     }
 
-                    if (item.Equals("마법검"))
+                    if (item.NAME.Equals("마법검"))
                     {
                         //print("마법 공격 30");
-                        int att = 30;
+                        float att = 0;
 
-                        switch (itemDict[item])
+                        switch (itemDict[item.NAME])
                         {
                             case 1:
-                                att = 30;
-                                action = $"마공 {player.att2 + att}";
+                                att = player.att2 + item.MATK;
+                                action = $"마공 {att}";
                                 break;
                             case 2:
-                                att *= 3;
-                                action = $"치명타!\n마공 {player.att2 + att}";
+                                att = player.att2 + (item.MATK * 3);
+                                action = $"{item.NAME} 치명타!\n마공 {att}";
                                 cri1 = false;
                                 break;
                             case 3:
-                                att *= 10;
-                                action = $"메가치명타!\n마공 {player.att2 + att}";
+                                att = player.att2 + (item.MATK * 9);
+                                action = $"메가치명타!\n마공 {att}";
                                 cri2 = false;
                                 break;
                         }
 
-                        itemPrefab = itemEffects[4];
+                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up * 2;
 
-                        enemy.hp -= (player.att2 + att);
+                        enemy.hp -= att;
 
                         enemy.UpdateHpShildSet();
 
                     }
 
-                    if (item.Equals("해골도끼"))
+                    if (item.NAME.Equals("해골도끼"))
                     {
                         //print("공격 20 공격 20");
-                        int att1 = Random.Range(5, 35);
-                        int att2 = Random.Range(5, 35);
+                        float att1 = 0;
+                        float att2 = 0;
 
-                        switch (itemDict[item])
+                        switch (itemDict[item.NAME])
                         {
                             case 1:
-                                //att1 = 20;
-                                //att2 = 20;
-                                action = $"물공 {player.att1 + att1} , 마공 {player.att2 + att2}";
+                                att1 = Random.Range(item.MINATK, item.ATK) + player.att1;
+                                att2 = Random.Range(item.MINMATK, item.MATK) + player.att2;
+                                action = $"물공 {att1} , 마공 {att2}";
                                 break;
                             case 2:
-                                att1 *= 3;
-                                att2 *= 3;
-                                action = $"치명타!\n물공 {player.att1 + att1} , 마공 {player.att2 + att2}";
+                                att1 = (Random.Range(item.MINATK, item.ATK) * 3) + player.att1;
+                                att2 = (Random.Range(item.MINMATK, item.MATK) * 3) + player.att2;
+                                action = $"{item.NAME} 치명타!\n물공 {att1} , 마공 {att2}";
                                 cri1 = false;
                                 break;
                             case 3:
-                                att1 *= 10;
-                                att2 *= 10;
-                                action = $"메가치명타!\n물공 {player.att1 + att1} , 마공 {player.att2 + att2}";
+                                att1 = (Random.Range(item.MINATK, item.ATK) * 9) + player.att1;
+                                att2 = (Random.Range(item.MINMATK, item.MATK) * 9) + player.att2;
+                                action = $"{item.NAME} 메가치명타!\n물공 {att1} , 마공 {att2}";
                                 cri2 = false;
                                 break;
                         }
 
-                        itemPrefab = itemEffects[5];
+                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up * 2;
 
                         //물리데미지 적용
                         AttDamage(att1);
 
                         //마법데미지 적용
-                        enemy.hp -= (player.att2 + att2);
+                        enemy.hp -= att2;
                         enemy.UpdateHpShildSet();
                     }
-                    if (item.Equals("마법봉"))
+
+                    if (item.NAME.Equals("마법봉"))
                     {
                         //print("공격 10");
-                        int att = 10;
+                        float att = 0;
 
-                        switch (itemDict[item])
+                        switch (itemDict[item.NAME])
                         {
                             case 1:
-                                att = 10;
-                                action = $"마공 {player.att2 + att}";
+                                att = item.MATK + player.att2;
+                                action = $"마공 {att}";
                                 break;
                             case 2:
-                                att *= 3;
-                                action = $"치명타!\n마공 {player.att2 + att}";
+                                att = (item.MATK * 3) + player.att2;
+                                action = $"{item.NAME} 치명타!\n마공 {att}";
                                 cri1 = false;
                                 break;
                             case 3:
-                                att *= 10;
-                                action = $"메가치명타\n마공 {player.att2 + att}";
+                                att = (item.MATK * 9) + player.att2;
+                                action = $"{item.NAME} 메가치명타\n마공 {att}";
                                 cri2 = false;
                                 break;
                         }
 
-                        itemPrefab = itemEffects[6];
+                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up * 2;
 
-                        enemy.hp -= (player.att2 + att);
+                        //마법데미지
+                        enemy.hp -= att;
                         enemy.UpdateHpShildSet();
 
                     }
-                    if (item.Equals("일반검"))
+                    if (item.NAME.Equals("일반검"))
                     {
                         //print("물공 10");
-                        int att = 10;
-                        switch (itemDict[item])
+                        float att = 0;
+                        switch (itemDict[item.NAME])
                         {
                             case 1:
-                                att = 10;
-                                action = $"물공 {player.att1 + att}";
+                                att = item.ATK + player.att1;
+                                action = $"물공 {att}";
                                 break;
                             case 2:
-                                att *= 3;
-                                action = $"치명타!\n물공 {player.att1 + att}";
+                                att = (item.ATK * 3) + player.att1;
+                                action = $"{item.NAME} 치명타!\n물공 {att}";
                                 cri1 = false;
                                 break;
                             case 3:
-                                att *= 10;
-                                action = $"메가치명타!\n물공 {player.att1 + att}";
+                                att = (item.ATK * 9) + player.att1; ;
+                                action = $"{item.NAME} 메가치명타!\n물공 {att}";
                                 cri2 = false;
                                 break;
                         }
 
-                        itemPrefab = itemEffects[7];
+                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up * 2;
 
                         AttDamage(att);
@@ -573,30 +657,30 @@ public class BattleManager : MonoBehaviour
 
 
                     }
-                    if (item.Equals("일반도끼"))
+                    if (item.NAME.Equals("일반도끼"))
                     {
                         //print("공격20 물리");
-                        int att = Random.Range(5, 15);
+                        float att = 0;
 
-                        switch (itemDict[item])
+                        switch (itemDict[item.NAME])
                         {
                             case 1:
-                                //att = 20;
-                                action = $"물공 {player.att1 + att}";
+                                att = Random.Range(item.MINMATK, item.ATK) + player.att1;
+                                action = $"물공 {att}";
                                 break;
                             case 2:
-                                att *= 3;
-                                action = $"치명타!\n물공 {player.att1 + att}";
+                                att = (Random.Range(item.MINMATK, item.ATK) * 3) + player.att1;
+                                action = $"{item.NAME} 치명타!\n물공 {att}";
                                 cri1 = false;
                                 break;
                             case 3:
-                                att *= 10;
-                                action = $"메가치명타!\n물공 {player.att1 + att}";
+                                att = (Random.Range(item.MINMATK, item.ATK) * 9) + player.att1;
+                                action = $"{item.NAME} 메가치명타!\n물공 {att}";
                                 cri2 = false;
                                 break;
                         }
 
-                        itemPrefab = itemEffects[8];
+                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up * 2;
 
                         AttDamage(att);
@@ -604,27 +688,27 @@ public class BattleManager : MonoBehaviour
                         enemy.UpdateHpShildSet();
 
                     }
-                    if (item.Equals("대검"))
+                    if (item.NAME.Equals("대검"))
                     {
                         //print("공격30 물리");
-                        int att = 30;
-                        int r = Random.Range(40, 100);
+                        float att = 0;
+                        float r = (Random.Range(item.STUNED, 1)) * 100;
 
-                        switch (itemDict[item])
+                        switch (itemDict[item.NAME])
                         {
                             case 1:
-                                att = 30;
-                                action = $"물공 {player.att1 + att}";
+                                att = item.ATK + player.att1;
+                                action = $"물공 {att}";
                                 break;
                             case 2:
-                                att *= 3;
-                                action = $"치명타!\n물공 {player.att1 + att}";
+                                att = (item.ATK * 3) + player.att1;
+                                action = $"{item.NAME} 치명타!\n물공 {att}";
                                 cri1 = false;
                                 r = 99;
                                 break;
                             case 3:
-                                att *= 10;
-                                action = $"메가치명타!\n물공 {player.att1 + att}";
+                                att = (item.ATK * 9) + player.att1;
+                                action = $"{item.NAME} 메가치명타!\n물공 {att}";
                                 cri2 = false;
                                 r = 99;
                                 break;
@@ -646,21 +730,22 @@ public class BattleManager : MonoBehaviour
                         }
 
 
-                        itemPrefab = itemEffects[9];
+                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up * 2;
 
+                        //물리데미지
                         AttDamage(att);
 
                         enemy.UpdateHpShildSet();
 
                     }
-                    if (item.Equals("고급도끼"))
+                    if (item.NAME.Equals("고급도끼"))
                     {
                         //print("공격40 물리");
                         int att = Random.Range(20, 60);
                         int r = Random.Range(80, 100);
 
-                        switch (itemDict[item])
+                        switch (itemDict[item.NAME])
                         {
                             case 1:
                                 //att = 40;
@@ -693,7 +778,7 @@ public class BattleManager : MonoBehaviour
                                 stuned2 = false;
                             }
                         }
-                        itemPrefab = itemEffects[10];
+                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up * 2;
 
                         AttDamage(att);
@@ -702,7 +787,7 @@ public class BattleManager : MonoBehaviour
 
                     }
 
-                    itemDict[item] = 1;
+                    itemDict[item.NAME] = 1;
 
                     energy++;
 
@@ -898,7 +983,7 @@ public class BattleManager : MonoBehaviour
     {
         //적 공격 Enermy.cs에서 작성예정 -애니메이션, 이펙트 (파티클?) 등
         enemy.Attack();
-        StartCoroutine(AttackEffect());
+        //StartCoroutine(AttackEffect());
         string action = $"공격 {enemy.att1}";
         Status(action);
 
@@ -928,7 +1013,7 @@ public class BattleManager : MonoBehaviour
     private void EnemySpecialAttack()
     {
         enemy.SpecialAttack();
-        StartCoroutine(SpecialEffect());
+        //StartCoroutine(SpecialEffect());
 
         string action = $"특수공격 {enemy.att2}";
         Status(action);
@@ -945,7 +1030,7 @@ public class BattleManager : MonoBehaviour
     private void EnemyShildRecover()
     {
         enemy.ShildRecover();
-        StartCoroutine(ShildEffect());
+        //StartCoroutine(ShildEffect());
 
         string action = $"방어도 {enemy.ShildRecover()}회복";
         Status(action);
@@ -960,7 +1045,7 @@ public class BattleManager : MonoBehaviour
     private void EnemyHealing()
     {
         enemy.Healing();
-        StartCoroutine(HealEffect());
+        //StartCoroutine(HealEffect());
 
         string action = $"체력 {enemy.Healing()}회복";
         Status(action);
@@ -973,45 +1058,46 @@ public class BattleManager : MonoBehaviour
         enemy.UpdateHpShildSet();
     }
 
-    IEnumerator AttackEffect()
-    {
-        GameObject enemyEffect = Instantiate(itemEffects[11]);
-        enemyEffect.transform.position = player.hpBar.transform.position;
+    //Enemy ScriptableObject만든 후 재작업
+    //IEnumerator AttackEffect()
+    //{
+    //    GameObject enemyEffect = Instantiate(itemEffects[11]);
+    //    enemyEffect.transform.position = player.hpBar.transform.position;
 
-        yield return new WaitForSeconds(1.5f);
+    //    yield return new WaitForSeconds(1.5f);
 
-        Destroy(enemyEffect);
-    }
+    //    Destroy(enemyEffect);
+    //}
 
-    IEnumerator SpecialEffect()
-    {
-        GameObject enemyEffect = Instantiate(itemEffects[12]);
-        enemyEffect.transform.position = player.hpBar.transform.position;
+    //IEnumerator SpecialEffect()
+    //{
+    //    GameObject enemyEffect = Instantiate(itemEffects[12]);
+    //    enemyEffect.transform.position = player.hpBar.transform.position;
 
-        yield return new WaitForSeconds(1.5f);
+    //    yield return new WaitForSeconds(1.5f);
 
-        Destroy(enemyEffect);
-    }
+    //    Destroy(enemyEffect);
+    //}
 
-    IEnumerator ShildEffect()
-    {
-        GameObject enemyEffect = Instantiate(itemEffects[13]);
-        enemyEffect.transform.position = enemy.transform.position;
+    //IEnumerator ShildEffect()
+    //{
+    //    GameObject enemyEffect = Instantiate(itemEffects[13]);
+    //    enemyEffect.transform.position = enemy.transform.position;
 
-        yield return new WaitForSeconds(1.5f);
+    //    yield return new WaitForSeconds(1.5f);
 
-        Destroy(enemyEffect);
-    }
+    //    Destroy(enemyEffect);
+    //}
 
-    IEnumerator HealEffect()
-    {
-        GameObject enemyEffect = Instantiate(itemEffects[14]);
-        enemyEffect.transform.position = enemy.transform.position;
+    //IEnumerator HealEffect()
+    //{
+    //    GameObject enemyEffect = Instantiate(itemEffects[14]);
+    //    enemyEffect.transform.position = enemy.transform.position;
 
-        yield return new WaitForSeconds(1.5f);
+    //    yield return new WaitForSeconds(1.5f);
 
-        Destroy(enemyEffect);
-    }
+    //    Destroy(enemyEffect);
+    //}
 
     IEnumerator EnemyDeath()
     {
@@ -1027,13 +1113,13 @@ public class BattleManager : MonoBehaviour
 
         playerTurn = false;
         enemyTurn = false;
-        GameObject enemyEffect = Instantiate(itemEffects[15]);
-        enemyEffect.transform.position = enemy.transform.position;
-        Destroy(enemy.gameObject);
+        //GameObject enemyEffect = Instantiate(itemEffects[15]);
+        //enemyEffect.transform.position = enemy.transform.position;
+        //Destroy(enemy.gameObject);
 
         //승리 결과창 추가?
         yield return new WaitForSeconds(1.5f);
-        Destroy(enemyEffect);
+        //Destroy(enemyEffect);
 
         yield return new WaitForSeconds(3f);
         //AudioManager.audioManager.StopBGM();
@@ -1061,42 +1147,40 @@ public class BattleManager : MonoBehaviour
         //SceneManager.LoadScene("StartScene");
     }
 
-    void Apple(int playerHp, int playerMaxHp)
+    void Apple(float playerHp)
     {
-        player.maxHp += playerMaxHp;
         player.hp += playerHp;
         if (player.hp >= player.maxHp) player.hp = player.maxHp;
         player.UpdateHpShildSet();
     }
 
-    void Grape(int playerSh, int playerMaxSh)
+    void Grape(float playerMaxSh)
     {
         player.maxSh += playerMaxSh;
-        player.shild += playerSh;
         if (player.shild >= player.maxSh) player.shild = player.maxSh;
         player.UpdateHpShildSet();
     }
 
-    void Energy(int att1, int att2)
+    void Energy(float att1, float att2)
     {
         player.att1 += att1;
         player.att2 += att2;
     }
 
-    void AttDamage(int att1)
+    void AttDamage(float att1)
     {
-        if (enemy.shild > 0 && enemy.shild >= (player.att1 + att1))
+        if (enemy.shild > 0 && enemy.shild >= att1)
         {
-            enemy.shild -= (player.att1 + att1);
+            enemy.shild -= att1;
         }
-        else if (enemy.shild > 0 && enemy.shild < (player.att1 + att1))
+        else if (enemy.shild > 0 && enemy.shild < att1)
         {
-            enemy.hp = (player.att1 + att1) - enemy.shild;
+            enemy.hp -= (att1 - enemy.shild);
             enemy.shild = 0;
         }
         else
         {
-            enemy.hp -= (player.att1 + att1);
+            enemy.hp -= att1;
         }
     }
 
@@ -1113,9 +1197,17 @@ public class BattleManager : MonoBehaviour
         statusTxt = GameObject.FindWithTag("StatusTxt")?.GetComponent<TextMeshProUGUI>();
         turnTxt = GameObject.FindWithTag("TurnTxt")?.GetComponent<TextMeshProUGUI>();
         slotParent = GameObject.FindWithTag("Slot");
-
+        stageManager = FindAnyObjectByType<StageManager>();
         //int r = Random.Range(0, enemyObjects.Length);
-        int r = currentStageIndex;
+
+        if (stageManager != null)
+        {
+            currentStageIndex = stageManager.SelectedStage - 1;
+        }
+        print($"{currentStageIndex}");
+
+        //스테이지 값 받아서 해당 스테이지 몬스터만 출현
+        //int r = currentStageIndex;
 
 
         // Player / Enemy 다시 찾기
@@ -1127,7 +1219,7 @@ public class BattleManager : MonoBehaviour
 
         //enemy = enemies[r];
 
-        EnemyCreate(r);
+        EnemyCreate(currentStageIndex);
          
         if (player == null || enemy == null || stopBtn == null)
         {

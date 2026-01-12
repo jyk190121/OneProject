@@ -30,5 +30,7 @@ MonoBehaviour:
   SHILD: 0
   POISON: 0
   BLOOD: 0
+  COUNT: 0
+  EFFECT: {fileID: 1758473627833946668, guid: 5d7aa98ecec1f294e92bef2d47ea869c, type: 3}
   STUNED: 0
   EXPLAIN: "\uCCB4\uB825 20 \uD68C\uBCF5\n\n\uCD5C\uB300 \uCCB4\uB825 10 \uC99D\uAC00"

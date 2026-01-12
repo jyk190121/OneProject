@@ -39,8 +39,8 @@ public class Item : ScriptableObject
     public float BLOOD;         //흡열 수치(HP 강탈)
     public int COUNT;           //치명타, 메가치명타 (콤보카운트)
 
-    [Header("아이템 기능")]
-    public GameObject effect;
+    [Header("아이템 이팩트")]
+    public GameObject EFFECT;
 
     //public List<ItemEffect> effects; // 이 아이템이 가진 기능들 (여러 개 가능)
 

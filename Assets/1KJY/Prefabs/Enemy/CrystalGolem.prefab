@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7458748613824806051}
   - component: {fileID: 7458748613824806052}
   - component: {fileID: 7458748613824806053}
-  - component: {fileID: -7941141273018834148}
+  - component: {fileID: -3012806238858543793}
   m_Layer: 6
   m_Name: CrystalGolem
   m_TagString: Untagged
@@ -112,7 +112,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-7941141273018834148
+--- !u!114 &-3012806238858543793
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,13 +124,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1369fb90aef7be4d920442caf72a2f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: c553e4ff96eb40845932001581d3ad1b, type: 2}
   hpBar: {fileID: 0}
   shildBar: {fileID: 0}
   hp: 0
   maxHp: 0
   shild: 0
   maxSh: 0
+  minAtt1: 0
   att1: 0
+  minAtt2: 0
   att2: 0
   death: 0
   animator: {fileID: 0}

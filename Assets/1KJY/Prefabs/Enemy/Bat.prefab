@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8015881309170186290}
   - component: {fileID: 2643148553989666045}
   - component: {fileID: 506800973762143671}
-  - component: {fileID: -8059858962110930500}
+  - component: {fileID: -8219532515668854037}
   m_Layer: 6
   m_Name: Bat
   m_TagString: Untagged
@@ -112,7 +112,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-8059858962110930500
+--- !u!114 &-8219532515668854037
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,13 +124,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 579d3449de9087545adbfa78633815f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: ec84ad6d397616940b6e6f5bb161f2ad, type: 2}
   hpBar: {fileID: 0}
   shildBar: {fileID: 0}
   hp: 0
   maxHp: 0
   shild: 0
   maxSh: 0
+  minAtt1: 0
   att1: 0
+  minAtt2: 0
   att2: 0
   death: 0
   animator: {fileID: 0}

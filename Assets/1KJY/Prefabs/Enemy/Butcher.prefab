@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 8074491022817363097}
   - component: {fileID: 8074491022817363103}
   - component: {fileID: 8074491022817363096}
-  - component: {fileID: 7970525600348476331}
+  - component: {fileID: -7888433957677392344}
   m_Layer: 6
   m_Name: Butcher
   m_TagString: Untagged
@@ -199,7 +199,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7970525600348476331
+--- !u!114 &-7888433957677392344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,13 +211,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be3bf35da171f749b686f6526bd97c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 7985faa0c2b3c5d48af0c0c61e6d409e, type: 2}
   hpBar: {fileID: 0}
   shildBar: {fileID: 0}
   hp: 0
   maxHp: 0
   shild: 0
   maxSh: 0
+  minAtt1: 0
   att1: 0
+  minAtt2: 0
   att2: 0
   death: 0
   animator: {fileID: 0}

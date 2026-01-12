@@ -27,17 +27,17 @@ using UnityEngine.UI;
 /// </summary>
 public class BattleManager : MonoBehaviour
 {
-    //List<Item> items;
-    public SlotSpinner[] slotSpinner; 
-    SlotSpinner[] spawnedSlots;       
+    
+    public List<Item> allItemDatas; // 인스펙터에서 프로젝트에 있는 모든 아이템
+
+    public SlotSpinner[] slotSpinner;
+    SlotSpinner[] spawnedSlots;
 
     public Player player;
-    //public GameObject[] itemEffects;
-    public GameObject itemPrefab;   
+    public GameObject itemPrefab;
     public GameObject[] currentEffects;
     public Enemy enemy;
-    public GameObject[] enemyObjects;   //적 프리팹
-
+    //public List<Enemy> enemies;
 
     public Button stopBtn;              //�������� ��ư
 
@@ -61,6 +61,8 @@ public class BattleManager : MonoBehaviour
 
     StageManager stageManager;              //현재 진입한 스테이지
     int currentStageIndex;
+
+    EnemyManager enemyManager;
 
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
@@ -305,29 +307,37 @@ public class BattleManager : MonoBehaviour
     // 애니메이션 효과 or 파티클 생성 + 데미지 계산
     IEnumerator ItemEffect(string[] items)
     {
-        //아이템 리스트에 뽑은 아이템 담기
-        List<Item> itemList = new List<Item>();
+        // [단계 1] 중복 갯수 초기화 및 계산
+        // 딕셔너리의 모든 값을 0으로 리셋
+        List<string> keys = new List<string>(itemDict.Keys);
+        foreach (string key in keys) itemDict[key] = 0;
 
-        foreach (Item itemData in itemList)
+        List<Item> matchedItems = new List<Item>();
+
+        foreach (string name in items)
         {
-            for(int i=0; i<items.Length; i++)
+            if (string.IsNullOrEmpty(name)) continue;
+
+            // 갯수 누적
+            if (itemDict.ContainsKey(name)) itemDict[name]++;
+
+            // [단계 2] 이름에 맞는 실제 Item 데이터 찾기 (allItemDatas에서)
+            Item data = allItemDatas.Find(x => x.NAME == name);
+            if (data != null && !matchedItems.Contains(data))
             {
-                if(items != null && items[i] == itemData.NAME)
-                {
-                    itemList.Add(itemData);
-                }
+                matchedItems.Add(data); // 중복 실행 방지를 위해 종류별로 하나씩만 담음
             }
         }
 
         int num = 0;
         string action = "";
         int energy = 0;
-        
+
         // 슬롯 아이템에 따른 효과 적용
 
-        if (itemList != null)
+        if (matchedItems != null)
         {
-            foreach (Item item in itemList)
+            foreach (Item item in matchedItems)
             {
                 if (itemDict.TryGetValue(item.NAME, out int equalsCount))
                 {
@@ -388,14 +398,14 @@ public class BattleManager : MonoBehaviour
                     }
                     if (item.NAME.Equals("에너지") || item.NAME.Equals("특수에너지"))
                     {
-                        for (int i = 0; i < itemList.Count; i++)
+                        for (int i = 0; i < matchedItems.Count; i++)
                         {
-                            if (item == itemList[i])
+                            if (item == matchedItems[i])
                             {
                                 int slotIndex = energy % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = item.EFFECT; 
+                                itemPrefab = item.EFFECT;
                                 break;
                             }
                         }
@@ -424,9 +434,9 @@ public class BattleManager : MonoBehaviour
 
                     if (item.NAME.Equals("물리에너지") || item.NAME.Equals("물리에너지_대"))
                     {
-                        for (int i = 0; i < itemList.Count; i++)
+                        for (int i = 0; i < matchedItems.Count; i++)
                         {
-                            if (item == itemList[i])
+                            if (item == matchedItems[i])
                             {
                                 int slotIndex = energy % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
@@ -460,9 +470,9 @@ public class BattleManager : MonoBehaviour
 
                     if (item.NAME.Equals("마법에너지") || item.NAME.Equals("마법에너지_대"))
                     {
-                        for (int i = 0; i < itemList.Count; i++)
+                        for (int i = 0; i < matchedItems.Count; i++)
                         {
-                            if (item == itemList[i])
+                            if (item == matchedItems[i])
                             {
                                 int slotIndex = energy % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
@@ -862,25 +872,25 @@ public class BattleManager : MonoBehaviour
     }
 
     //적 캐릭터 생성
-    void EnemyCreate(int r)
-    {
-        if (GameObject.FindWithTag("Enemy") == null) return;
-        if (r < 0 || r > enemyObjects.Length)
-        {
-            print("enemy 생성못함");
-            return;
-        }
+    //void EnemyCreate(int r)
+    //{
+    //    if (GameObject.FindWithTag("Enemy") == null) return;
+    //    if (r < 0 || r > enemyObjects.Length)
+    //    {
+    //        print("enemy 생성못함");
+    //        return;
+    //    }
 
-        Transform enemyPos = GameObject.FindWithTag("Enemy").transform;
-        GameObject newObj = Instantiate(enemyObjects[r], enemyPos);
+    //    Transform enemyPos = GameObject.FindWithTag("Enemy").transform;
+    //    GameObject newObj = Instantiate(enemyObjects[r], enemyPos);
 
-        enemy = newObj.GetComponent<Enemy>();
+    //    enemy = newObj.GetComponent<Enemy>();
 
-        newObj.transform.position = Vector3.zero;
-        if (r == 1 || r == 2) { newObj.transform.position = Vector3.down; }
-        newObj.transform.localScale = new Vector3(-1, 1, 1);
-        print("적 생성 완료");
-    }
+    //    newObj.transform.position = Vector3.zero;
+    //    if (r == 1 || r == 2) { newObj.transform.position = Vector3.down; }
+    //    newObj.transform.localScale = new Vector3(-1, 1, 1);
+    //    print("적 생성 완료");
+    //}
 
 
     void StartEnemyTurn()
@@ -950,6 +960,8 @@ public class BattleManager : MonoBehaviour
         //플레이어의 독데미지 적용 시점
         if (player.poison > 0)
         {
+            GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[2]);
+            enemyEffect.transform.position = enemy.transform.position;
             enemy.hp -= player.poison;
             Status($"<color=yellow> 독 피해 : {player.poison}");
             player.poison -= 2f;
@@ -983,7 +995,7 @@ public class BattleManager : MonoBehaviour
     {
         //적 공격 Enermy.cs에서 작성예정 -애니메이션, 이펙트 (파티클?) 등
         enemy.Attack();
-        //StartCoroutine(AttackEffect());
+        StartCoroutine(AttackEffect());
         string action = $"공격 {enemy.att1}";
         Status(action);
 
@@ -1013,7 +1025,7 @@ public class BattleManager : MonoBehaviour
     private void EnemySpecialAttack()
     {
         enemy.SpecialAttack();
-        //StartCoroutine(SpecialEffect());
+        StartCoroutine(SpecialEffect());
 
         string action = $"특수공격 {enemy.att2}";
         Status(action);
@@ -1030,7 +1042,7 @@ public class BattleManager : MonoBehaviour
     private void EnemyShildRecover()
     {
         enemy.ShildRecover();
-        //StartCoroutine(ShildEffect());
+        StartCoroutine(ShildEffect());
 
         string action = $"방어도 {enemy.ShildRecover()}회복";
         Status(action);
@@ -1045,7 +1057,7 @@ public class BattleManager : MonoBehaviour
     private void EnemyHealing()
     {
         enemy.Healing();
-        //StartCoroutine(HealEffect());
+        StartCoroutine(HealEffect());
 
         string action = $"체력 {enemy.Healing()}회복";
         Status(action);
@@ -1059,45 +1071,45 @@ public class BattleManager : MonoBehaviour
     }
 
     //Enemy ScriptableObject만든 후 재작업
-    //IEnumerator AttackEffect()
-    //{
-    //    GameObject enemyEffect = Instantiate(itemEffects[11]);
-    //    enemyEffect.transform.position = player.hpBar.transform.position;
+    IEnumerator AttackEffect()
+    {
+        GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[3]);
+        enemyEffect.transform.position = player.hpBar.transform.position;
 
-    //    yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.5f);
 
-    //    Destroy(enemyEffect);
-    //}
+        Destroy(enemyEffect);
+    }
 
-    //IEnumerator SpecialEffect()
-    //{
-    //    GameObject enemyEffect = Instantiate(itemEffects[12]);
-    //    enemyEffect.transform.position = player.hpBar.transform.position;
+    IEnumerator SpecialEffect()
+    {
+        GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[4]);
+        enemyEffect.transform.position = player.hpBar.transform.position;
 
-    //    yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.5f);
 
-    //    Destroy(enemyEffect);
-    //}
+        Destroy(enemyEffect);
+    }
 
-    //IEnumerator ShildEffect()
-    //{
-    //    GameObject enemyEffect = Instantiate(itemEffects[13]);
-    //    enemyEffect.transform.position = enemy.transform.position;
+    IEnumerator ShildEffect()
+    {
+        GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[0]);
+        enemyEffect.transform.position = enemy.transform.position;
 
-    //    yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.5f);
 
-    //    Destroy(enemyEffect);
-    //}
+        Destroy(enemyEffect);
+    }
 
-    //IEnumerator HealEffect()
-    //{
-    //    GameObject enemyEffect = Instantiate(itemEffects[14]);
-    //    enemyEffect.transform.position = enemy.transform.position;
+    IEnumerator HealEffect()
+    {
+        GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[1]);
+        enemyEffect.transform.position = enemy.transform.position;
 
-    //    yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.5f);
 
-    //    Destroy(enemyEffect);
-    //}
+        Destroy(enemyEffect);
+    }
 
     IEnumerator EnemyDeath()
     {
@@ -1113,18 +1125,21 @@ public class BattleManager : MonoBehaviour
 
         playerTurn = false;
         enemyTurn = false;
-        //GameObject enemyEffect = Instantiate(itemEffects[15]);
-        //enemyEffect.transform.position = enemy.transform.position;
-        //Destroy(enemy.gameObject);
+        GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[5]);
+        enemyEffect.transform.position = enemy.transform.position;
+        Destroy(enemy.gameObject);
 
-        //승리 결과창 추가?
+        //라운드 확인 작업필요
+
         yield return new WaitForSeconds(1.5f);
-        //Destroy(enemyEffect);
+        Destroy(enemyEffect);
+
 
         yield return new WaitForSeconds(3f);
-        //AudioManager.audioManager.StopBGM();
 
-        //Destroy(gameObject);
+        //안끝났다면 다음 라운드 이동
+
+        //끝났다면 업그레이드 상점으로 이동
         GameSceneManager.Instance.LoadScene("UpgradeStore");
 
         yield return null;
@@ -1198,29 +1213,28 @@ public class BattleManager : MonoBehaviour
         turnTxt = GameObject.FindWithTag("TurnTxt")?.GetComponent<TextMeshProUGUI>();
         slotParent = GameObject.FindWithTag("Slot");
         stageManager = FindAnyObjectByType<StageManager>();
+        //enemyManager = FindAnyObjectByType<EnemyManager>();
+        
+        enemyManager = EnemyManager.Instance;
+        player = FindFirstObjectByType<Player>();
         //int r = Random.Range(0, enemyObjects.Length);
 
         if (stageManager != null)
         {
-            currentStageIndex = stageManager.SelectedStage - 1;
+            currentStageIndex = stageManager.SelectedStage  - 1 ;
         }
-        print($"{currentStageIndex}");
 
         //스테이지 값 받아서 해당 스테이지 몬스터만 출현
         //int r = currentStageIndex;
-
-
-        // Player / Enemy 다시 찾기
-        player = FindFirstObjectByType<Player>();
-
         //Enemy[] enemies = new Enemy[enemyObjects.Length];
-
         //enemies[r] = FindAnyObjectByType<Enemy>();
-
         //enemy = enemies[r];
+        //EnemyCreate(currentStageIndex);
 
-        EnemyCreate(currentStageIndex);
-         
+        enemyManager.SpawnEnemy(currentStageIndex, 1);
+
+        enemy = enemyManager.currentEnemy;
+
         if (player == null || enemy == null || stopBtn == null)
         {
             Debug.LogWarning("필수 오브젝트 없음!!");
@@ -1230,7 +1244,7 @@ public class BattleManager : MonoBehaviour
         //초기 배열 및 카운트 재설정
         slotCount = 5;
         items = new string[slotCount];
-       
+
         itemPrefab = GetComponent<GameObject>();
         currentEffects = new GameObject[slotCount];
         isEnemyturnning = false;

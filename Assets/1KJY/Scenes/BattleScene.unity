@@ -3037,6 +3037,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpBar: {fileID: 1053376695}
   shildBar: {fileID: 295572931}
+  enemyEffets:
+  - {fileID: 7155335147208632822, guid: 82454b8d18471a44fbfcf975f740f427, type: 3}
+  - {fileID: 9017484664307500583, guid: 13db347bb43126f4e93ee4ca57bd0c7a, type: 3}
+  - {fileID: 7053385775836331393, guid: 846e6235bb080e0408066de265f4f201, type: 3}
+  - {fileID: 1758473627833946668, guid: 5d7aa98ecec1f294e92bef2d47ea869c, type: 3}
+  - {fileID: 7957833072274404953, guid: a918d3b3dce66424d81c16d324b72c54, type: 3}
+  - {fileID: 4994997792314849709, guid: 23696b4d2008929488be3da8c3225a9b, type: 3}
+  stages:
+  - stageName: "\uC2A4\uD14C\uC774\uC9C01"
+    normalEnemies:
+    - {fileID: 11400000, guid: 7985faa0c2b3c5d48af0c0c61e6d409e, type: 2}
+    - {fileID: 11400000, guid: 7985faa0c2b3c5d48af0c0c61e6d409e, type: 2}
+    - {fileID: 11400000, guid: 7985faa0c2b3c5d48af0c0c61e6d409e, type: 2}
+    - {fileID: 11400000, guid: c553e4ff96eb40845932001581d3ad1b, type: 2}
+    bossEnemy: {fileID: 11400000, guid: 3436063458629ab4ab731838f644a210, type: 2}
+  - stageName: "\uC2A4\uD14C\uC774\uC9C02"
+    normalEnemies:
+    - {fileID: 11400000, guid: ec84ad6d397616940b6e6f5bb161f2ad, type: 2}
+    - {fileID: 11400000, guid: ec84ad6d397616940b6e6f5bb161f2ad, type: 2}
+    - {fileID: 11400000, guid: ec84ad6d397616940b6e6f5bb161f2ad, type: 2}
+    - {fileID: 11400000, guid: ec84ad6d397616940b6e6f5bb161f2ad, type: 2}
+    bossEnemy: {fileID: 11400000, guid: e5dae52bb74444c4f84a2c5e11d3f600, type: 2}
+  enemyPrefab: {fileID: 8074491022817363098, guid: 32b4c8e894fcd654d93a9cc3a2c6955c, type: 3}
+  spawnPoint: {fileID: 6300810757127734352}
 --- !u!114 &7388636426433586931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3049,6 +3073,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b3d34b8de8a2ef4584e6a89b5430e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allItemDatas:
+  - {fileID: 11400000, guid: dc87f8d14aa5bda4cad1ed333a2a2011, type: 2}
+  - {fileID: 11400000, guid: 5eb868dcef44c2b47b2e2d52ab17b892, type: 2}
+  - {fileID: 11400000, guid: 05bbd44e62519d54a843f6cfbcf620f6, type: 2}
+  - {fileID: 11400000, guid: d29d7c9a7742e004bae93169b60a0561, type: 2}
+  - {fileID: 11400000, guid: e99ca3191b4c2d842b24d7440de963b6, type: 2}
+  - {fileID: 11400000, guid: 6731c199a5e082e428881ef2178d65af, type: 2}
+  - {fileID: 11400000, guid: 9224af44837a7c4489db4d82c9427c3f, type: 2}
+  - {fileID: 11400000, guid: 43147e28c86a9bc4c92e2ab7127bc7a4, type: 2}
+  - {fileID: 11400000, guid: dc3518bf57f913649a730e05765364bf, type: 2}
+  - {fileID: 11400000, guid: a6e45486d48922a4a9f91d41f4cabc59, type: 2}
+  - {fileID: 11400000, guid: 6edc468fe9d6d5a459c4f47ac871ae49, type: 2}
+  - {fileID: 11400000, guid: e6ff62d6d63a1824fb0e21c0358943c7, type: 2}
+  - {fileID: 11400000, guid: 04703a0723c198e45bd2260c60763ffc, type: 2}
+  - {fileID: 11400000, guid: 8919bbc8000cc7647be152850bc42f5c, type: 2}
+  - {fileID: 11400000, guid: cdfd67e566d9c8941814d70113d1611f, type: 2}
+  - {fileID: 11400000, guid: c8e0fdafb5e248245ae7cdcd8a2fe9e7, type: 2}
+  - {fileID: 11400000, guid: 66e47e81093b1a44ead2195fab444430, type: 2}
+  - {fileID: 11400000, guid: 4779f04dfdca3ba4587ef4b5e83acfea, type: 2}
+  - {fileID: 11400000, guid: 640ea582d4748534184a204573ef5a72, type: 2}
+  - {fileID: 11400000, guid: ab731145b99f9c74595b54029fd1ea94, type: 2}
+  - {fileID: 11400000, guid: 7369f4ebf4514484fa8b7627c6a0b0e4, type: 2}
+  - {fileID: 11400000, guid: 299d0d2979c276a47966d7e4b92c0740, type: 2}
+  - {fileID: 11400000, guid: 70bb664b3698938498b9cdaa235e2408, type: 2}
+  - {fileID: 11400000, guid: 3a8eada8d3166534b847d399b70a2542, type: 2}
+  - {fileID: 11400000, guid: d59d296ecff201d4cb7407644b7b3f48, type: 2}
+  - {fileID: 11400000, guid: dad0b87b22817da4193427f3ba4f9871, type: 2}
+  - {fileID: 11400000, guid: e08f0ed8463aea6488dba2c8e46a0b63, type: 2}
+  - {fileID: 11400000, guid: cbc5d3addf87f894c9a84c8f64f4fd75, type: 2}
   slotSpinner:
   - {fileID: 4263291505374923078, guid: b985cae87dc2c7c4eaed47e04ea75b89, type: 3}
   - {fileID: 7588344410190130787, guid: cf00f5405613ab343bb8664428b24e25, type: 3}
@@ -3056,31 +3109,9 @@ MonoBehaviour:
   - {fileID: 358163647992234393, guid: c292c294aad94df488d8c7227d79d6d0, type: 3}
   - {fileID: 3552662456739506248, guid: 96d5a3fb17363844c8f7c5f1593d8621, type: 3}
   player: {fileID: 5135786665911232165}
-  itemEffects:
-  - {fileID: 6287953604210959080, guid: 282847907f0f4fe4dbcd6a2f4c753f58, type: 3}
-  - {fileID: 1289543790355709915, guid: 7f049f9301c736749966c2df8e8e72b9, type: 3}
-  - {fileID: 5607819269926399345, guid: e0209aa88fdcd87419ab8751b8c82902, type: 3}
-  - {fileID: 8915312667134092580, guid: 6bc03f65d9111c24c8cf70cdf494add7, type: 3}
-  - {fileID: 32669344851961284, guid: 11ee28ccee676984d9f5c09d7196b4c8, type: 3}
-  - {fileID: 689667626583958020, guid: 80dc97be60f7f934a86eae85ed05f840, type: 3}
-  - {fileID: 6823302871133167919, guid: 28e6e45d50308cb469baf93ad2dde957, type: 3}
-  - {fileID: 2965222256817593503, guid: c41d71d54a3814f4dbc3f719b58045c6, type: 3}
-  - {fileID: 1758473627833946668, guid: 5d7aa98ecec1f294e92bef2d47ea869c, type: 3}
-  - {fileID: 4924508274929071776, guid: 66aaa8f20aed5704ebcff2b2a466432f, type: 3}
-  - {fileID: 2944396702758532163, guid: 2d95b46fa10cbcd45808b8bd4ed86ab2, type: 3}
-  - {fileID: 358637981425055526, guid: 7cdd1d84823d72e45922a5181745ce78, type: 3}
-  - {fileID: 7957833072274404953, guid: a918d3b3dce66424d81c16d324b72c54, type: 3}
-  - {fileID: 7155335147208632822, guid: 82454b8d18471a44fbfcf975f740f427, type: 3}
-  - {fileID: 9017484664307500583, guid: 13db347bb43126f4e93ee4ca57bd0c7a, type: 3}
-  - {fileID: 5034656251238326012, guid: f7caac1f0f5474e48b3fd2b4bfa8ab64, type: 3}
   itemPrefab: {fileID: 0}
   currentEffects: []
   enemy: {fileID: 0}
-  enemyObjects:
-  - {fileID: 5840038882737305133, guid: f4602107911282542bfd45e2bf6bb648, type: 3}
-  - {fileID: 8074491022817363098, guid: 32b4c8e894fcd654d93a9cc3a2c6955c, type: 3}
-  - {fileID: 7458748613824806050, guid: abb08ce993549f04ea69db5809d42793, type: 3}
-  - {fileID: 3676971076677257608, guid: 0b5757230de2ac846926c905719e30e3, type: 3}
   stopBtn: {fileID: 1724835878}
   slotParent: {fileID: 974749388}
   playerTurn: 0

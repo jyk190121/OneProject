@@ -1,2 +1,21 @@
 fileFormatVersion: 2
 guid: 9d3ae079c84a0a04ab4d2a807fbc18fd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - gameStartBtn: {instanceID: 0}
+  - endBtn: {instanceID: 0}
+  - endY: {instanceID: 0}
+  - endN: {instanceID: 0}
+  - settingBtn: {instanceID: 0}
+  - EndImg: {instanceID: 0}
+  - volSetImg: {instanceID: 0}
+  - setCloseBtn: {instanceID: 0}
+  - volumeSlider: {instanceID: 0}
+  - cursorTexture: {fileID: 2800000, guid: 42ec8a0e710138343a271d732299cfb6, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

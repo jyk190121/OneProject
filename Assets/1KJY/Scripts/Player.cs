@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public Image shildBar;
     public TextMeshProUGUI hpBarTxt;
     public TextMeshProUGUI shildBarTxt;
+    public TextMeshProUGUI goldTxt;         //보유 골드 텍스트
 
     //�������� ���� ������Ʈ
     public TextMeshProUGUI poisonTxt;
@@ -22,7 +23,7 @@ public class Player : MonoBehaviour
     public float att1;     //물리공격력
     public float att2;     //마법공격력
     public float poison;   //�� ����������
-    public int gold;
+    public int gold;       //보유골드
 
     //�ʱ⼳��
     public void HpShildSet()
@@ -37,7 +38,8 @@ public class Player : MonoBehaviour
         poison = 0;
 
         UpdateHpShildSet();
-        UpdatePosion();
+        UpdatePosionUI();
+        UpdateGoldUI();
     }
 
     //������Ʈ ����
@@ -50,9 +52,18 @@ public class Player : MonoBehaviour
         shildBar.fillAmount = shild / maxSh;
     }
 
-    public void UpdatePosion()
+    public void UpdatePosionUI()
     {
         poisonTxt.text = poison.ToString();
     }
 
+    public void UpdateGoldUI()
+    {
+        goldTxt.text = gold.ToString();
+    }
+
+    public void UseGold(int gold)
+    {
+        this.gold -= gold;
+    }
 }

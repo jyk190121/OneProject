@@ -13,12 +13,24 @@ MonoBehaviour:
   m_Name: MagicSword
   m_EditorClassIdentifier: 
   id: 0
-  NAME: MagicSword
+  NAME: "\uB9C8\uBC95\uAC80"
   IMAGE: {fileID: 21300000, guid: 7fd65bec72697b74daf109f5f66373fe, type: 3}
-  PRICE: 0
-  COUNT: 0
+  PRICE: 120
+  ENHANCE: 0
+  GOLD: 0
+  MINATK: 0
+  MINMATK: 0
   ATK: 0
   MATK: 30
+  PLUSATK: 0
+  PLUSMATK: 0
+  PLUS_HP: 0
+  PLUS_SHILD: 0
   HP: 0
-  Shild: 0
-  poison: 0
+  SHILD: 0
+  POISON: 0
+  BLOOD: 0
+  COUNT: 0
+  EFFECT: {fileID: 6287953604210959080, guid: 282847907f0f4fe4dbcd6a2f4c753f58, type: 3}
+  STUNED: 0
+  EXPLAIN: "\uB9C8\uBC95\uACF5\uACA9 30"

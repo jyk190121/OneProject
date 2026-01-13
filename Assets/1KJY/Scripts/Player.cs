@@ -38,8 +38,8 @@ public class Player : MonoBehaviour
         poison = 0;
 
         UpdateHpShildSet();
-        UpdatePosion();
-        UpdateGold();
+        UpdatePosionUI();
+        UpdateGoldUI();
     }
 
     //������Ʈ ����
@@ -52,13 +52,18 @@ public class Player : MonoBehaviour
         shildBar.fillAmount = shild / maxSh;
     }
 
-    public void UpdatePosion()
+    public void UpdatePosionUI()
     {
         poisonTxt.text = poison.ToString();
     }
 
-    public void UpdateGold()
+    public void UpdateGoldUI()
     {
         goldTxt.text = gold.ToString();
+    }
+
+    public void UseGold(int gold)
+    {
+        this.gold -= gold;
     }
 }

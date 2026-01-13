@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -29,7 +28,7 @@ using UnityEngine.UI;
 public class BattleManager : MonoBehaviour
 {
     
-    public List<Item> allItemDatas; // 인스펙터에서 프로젝트에 있는 모든 아이템
+    List<Item> allItemDatas;
 
     public SlotSpinner[] slotSpinner;
     SlotSpinner[] spawnedSlots;
@@ -64,6 +63,7 @@ public class BattleManager : MonoBehaviour
     int currentStageIndex;
 
     EnemyManager enemyManager;
+    ItemManager itemManager;
 
     public GameObject goldParent;           //골드 프리팹 생성할 위치
     public GameObject goldPrefab;           //캔버스에 보여줄 프리팹(골드)
@@ -609,18 +609,18 @@ public class BattleManager : MonoBehaviour
                                 action = $"독 중독 {item.POISON}";
                                 //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
                                 player.poison += item.POISON;
-                                player.UpdatePosion();
+                                player.UpdatePosionUI();
                                 break;
                             case 2:
                                 action = $"{item.NAME} 치명타!\n독 중독 {item.POISON * 3}";
                                 player.poison += (item.POISON * 3);
-                                player.UpdatePosion();
+                                player.UpdatePosionUI();
                                 cri1 = false;
                                 break;
                             case 3:
                                 action = $"{item.NAME} 메가치명타!\n독 중독  {item.POISON * 9}";
                                 player.poison += (item.POISON * 9);
-                                player.UpdatePosion();
+                                player.UpdatePosionUI();
                                 cri2 = false;
                                 break;
                         }
@@ -640,20 +640,20 @@ public class BattleManager : MonoBehaviour
                                 action = $"물공 {att}\n독 중독 {item.POISON}";
                                 //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
                                 player.poison += item.POISON;
-                                player.UpdatePosion();
+                                player.UpdatePosionUI();
                                 break;
                             case 2:
                                 att *= 3;
                                 action = $"{item.NAME} 치명타!\n물공 {att}\n독 중독 {item.POISON * 3}";
                                 player.poison += (item.POISON * 3);
-                                player.UpdatePosion();
+                                player.UpdatePosionUI();
                                 cri1 = false;
                                 break;
                             case 3:
                                 att *= 9;
                                 action = $"{item.NAME} 메가치명타!\n물공 {att}\n독 중독 {item.POISON * 9}";
                                 player.poison += (item.POISON * 9);
-                                player.UpdatePosion();
+                                player.UpdatePosionUI();
                                 cri2 = false;
                                 break;
                         }
@@ -1061,7 +1061,7 @@ public class BattleManager : MonoBehaviour
                         }
 
                         player.gold += gold;
-                        player.UpdateGold();
+                        player.UpdateGoldUI();
                     }
 
                     if (item.NAME.Equals("원석"))
@@ -1106,7 +1106,7 @@ public class BattleManager : MonoBehaviour
                         }
 
                         player.gold += gold;
-                        player.UpdateGold();
+                        player.UpdateGoldUI();
                     }
 
                     if (item.NAME.Equals("마법투구"))
@@ -1327,7 +1327,7 @@ public class BattleManager : MonoBehaviour
                                
                                 //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
                                 player.poison += item.POISON;
-                                player.UpdatePosion();
+                                player.UpdatePosionUI();
                                 break;
                             case 2:
                                 shild *= 3;
@@ -1340,7 +1340,7 @@ public class BattleManager : MonoBehaviour
                                 Shield(shild, plus_sh);
                                 //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
                                 player.poison += (item.POISON * 3);
-                                player.UpdatePosion();
+                                player.UpdatePosionUI();
                                 cri1 = false;
                                 break;
                             case 3:
@@ -1354,7 +1354,7 @@ public class BattleManager : MonoBehaviour
                                 Shield(shild, plus_sh);
                                 //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
                                 player.poison += (item.POISON * 9);
-                                player.UpdatePosion();
+                                player.UpdatePosionUI();
                                 cri2 = false;
                                 break;
                         }
@@ -1544,7 +1544,7 @@ public class BattleManager : MonoBehaviour
             enemy.AnimDamage();
 
             enemy.UpdateHpShildSet();
-            player.UpdatePosion();
+            player.UpdatePosionUI();
 
 
             if (enemy.hp <= 0)
@@ -1834,8 +1834,11 @@ public class BattleManager : MonoBehaviour
         //enemyManager = FindAnyObjectByType<EnemyManager>();
         
         enemyManager = EnemyManager.Instance;
+        itemManager = ItemManager.Instance;
         player = FindFirstObjectByType<Player>();
         //int r = Random.Range(0, enemyObjects.Length);
+
+        allItemDatas = itemManager.allItemDatas;
 
         if (stageManager != null)
         {

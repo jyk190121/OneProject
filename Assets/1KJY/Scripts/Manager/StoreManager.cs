@@ -12,18 +12,21 @@ using System.Collections.Generic;
 /// </summary>
 public class StoreManager : MonoBehaviour
 {
-    public GameObject CurrentPanel;         //현재 보유한 아이템 보여줄 판넬
-    public GameObject itemInvenPrefab;      //보유한 아이템 이미지(프리팹)
-    public GameObject itemInvenBGPrefab;    //보유한 아이템 이미지 배경(프리팹)
+    public GameObject CurrentPanel;                     //현재 보유한 아이템 보여줄 판넬
+    public GameObject itemInvenPrefab;                  //보유한 아이템 이미지(프리팹)
+    public GameObject itemInvenBGPrefab;                //보유한 아이템 이미지 배경(프리팹)
     List<GameObject> itemsBG = new List<GameObject>();
 
     List<Item> items;
 
     ItemManager itemManager;
 
+    Player player;
+
     void Awake()
     {
         itemManager = FindAnyObjectByType<ItemManager>();
+        player = FindAnyObjectByType<Player>();
 
         if(itemManager != null)
         {

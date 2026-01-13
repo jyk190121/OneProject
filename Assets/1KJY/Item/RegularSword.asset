@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   NAME: "\uC77C\uBC18\uAC80"
   IMAGE: {fileID: 21300000, guid: 7889127a7bdf7984f89d9e85cb7d35e6, type: 3}
-  PRICE: 0
+  PRICE: 3
   ENHANCE: 0
   GOLD: 0
   MINATK: 0
@@ -30,7 +30,7 @@ MonoBehaviour:
   SHILD: 0
   POISON: 0
   BLOOD: 0
-  COUNT: 0
+  COUNT: 1
   EFFECT: {fileID: 8378648546881499446, guid: d571668e21596c9428f59a594e1df54c, type: 3}
   STUNED: 0
   EXPLAIN: "\uBB3C\uB9AC\uACF5\uACA9 10"

@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   NAME: "\uD761\uD608\uBC18\uC9C0"
   IMAGE: {fileID: 21300000, guid: 76cbeb51dd042f845b7b7f7348852e34, type: 3}
-  PRICE: 0
+  PRICE: 300
   ENHANCE: 0
   GOLD: 0
   MINATK: 0

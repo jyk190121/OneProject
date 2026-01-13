@@ -122,9 +122,9 @@ public abstract class Enemy : MonoBehaviour
     }
 
     // 이제 자식들은 내부 로직만 신경 쓰면 됨
-    public virtual void Attack() { animator.SetTrigger("AttackTrigger"); }
-    public virtual void SpecialAttack() { animator.SetTrigger("SpecialATrigger"); }
-    public virtual void Death() { animator.SetTrigger("DeathTrigger"); death = true; }
+    virtual public void Attack() { animator.SetTrigger("AttackTrigger"); }
+    virtual public void SpecialAttack() { animator.SetTrigger("SpecialATrigger"); }
+    virtual public void Death() { animator.SetTrigger("DeathTrigger"); death = true; }
 
 
     virtual public void UpdateHpShildSet()
@@ -138,6 +138,12 @@ public abstract class Enemy : MonoBehaviour
     {
         //Animator animator = GetComponentInChildren<Animator>();
         animator.SetTrigger("Damage");
+
+        if(hp < 0)
+        {
+            hp = 0;
+            Death();
+        }
     }
 
     //virtual public void Attack()

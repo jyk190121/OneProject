@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public Image shildBar;
     public TextMeshProUGUI hpBarTxt;
     public TextMeshProUGUI shildBarTxt;
+    public TextMeshProUGUI goldTxt;         //보유 골드 텍스트
 
     //�������� ���� ������Ʈ
     public TextMeshProUGUI poisonTxt;
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
 
         UpdateHpShildSet();
         UpdatePosion();
+        UpdateGold();
     }
 
     //������Ʈ ����
@@ -55,4 +57,8 @@ public class Player : MonoBehaviour
         poisonTxt.text = poison.ToString();
     }
 
+    public void UpdateGold()
+    {
+        goldTxt.text = gold.ToString();
+    }
 }

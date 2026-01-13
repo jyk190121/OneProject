@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -63,6 +64,9 @@ public class BattleManager : MonoBehaviour
     int currentStageIndex;
 
     EnemyManager enemyManager;
+
+    public GameObject goldParent;           //골드 프리팹 생성할 위치
+    public GameObject goldPrefab;           //캔버스에 보여줄 프리팹(골드)
 
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
@@ -127,7 +131,7 @@ public class BattleManager : MonoBehaviour
                 //SpinStart();
 
                 // ComboCount 계산
-                ComboCri(ComboCount(items));
+                //ComboCri(ComboCount(items));
 
                 // 플레이어 아이템 효과 발동 및 생성
                 StartCoroutine(ItemEffect(items));
@@ -157,68 +161,68 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    // 콤보 확인
-    string ComboCount(string[] itmes)
-    {
-        string lastItem = null;
+    //// 콤보 확인
+    //string ComboCount(string[] itmes)
+    //{
+    //    string lastItem = null;
 
-        foreach (string item in itmes)
-        {
-            if (itemDict.TryGetValue(item, out int equalsCount))
-            {
-                if (item == lastItem && lastItem != null)
-                {
-                    itemDict[item]++;
-                }
-                else
-                {
-                    itemDict[item] = 1;
-                }
-            }
-            lastItem = item;
-        }
+    //    foreach (string item in itmes)
+    //    {
+    //        if (itemDict.TryGetValue(item, out int equalsCount))
+    //        {
+    //            if (item == lastItem && lastItem != null)
+    //            {
+    //                itemDict[item]++;
+    //            }
+    //            else
+    //            {
+    //                itemDict[item] = 1;
+    //            }
+    //        }
+    //        lastItem = item;
+    //    }
 
-        // 치명타, 메가치명타 여부 확인
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (itemDict.TryGetValue(items[i], out int equalsCount))
-            {
-                if (equalsCount >= 3 && equalsCount != 5)
-                {
-                    print($"{items[i]} 치명타 ");
-                    cri1 = true;
-                    return items[i];
-                }
+    //    // 치명타, 메가치명타 여부 확인
+    //    for (int i = 0; i < items.Length; i++)
+    //    {
+    //        if (itemDict.TryGetValue(items[i], out int equalsCount))
+    //        {
+    //            if (equalsCount >= 3 && equalsCount != 5)
+    //            {
+    //                print($"{items[i]} 치명타 ");
+    //                cri1 = true;
+    //                return items[i];
+    //            }
 
-                if (equalsCount == 5)
-                {
-                    print($"{items[i]} 메가치명타");
-                    cri2 = true;
-                    return items[i];
-                }
-            }
-        }
+    //            if (equalsCount == 5)
+    //            {
+    //                print($"{items[i]} 메가치명타");
+    //                cri2 = true;
+    //                return items[i];
+    //            }
+    //        }
+    //    }
 
-        // 콤보 횟수 초기화
-        for (int i = 0; i < items.Length; i++)
-        {
-            itemDict[items[i]] = 1;
-        }
+    //    // 콤보 횟수 초기화
+    //    for (int i = 0; i < items.Length; i++)
+    //    {
+    //        itemDict[items[i]] = 1;
+    //    }
 
-        return null;
-    }
+    //    return null;
+    //}
 
-    void ComboCri(string item)
-    {
-        if (cri1 == true)
-        {
-            itemDict[item] = 2;
-        }
-        else if (cri2 == true)
-        {
-            itemDict[item] = 3;
-        }
-    }
+    //void ComboCri(string item)
+    //{
+    //    if (cri1 == true)
+    //    {
+    //        itemDict[item] = 3;
+    //    }
+    //    else if (cri2 == true)
+    //    {
+    //        itemDict[item] = 5;
+    //    }
+    //}
 
     // 플레이어 슬롯 스피너 생성
     void SpinSlotCreate()
@@ -287,6 +291,7 @@ public class BattleManager : MonoBehaviour
                     Debug.Log("전부 다 멈춤");
                     items[i] = currentItemName;
                     spawnedSlots[i].StopSpin();
+
                 }
             }
         }
@@ -295,6 +300,9 @@ public class BattleManager : MonoBehaviour
     // 애니메이션 효과 or 파티클 생성 + 데미지 계산
     IEnumerator ItemEffect(string[] items)
     {
+        //이전 아이템명과 동일한지 체크
+        string lastItem = null;
+
         // [단계 1] 중복 갯수 초기화 및 계산
         // 딕셔너리의 모든 값을 0으로 리셋
         List<string> keys = new List<string>(itemDict.Keys);
@@ -306,15 +314,25 @@ public class BattleManager : MonoBehaviour
         {
             if (string.IsNullOrEmpty(name)) continue;
 
-            // 갯수 누적
-            if (itemDict.ContainsKey(name)) itemDict[name]++;
+            if (name == lastItem)
+            {
+                // 갯수 누적
+                if (itemDict.ContainsKey(name)) itemDict[name]++;
+            }
+            else
+            {
+                if (itemDict.ContainsKey(name)) itemDict[name] = 1;
+            }
 
             // [단계 2] 이름에 맞는 실제 Item 데이터 찾기 (allItemDatas에서)
             Item data = allItemDatas.Find(x => x.NAME == name);
-            if (data != null && !matchedItems.Contains(data))
+            if (data != null)
             {
-                matchedItems.Add(data); // 중복 실행 방지를 위해 종류별로 하나씩만 담음
+                matchedItems.Add(data);
             }
+
+            //print($"{itemDict[name]} 콤보확인");
+            lastItem = name;
         }
 
         int num = 0;
@@ -322,13 +340,36 @@ public class BattleManager : MonoBehaviour
         int energy1 = 0;
         int energy2 = 0;
         int energy3 = 0;
-
+        int helmet = 0;
+        int ring1 = 0;
+        int ring2 = 0;
+        int ring3 = 0;
+        int goldIndex = 0;
+        int stone = 0;
+        
         // 슬롯 아이템에 따른 효과 적용
-
-        if (matchedItems != null)
+        if (matchedItems != null && !enemy.death)
         {
             foreach (Item item in matchedItems)
             {
+                if (itemDict[item.NAME] > 0 &&
+                    itemDict[item.NAME] < 3)
+                {
+                    item.COUNT = 1;
+                }
+                else if(itemDict[item.NAME] >= 3 &&
+                        itemDict[item.NAME] < 5)
+                {
+                    item.COUNT = 2;
+                }
+                else if(itemDict[item.NAME] == 5)
+                {
+                    item.COUNT = 3;
+                }
+                else
+                {
+                    item.COUNT = 0;
+                }
                 if (itemDict.TryGetValue(item.NAME, out int equalsCount))
                 {
                     // 이펙트 생성 위치
@@ -341,7 +382,7 @@ public class BattleManager : MonoBehaviour
 
                         itemPos = player.hpBar.transform.position;
 
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             // 일반
                             case 1:
@@ -367,7 +408,7 @@ public class BattleManager : MonoBehaviour
                     {
                         itemPrefab = item.EFFECT;
                         itemPos = player.hpBar.transform.position;
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             // 일반
                             case 1:
@@ -386,6 +427,67 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
                     }
+
+                    if (item.NAME.Equals("딸기"))
+                    {
+                        itemPrefab = item.EFFECT;
+                        itemPos = player.hpBar.transform.position;
+                        switch (item.COUNT)
+                        {
+                            // 일반
+                            case 1:
+                                action = $"체력 {item.HP} 회복\n최대 체력 {item.PLUS_HP} 증가";
+                                Apple(item.HP);
+                                Grape(item.PLUS_HP);
+                                break;
+                            case 2:
+                                action = $"{item.NAME} 치명타!\n체력 {item.HP * 3} 회복\n최대 체력 {item.PLUS_HP * 3} 증가";
+                                Apple(item.HP * 3);
+                                Grape(item.PLUS_HP * 3);
+                                cri1 = false;
+                                break;
+                            case 3:
+                                action = $"{item.NAME} 메가치명타!\n체력 {item.HP * 9} 회복\n최대 체력 {item.PLUS_HP * 9} 증가";
+                                Apple(item.HP * 9);
+                                Grape(item.PLUS_HP * 9);
+                                cri2 = false;
+                                break;
+                        }
+                    }
+
+                    if (item.NAME.Equals("고기"))
+                    {
+                        itemPrefab = item.EFFECT;
+                        itemPos = player.hpBar.transform.position;
+
+                        float hp = item.HP;
+                        float shild = item.SHILD;
+
+
+                        switch (item.COUNT)
+                        {
+                            // 일반
+                            case 1:
+                                action = $"체력 {hp} 회복\n방어도 {shild} 회복";
+                                Meat(hp, shild);
+                                break;
+                            case 2:
+                                hp *= 3;
+                                shild *= 3;
+                                action = $"{item.NAME} 치명타!\n체력 {hp} 회복\n방어도 {shild} 회복";
+                                Meat(hp, shild);
+                                cri1 = false;
+                                break;
+                            case 3:
+                                hp *= 9;
+                                shild *= 9;
+                                action = $"{item.NAME} 메가치명타!\n체력 {hp} 회복\n방어도 {shild} 회복";
+                                Meat(hp, shild);
+                                cri2 = false;
+                                break;
+                        }
+                    }
+
                     if (item.NAME.Equals("에너지") || item.NAME.Equals("특수에너지"))
                     {
                         for (int i = 0; i < matchedItems.Count; i++)
@@ -400,7 +502,7 @@ public class BattleManager : MonoBehaviour
                             }
                         }
 
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             // 일반
                             case 1:
@@ -436,7 +538,7 @@ public class BattleManager : MonoBehaviour
                             }
                         }
 
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             // 일반
                             case 1:
@@ -472,7 +574,7 @@ public class BattleManager : MonoBehaviour
                             }
                         }
 
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             // 일반
                             case 1:
@@ -500,7 +602,7 @@ public class BattleManager : MonoBehaviour
                         itemPrefab = item.EFFECT;
                         itemPos = Vector3.up * 2;
                         //print("독 데미지 12");
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             //일반
                             case 1:
@@ -524,12 +626,49 @@ public class BattleManager : MonoBehaviour
                         }
                     }
 
+                    if (item.NAME.Equals("독검"))
+                    {
+                        itemPrefab = item.EFFECT;
+                        itemPos = Vector3.up * 2;
+                        //물공 10~25
+                        //독 중독5
+                        float att = Random.Range(item.MINATK, item.ATK);
+                        switch (item.COUNT)
+                        {
+                            //일반
+                            case 1:
+                                action = $"물공 {att}\n독 중독 {item.POISON}";
+                                //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
+                                player.poison += item.POISON;
+                                player.UpdatePosion();
+                                break;
+                            case 2:
+                                att *= 3;
+                                action = $"{item.NAME} 치명타!\n물공 {att}\n독 중독 {item.POISON * 3}";
+                                player.poison += (item.POISON * 3);
+                                player.UpdatePosion();
+                                cri1 = false;
+                                break;
+                            case 3:
+                                att *= 9;
+                                action = $"{item.NAME} 메가치명타!\n물공 {att}\n독 중독 {item.POISON * 9}";
+                                player.poison += (item.POISON * 9);
+                                player.UpdatePosion();
+                                cri2 = false;
+                                break;
+                        }
+                        //물리데미지 적용
+                        AttDamage(att);
+
+                        enemy.UpdateHpShildSet();
+                    }
+
                     if (item.NAME.Equals("마법검"))
                     {
                         //print("마법 공격 30");
                         float att = 0;
 
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             case 1:
                                 att = player.att2 + item.MATK;
@@ -562,7 +701,7 @@ public class BattleManager : MonoBehaviour
                         float att1 = 0;
                         float att2 = 0;
 
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             case 1:
                                 att1 = Random.Range(item.MINATK, item.ATK) + player.att1;
@@ -599,7 +738,7 @@ public class BattleManager : MonoBehaviour
                         //print("공격 10");
                         float att = 0;
 
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             case 1:
                                 att = item.MATK + player.att2;
@@ -629,7 +768,7 @@ public class BattleManager : MonoBehaviour
                     {
                         //print("물공 10");
                         float att = 0;
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             case 1:
                                 att = item.ATK + player.att1;
@@ -662,7 +801,7 @@ public class BattleManager : MonoBehaviour
                         //print("공격20 물리");
                         float att = 0;
 
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             case 1:
                                 att = Random.Range(item.MINMATK, item.ATK) + player.att1;
@@ -694,7 +833,7 @@ public class BattleManager : MonoBehaviour
                         float att = 0;
                         float r = (Random.Range(item.STUNED, 1)) * 100;
 
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             case 1:
                                 att = item.ATK + player.att1;
@@ -745,7 +884,7 @@ public class BattleManager : MonoBehaviour
                         float att = 0;
                         float r = (Random.Range(item.STUNED, 1)) * 100;
 
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             case 1:
                                 att = Random.Range(item.MINATK,item.ATK) + player.att1;
@@ -787,28 +926,60 @@ public class BattleManager : MonoBehaviour
 
                     }
 
+                    if (item.NAME.Equals("천둥망치"))
+                    {
+                        //마공 30~100
+                        float att = 0;
+
+                        switch (item.COUNT)
+                        {
+                            case 1:
+                                att = Random.Range(item.MINMATK, item.MATK) + player.att2;
+                                action = $"마공 {att}";
+                                break;
+                            case 2:
+                                att = (Random.Range(item.MINMATK, item.MATK) * 3) + player.att2;
+                                action = $"{item.NAME}치명타!\n마공 {att}";
+                                cri1 = false;
+                                break;
+                            case 3:
+                                att = (Random.Range(item.MINMATK, item.MATK) * 9) + player.att2;
+                                action = $"{item.NAME}메가치명타!\n마공 {att}";
+                                cri2 = false;
+                                break;
+                        }
+
+                        itemPrefab = item.EFFECT;
+                        itemPos = Vector3.up * 2;
+
+                        //마법데미지
+                        enemy.hp -= att;
+                        enemy.UpdateHpShildSet();
+
+                    }
+
                     if (item.NAME.Equals("화염방패"))
                     {
                         float shild = item.SHILD;
                         float plus_sh = item.PLUS_SHILD;
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             case 1:
                                 action = $"방어도 {shild} 회복\n최대 방어도 {plus_sh}";
-                                FlameShield(shild , plus_sh);
+                                Shield(shild , plus_sh);
                                 break;
                             case 2:
                                 shild *= 3;
                                 plus_sh *= 3;
                                 action = $"{item.NAME}치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
-                                FlameShield(shild, plus_sh);
+                                Shield(shild, plus_sh);
                                 cri1 = false;
                                 break;
                             case 3:
                                 shild *= 9;
                                 plus_sh *= 9;
                                 action = $"{item.NAME}메가치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
-                                FlameShield(shild, plus_sh);
+                                Shield(shild, plus_sh);
                                 cri2 = false;
                                 break;
                         }
@@ -819,10 +990,51 @@ public class BattleManager : MonoBehaviour
 
                     }
 
+                    if (item.NAME.Equals("해골방패"))
+                    {
+                        float shild = item.SHILD;
+                        switch (item.COUNT)
+                        {
+                            case 1:
+                                action = $"방어도 {shild} 회복";
+                                Shield(shild, 0);
+                                break;
+                            case 2:
+                                shild *= 3;
+                                action = $"{item.NAME}치명타!\n방어도 {shild} 회복";
+                                Shield(shild, 0);
+                                cri1 = false;
+                                break;
+                            case 3:
+                                shild *= 9;
+                                action = $"{item.NAME}메가치명타!\n방어도 {shild} 회복";
+                                Shield(shild, 0);
+                                cri2 = false;
+                                break;
+                        }
+
+
+                        itemPrefab = item.EFFECT;
+                        itemPos = player.shildBar.transform.position;
+
+                    }
+
                     if (item.NAME.Equals("골드"))
                     {
+                        for (int i = 0; i < matchedItems.Count; i++)
+                        {
+                            if (item == matchedItems[i])
+                            {
+                                int slotIndex = goldIndex % spawnedSlots.Length;
+                                // 슬롯의 위치에 이펙트 인덱스 설정
+                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                itemPrefab = item.EFFECT;
+                                break;
+                            }
+                        }
+
                         int gold = item.GOLD;
-                        switch (itemDict[item.NAME])
+                        switch (item.COUNT)
                         {
                             case 1:
                                 action = $"{gold}골드 획득";
@@ -840,13 +1052,61 @@ public class BattleManager : MonoBehaviour
                         }
 
 
-                        itemPrefab = item.EFFECT;
-
-                        //골드 획득 시 Enemy 좌측으로 이동
-                        //획득 시 애니메이션 추가(Prefabs)
-                        itemPos = Vector3.up * 2;
+                        //골드 획득 시 프리팹 추가
+                        GameObject goldEffect = Instantiate(goldPrefab, goldParent.transform);
+                        SpriteRenderer goldEffectRander = goldEffect.GetComponent<SpriteRenderer>();
+                        if (goldEffectRander != null)
+                        {
+                            goldEffectRander.sortingOrder = 50;
+                        }
 
                         player.gold += gold;
+                        player.UpdateGold();
+                    }
+
+                    if (item.NAME.Equals("원석"))
+                    {
+                        for (int i = 0; i < matchedItems.Count; i++)
+                        {
+                            if (item == matchedItems[i])
+                            {
+                                int slotIndex = stone % spawnedSlots.Length;
+                                // 슬롯의 위치에 이펙트 인덱스 설정
+                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                itemPrefab = item.EFFECT;
+                                break;
+                            }
+                        }
+
+                        int gold = item.GOLD;
+                        switch (item.COUNT)
+                        {
+                            case 1:
+                                action = $"{gold}골드 획득";
+                                break;
+                            case 2:
+                                gold *= 3;
+                                action = $"{item.NAME}치명타!\n{gold}골드 획득";
+                                cri1 = false;
+                                break;
+                            case 3:
+                                gold *= 9;
+                                action = $"{item.NAME}메가치명타!\n{gold}골드 획득";
+                                cri2 = false;
+                                break;
+                        }
+
+
+                        //골드 획득 시 프리팹 추가
+                        GameObject goldEffect = Instantiate(goldPrefab, goldParent.transform);
+                        SpriteRenderer goldEffectRander = goldEffect.GetComponent<SpriteRenderer>();
+                        if (goldEffectRander != null)
+                        {
+                            goldEffectRander.sortingOrder = 50;
+                        }
+
+                        player.gold += gold;
+                        player.UpdateGold();
                     }
 
                     if (item.NAME.Equals("마법투구"))
@@ -860,14 +1120,26 @@ public class BattleManager : MonoBehaviour
                         float shild = item.SHILD;
                         float plus_sh = item.PLUS_SHILD;
 
-                        switch (itemDict[item.NAME])
+                        for (int i = 0; i < matchedItems.Count; i++)
+                        {
+                            if (item == matchedItems[i])
+                            {
+                                int slotIndex = helmet % spawnedSlots.Length;
+                                // 슬롯의 위치에 이펙트 인덱스 설정
+                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                itemPrefab = item.EFFECT;
+                                break;
+                            }
+                        }
+
+                        switch (item.COUNT)
                         {
                             case 1:
                                 action = $"물공 {att1},마공 {att2} 증가\n" +
-                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}\n" +
+                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
 
-                                MagicHelmet(att1, att2, hp, plus_hp, shild, plus_sh);
+                                Magic(att1, att2, hp, plus_hp, shild, plus_sh);
 
                                 break;
                             case 2:
@@ -880,10 +1152,10 @@ public class BattleManager : MonoBehaviour
 
                                 action = $"{item.NAME}치명타!\n"+
                                          $"물공 {att1},마공 {att2} 증가\n" +
-                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}\n" +
-                                         $"체력{hp}, 방어도{shild} 회복"; ;
+                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
+                                         $"체력{hp}, 방어도{shild} 회복";
 
-                                MagicHelmet(att1, att2, hp, plus_hp, shild, plus_sh);
+                                Magic(att1, att2, hp, plus_hp, shild, plus_sh);
 
                                 cri1 = false;
                                 break;
@@ -896,20 +1168,196 @@ public class BattleManager : MonoBehaviour
                                 plus_sh *= 9;
                                 action = $"{item.NAME}메가치명타!\n"+
                                          $"물공 {att1},마공 {att2} 증가\n" +
-                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}\n" +
+                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
 
-                                MagicHelmet(att1, att2, hp, plus_hp, shild, plus_sh);
+                                Magic(att1, att2, hp, plus_hp, shild, plus_sh);
 
                                 cri2 = false;
                                 break;
                         }
 
 
-                        itemPrefab = item.EFFECT;
+                    }
 
-                        //에너지처럼 자기 위치가 나을듯
-                        itemPos = player.shildBar.transform.position;
+                    if (item.NAME.Equals("마법반지"))
+                    {
+                        //증가치
+                        float hp = item.HP;
+                        float plus_hp = item.PLUS_HP;
+                        float shild = item.SHILD;
+                        float plus_sh = item.PLUS_SHILD;
+
+                        for (int i = 0; i < matchedItems.Count; i++)
+                        {
+                            if (item == matchedItems[i])
+                            {
+                                int slotIndex = ring1 % spawnedSlots.Length;
+                                // 슬롯의 위치에 이펙트 인덱스 설정
+                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                itemPrefab = item.EFFECT;
+                                break;
+                            }
+                        }
+
+                        switch (item.COUNT)
+                        {
+                            case 1:
+                                action = $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
+                                         $"체력{hp}, 방어도{shild} 회복";
+
+                                Magic(0, 0, hp, plus_hp, shild, plus_sh);
+
+                                break;
+                            case 2:
+                                hp *= 3;
+                                plus_hp *= 3;
+                                shild *= 3;
+                                plus_sh *= 3;
+
+                                action = $"{item.NAME}치명타!\n" +
+                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
+                                         $"체력{hp}, 방어도{shild} 회복";
+
+                                Magic(0, 0, hp, plus_hp, shild, plus_sh);
+
+                                cri1 = false;
+                                break;
+                            case 3:
+                                hp *= 9;
+                                plus_hp *= 9;
+                                shild *= 9;
+                                plus_sh *= 9;
+                                action = $"{item.NAME}메가치명타!\n" +
+                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
+                                         $"체력{hp}, 방어도{shild} 회복";
+
+                                Magic(0, 0, hp, plus_hp, shild, plus_sh);
+
+                                cri2 = false;
+                                break;
+                        }
+                    }
+
+                    if (item.NAME.Equals("흡혈반지"))
+                    {
+                        //증가치
+                        float shild = item.SHILD;
+                        float plus_sh = item.PLUS_SHILD;
+
+                        //흡혈
+                        float blood = item.BLOOD;
+
+                        for (int i = 0; i < matchedItems.Count; i++)
+                        {
+                            if (item == matchedItems[i])
+                            {
+                                int slotIndex = ring2 % spawnedSlots.Length;
+                                // 슬롯의 위치에 이펙트 인덱스 설정
+                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                itemPrefab = item.EFFECT;
+                                break;
+                            }
+                        }
+
+                        switch (item.COUNT)
+                        {
+                            case 1:
+                                action = $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
+                                         $"흡혈 {blood}";
+                                Shield(shild, plus_sh);
+                                Blood(blood);
+                                break;
+                            case 2:
+                                shild *= 3;
+                                plus_sh *= 3;
+                                blood *= 3;
+
+                                action = $"{item.NAME}치명타!\n" +
+                                         $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
+                                         $"흡혈 {blood}";
+
+                                Shield(shild, plus_sh);
+                                Blood(blood);
+                                cri1 = false;
+                                break;
+                            case 3:
+                                shild *= 9;
+                                plus_sh *= 9;
+                                blood *= 9;
+
+                                action = $"{item.NAME}메가치명타!\n" +
+                                         $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
+                                         $"흡혈 {blood}";
+
+                                Shield(shild, plus_sh);
+                                Blood(blood);
+                                cri2 = false;
+                                break;
+                        }
+                    }
+
+                    if (item.NAME.Equals("독반지"))
+                    {
+                        //증가치
+                        float shild = item.SHILD;
+                        float plus_sh = item.PLUS_SHILD;
+
+                        //독
+                        //float poison = item.POISON;
+
+                        for (int i = 0; i < matchedItems.Count; i++)
+                        {
+                            if (item == matchedItems[i])
+                            {
+                                int slotIndex = ring3 % spawnedSlots.Length;
+                                // 슬롯의 위치에 이펙트 인덱스 설정
+                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                itemPrefab = item.EFFECT;
+                                break;
+                            }
+                        }
+
+                        switch (item.COUNT)
+                        {
+                            case 1:
+                                action = $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
+                                         $"독 중독 {item.POISON}";
+                                Shield(shild, plus_sh);
+                               
+                                //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
+                                player.poison += item.POISON;
+                                player.UpdatePosion();
+                                break;
+                            case 2:
+                                shild *= 3;
+                                plus_sh *= 3;
+
+                                action = $"{item.NAME}치명타!\n" +
+                                         $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
+                                         $"독 중독 {item.POISON}";
+
+                                Shield(shild, plus_sh);
+                                //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
+                                player.poison += (item.POISON * 3);
+                                player.UpdatePosion();
+                                cri1 = false;
+                                break;
+                            case 3:
+                                shild *= 9;
+                                plus_sh *= 9;
+
+                                action = $"{item.NAME}메가치명타!\n" +
+                                         $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
+                                         $"독 중독 {item.POISON}";
+
+                                Shield(shild, plus_sh);
+                                //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
+                                player.poison += (item.POISON * 9);
+                                player.UpdatePosion();
+                                cri2 = false;
+                                break;
+                        }
                     }
 
 
@@ -918,6 +1366,12 @@ public class BattleManager : MonoBehaviour
                     energy1++;
                     energy2++;
                     energy3++;
+                    helmet++;
+                    ring1++;
+                    ring2++;
+                    ring3++;
+                    goldIndex++;
+                    stone++;
 
                     currentEffects[num] = Instantiate(itemPrefab);
                     currentEffects[num].transform.position = itemPos;
@@ -925,9 +1379,14 @@ public class BattleManager : MonoBehaviour
 
                     //적 앞에 소환
                     ParticleSystemRenderer effectRender = currentEffects[num].GetComponent<ParticleSystemRenderer>();
+                    SpriteRenderer goldEffectRederer = currentEffects[num].GetComponent<SpriteRenderer>();
                     if (effectRender != null)
                     {
-                        effectRender.sortingOrder = 11;
+                        effectRender.sortingOrder = 50;
+                    }
+                    if (goldEffectRederer != null)
+                    {
+                        goldEffectRederer.sortingOrder = 500;
                     }
 
                     if (num < currentEffects.Length)
@@ -940,7 +1399,7 @@ public class BattleManager : MonoBehaviour
                     yield return new WaitForSeconds(1.5f);
                     //print($"{num} , {currentEffects.Length} ");
                     //아이템이 한바퀴 돌았을 때
-                    if (num == currentEffects.Length)
+                    if (num == currentEffects.Length || enemy.death)
                     {
 
                         //턴 넘기기
@@ -1009,7 +1468,6 @@ public class BattleManager : MonoBehaviour
     //    newObj.transform.localScale = new Vector3(-1, 1, 1);
     //    print("적 생성 완료");
     //}
-
 
     void StartEnemyTurn()
     {
@@ -1211,6 +1669,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator ShildEffect()
     {
+        //enemy.ShildRecover();
         GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[0]);
         enemyEffect.transform.position = enemy.transform.position;
 
@@ -1221,6 +1680,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator HealEffect()
     {
+        //enemy.Healing();
         GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[1]);
         enemyEffect.transform.position = enemy.transform.position;
 
@@ -1252,13 +1712,12 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         Destroy(enemyEffect);
 
-
         yield return new WaitForSeconds(3f);
 
         //안끝났다면 다음 라운드 이동
 
         //끝났다면 업그레이드 상점으로 이동
-        GameSceneManager.Instance.LoadScene("UpgradeStore");
+        GameSceneManager.Instance.LoadScene("UpgradeStoreScene");
 
         yield return null;
     }
@@ -1293,13 +1752,22 @@ public class BattleManager : MonoBehaviour
         player.UpdateHpShildSet();
     }
 
+    void Meat(float hp, float shild)
+    {
+        player.hp += hp;
+        player.shild += shild;
+        if (player.hp >= player.maxHp) player.hp = player.maxHp;
+        if (player.shild > player.maxSh) player.shild = player.maxSh;
+
+        player.UpdateHpShildSet();
+    }
     void Energy(float att1, float att2)
     {
         player.att1 += att1;
         player.att2 += att2;
     }
 
-    void FlameShield(float playerSh, float playerMaxSh)
+    void Shield(float playerSh, float playerMaxSh)
     {
         player.maxSh += playerMaxSh;
         player.shild += playerSh;
@@ -1307,7 +1775,7 @@ public class BattleManager : MonoBehaviour
         player.UpdateHpShildSet();
     }
 
-    void MagicHelmet(float att1, float att2, float hp,float plus_hp,float shild,float plus_sh)
+    void Magic(float att1, float att2, float hp,float plus_hp,float shild,float plus_sh)
     {
         player.att1 += att1;
         player.att2 += att2;
@@ -1318,6 +1786,16 @@ public class BattleManager : MonoBehaviour
         player.shild += shild;
         if (player.hp >= player.maxHp) player.hp = player.maxHp;
         if (player.shild > player.maxSh) player.shild = player.maxSh;
+
+        player.UpdateHpShildSet();
+    }
+
+    void Blood(float blood)
+    {
+        player.hp += blood;
+        if (player.hp >= player.maxHp) player.hp = player.maxHp;
+
+        AttDamage(blood);
         player.UpdateHpShildSet();
     }
 
@@ -1338,6 +1816,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    
     void InitializeSceneObjects()
     {
         //if (AudioManager.audioManager.IsPlaying("Intro"))

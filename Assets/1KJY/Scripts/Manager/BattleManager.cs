@@ -1048,6 +1048,11 @@ public class BattleManager : MonoBehaviour
                         //골드 획득 시 프리팹 추가
                         GameObject goldEffect = Instantiate(goldPrefab, goldParent.transform);
                         SpriteRenderer goldEffectRander = goldEffect.GetComponent<SpriteRenderer>();
+                        int r1 = Random.Range(-100, 130);
+                        int r2 = Random.Range(-100, 130);
+                        float ranX = Mathf.Clamp(r1, -100, 100);
+                        float ranY = Mathf.Clamp(r2, -30, 120);
+                        goldPrefab.transform.position = new Vector3(ranX, ranY, 0);
                         if (goldEffectRander != null)
                         {
                             goldEffectRander.sortingOrder = 50;
@@ -1089,7 +1094,13 @@ public class BattleManager : MonoBehaviour
 
 
                         //골드 획득 시 프리팹 추가
+                        //x(-100 , 100) y(-30, 120)
                         GameObject goldEffect = Instantiate(goldPrefab, goldParent.transform);
+                        int r1 = Random.Range(-100, 130);
+                        int r2 = Random.Range(-100, 130);
+                        float ranX = Mathf.Clamp(r1, -100, 100);
+                        float ranY = Mathf.Clamp(r2, -30, 120);
+                        goldPrefab.transform.position = new Vector3(ranX, ranY, 0);
                         SpriteRenderer goldEffectRander = goldEffect.GetComponent<SpriteRenderer>();
                         if (goldEffectRander != null)
                         {

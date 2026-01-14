@@ -31,6 +31,6 @@ MonoBehaviour:
   POISON: 0
   BLOOD: 0
   COUNT: 0
-  EFFECT: {fileID: 6823302871133167919, guid: 28e6e45d50308cb469baf93ad2dde957, type: 3}
+  EFFECT: {fileID: 5607819269926399345, guid: c3f14c3f0708bf24abb10dc35e3bc3f2, type: 3}
   STUNED: 0
   EXPLAIN: "\uB9C8\uBC95\uACF5\uACA9 50 \uC99D\uAC00"

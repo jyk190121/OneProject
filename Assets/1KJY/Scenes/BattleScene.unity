@@ -627,7 +627,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -961,8 +961,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0015125, y: 0.000011444}
-  m_SizeDelta: {x: 183.47, y: 176}
+  m_AnchoredPosition: {x: -0.0015125, y: -23.67}
+  m_SizeDelta: {x: 183.47, y: 128.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &614498621
 MonoBehaviour:
@@ -1012,8 +1012,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1185,8 +1185,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0010624, y: -0.0000019073}
-  m_SizeDelta: {x: 183.47, y: 176}
+  m_AnchoredPosition: {x: 0.0010624, y: -23.91}
+  m_SizeDelta: {x: 183.47, y: 128.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &807495016
 MonoBehaviour:
@@ -1236,8 +1236,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2173,7 +2173,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -3476,19 +3476,26 @@ MonoBehaviour:
   stages:
   - stageName: "\uC2A4\uD14C\uC774\uC9C01"
     normalEnemies:
-    - {fileID: 11400000, guid: ec84ad6d397616940b6e6f5bb161f2ad, type: 2}
-    - {fileID: 11400000, guid: ec84ad6d397616940b6e6f5bb161f2ad, type: 2}
-    - {fileID: 11400000, guid: ec84ad6d397616940b6e6f5bb161f2ad, type: 2}
-    - {fileID: 11400000, guid: 7985faa0c2b3c5d48af0c0c61e6d409e, type: 2}
-    bossEnemy: {fileID: 11400000, guid: 3436063458629ab4ab731838f644a210, type: 2}
+    - {fileID: 11400000, guid: 5790cff5788d05c4198a60d20addfd92, type: 2}
+    - {fileID: 11400000, guid: 34c0c63fe712d6948957756db6b17e48, type: 2}
+    - {fileID: 11400000, guid: d562acde8f735eb478a623707020fa88, type: 2}
+    - {fileID: 11400000, guid: a42c084c3d0ff8c4494c7702a2b9fc99, type: 2}
+    bossEnemy: {fileID: 11400000, guid: f73cfd47c28469f4b9c9d36bc7097b78, type: 2}
   - stageName: "\uC2A4\uD14C\uC774\uC9C02"
     normalEnemies:
+    - {fileID: 11400000, guid: 34c0c63fe712d6948957756db6b17e48, type: 2}
+    - {fileID: 11400000, guid: a42c084c3d0ff8c4494c7702a2b9fc99, type: 2}
+    - {fileID: 11400000, guid: ec84ad6d397616940b6e6f5bb161f2ad, type: 2}
+    - {fileID: 11400000, guid: c8f9fdb03e47cba40a02606e28d89ee2, type: 2}
+    bossEnemy: {fileID: 11400000, guid: 8e3113ada7028344c8e95163e9e142d6, type: 2}
+  - stageName: "\uC2A4\uD14C\uC774\uC9C03"
+    normalEnemies:
+    - {fileID: 11400000, guid: f73cfd47c28469f4b9c9d36bc7097b78, type: 2}
+    - {fileID: 11400000, guid: 8e3113ada7028344c8e95163e9e142d6, type: 2}
+    - {fileID: 11400000, guid: 3a76ea64cb658eb4b90fd49285798e49, type: 2}
     - {fileID: 11400000, guid: 7985faa0c2b3c5d48af0c0c61e6d409e, type: 2}
-    - {fileID: 11400000, guid: 7985faa0c2b3c5d48af0c0c61e6d409e, type: 2}
-    - {fileID: 11400000, guid: c553e4ff96eb40845932001581d3ad1b, type: 2}
-    - {fileID: 11400000, guid: c553e4ff96eb40845932001581d3ad1b, type: 2}
-    bossEnemy: {fileID: 11400000, guid: e5dae52bb74444c4f84a2c5e11d3f600, type: 2}
-  enemyPrefab: {fileID: 8074491022817363098, guid: 32b4c8e894fcd654d93a9cc3a2c6955c, type: 3}
+    bossEnemy: {fileID: 11400000, guid: 3436063458629ab4ab731838f644a210, type: 2}
+  enemyPrefab: {fileID: 2695397109250390434, guid: e755b6ac08a90bd43bda31f4eaabfb36, type: 3}
   spawnPoint: {fileID: 6300810757127734352}
 --- !u!114 &7388636426433586931
 MonoBehaviour:
@@ -3502,35 +3509,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b3d34b8de8a2ef4584e6a89b5430e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allItemDatas:
-  - {fileID: 11400000, guid: dc87f8d14aa5bda4cad1ed333a2a2011, type: 2}
-  - {fileID: 11400000, guid: 5eb868dcef44c2b47b2e2d52ab17b892, type: 2}
-  - {fileID: 11400000, guid: 05bbd44e62519d54a843f6cfbcf620f6, type: 2}
-  - {fileID: 11400000, guid: d29d7c9a7742e004bae93169b60a0561, type: 2}
-  - {fileID: 11400000, guid: e99ca3191b4c2d842b24d7440de963b6, type: 2}
-  - {fileID: 11400000, guid: 6731c199a5e082e428881ef2178d65af, type: 2}
-  - {fileID: 11400000, guid: 9224af44837a7c4489db4d82c9427c3f, type: 2}
-  - {fileID: 11400000, guid: 43147e28c86a9bc4c92e2ab7127bc7a4, type: 2}
-  - {fileID: 11400000, guid: dc3518bf57f913649a730e05765364bf, type: 2}
-  - {fileID: 11400000, guid: a6e45486d48922a4a9f91d41f4cabc59, type: 2}
-  - {fileID: 11400000, guid: 6edc468fe9d6d5a459c4f47ac871ae49, type: 2}
-  - {fileID: 11400000, guid: e6ff62d6d63a1824fb0e21c0358943c7, type: 2}
-  - {fileID: 11400000, guid: 04703a0723c198e45bd2260c60763ffc, type: 2}
-  - {fileID: 11400000, guid: 8919bbc8000cc7647be152850bc42f5c, type: 2}
-  - {fileID: 11400000, guid: cdfd67e566d9c8941814d70113d1611f, type: 2}
-  - {fileID: 11400000, guid: c8e0fdafb5e248245ae7cdcd8a2fe9e7, type: 2}
-  - {fileID: 11400000, guid: 66e47e81093b1a44ead2195fab444430, type: 2}
-  - {fileID: 11400000, guid: 4779f04dfdca3ba4587ef4b5e83acfea, type: 2}
-  - {fileID: 11400000, guid: 640ea582d4748534184a204573ef5a72, type: 2}
-  - {fileID: 11400000, guid: ab731145b99f9c74595b54029fd1ea94, type: 2}
-  - {fileID: 11400000, guid: 7369f4ebf4514484fa8b7627c6a0b0e4, type: 2}
-  - {fileID: 11400000, guid: 299d0d2979c276a47966d7e4b92c0740, type: 2}
-  - {fileID: 11400000, guid: 70bb664b3698938498b9cdaa235e2408, type: 2}
-  - {fileID: 11400000, guid: 3a8eada8d3166534b847d399b70a2542, type: 2}
-  - {fileID: 11400000, guid: d59d296ecff201d4cb7407644b7b3f48, type: 2}
-  - {fileID: 11400000, guid: dad0b87b22817da4193427f3ba4f9871, type: 2}
-  - {fileID: 11400000, guid: e08f0ed8463aea6488dba2c8e46a0b63, type: 2}
-  - {fileID: 11400000, guid: cbc5d3addf87f894c9a84c8f64f4fd75, type: 2}
   slotSpinner:
   - {fileID: 4263291505374923078, guid: b985cae87dc2c7c4eaed47e04ea75b89, type: 3}
   - {fileID: 7588344410190130787, guid: cf00f5405613ab343bb8664428b24e25, type: 3}

@@ -1,40 +1,33 @@
 using UnityEngine;
 
 //[RequireComponent(typeof(Image))]
-public class CrystalGolem : Enemy
+public class Butcher : Enemy
 {
-    protected override void InitStats()
-    {
-        maxHp = 1000;
-        maxSh = 500;
-        att1 = 20;
-        att2 = 20;
-    }
+    protected override void InitStats() { }
 
     public override void Attack()
     {
         base.Attack();
-        att1 = Random.Range(20, 30);
+        att1 = Random.Range(20, 40);
     }
 
     override public void SpecialAttack()
     {
         base.SpecialAttack();
-        att2 = Random.Range(20, 41);
+        att2 = Random.Range(20, 61);
     }
-
     override public float ShildRecover()
     {
         base.ShildRecover();
 
-        return 100f;
+        return 50f;
     }
 
     override public float Healing()
     {
         base.Healing();
 
-        return 100f;
+        return 30f;
     }
 
     //override public void Attack()
@@ -42,7 +35,7 @@ public class CrystalGolem : Enemy
     //    Animator animator = GetComponentInChildren<Animator>();
     //    animator.SetTrigger("AttackTrigger");
 
-    //    int r = Random.Range(20, 30);
+    //    int r = Random.Range(20, 40);
     //    att1 = r;
     //}
     //override public void SpecialAttack()
@@ -50,7 +43,7 @@ public class CrystalGolem : Enemy
     //    Animator animator = GetComponentInChildren<Animator>();
     //    animator.SetTrigger("SpecialATrigger");
 
-    //    int r = Random.Range(20, 41);
+    //    int r = Random.Range(20, 61);
     //    att2 = r;
     //}
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -348,28 +349,30 @@ public class BattleManager : MonoBehaviour
         int stone = 0;
         
         // 슬롯 아이템에 따른 효과 적용
-        if (matchedItems != null && !enemy.death)
+        if (matchedItems != null)
         {
             foreach (Item item in matchedItems)
             {
-                if (itemDict[item.NAME] > 0 &&
-                    itemDict[item.NAME] < 3)
+                if (itemDict[item.NAME] >= 0 &&
+                  itemDict[item.NAME] < 3)
                 {
                     item.COUNT = 1;
                 }
-                else if(itemDict[item.NAME] >= 3 &&
-                        itemDict[item.NAME] < 5)
+                else if (itemDict[item.NAME] >= 3 &&
+                         itemDict[item.NAME] < 5)
                 {
-                    item.COUNT = 2;
+                    matchedItems[2].COUNT = 2;
                 }
-                else if(itemDict[item.NAME] == 5)
+                else if (itemDict[item.NAME] == 5)
                 {
-                    item.COUNT = 3;
+                    //item.COUNT = 3;
+                    matchedItems[matchedItems.Count].COUNT = 3;
                 }
                 else
                 {
                     item.COUNT = 0;
                 }
+
                 if (itemDict.TryGetValue(item.NAME, out int equalsCount))
                 {
                     // 이펙트 생성 위치
@@ -392,13 +395,13 @@ public class BattleManager : MonoBehaviour
 
                             // 치명타
                             case 2:
-                                action = $"{item.NAME} 치명타!\n체력 {item.HP * 3} 회복";
+                                action = $"치명타!\n체력 {item.HP * 3} 회복";
                                 Apple(item.HP * 3);
                                 cri1 = false;
                                 break;
                             // 메가치명타
                             case 3:
-                                action = $"{item.NAME} 메가치명타!\n체력 {item.HP * 9} 회복";
+                                action = $"메가치명타!\n체력 {item.HP * 9} 회복";
                                 Apple(item.HP * 9);
                                 cri2 = false;
                                 break;
@@ -416,12 +419,12 @@ public class BattleManager : MonoBehaviour
                                 Grape(item.PLUS_HP);
                                 break;
                             case 2:
-                                action = $"{item.NAME} 치명타!\n최대 체력 {item.PLUS_HP * 3} 증가";
+                                action = $"치명타!\n최대 체력 {item.PLUS_HP * 3} 증가";
                                 Grape(item.PLUS_HP * 3);
                                 cri1 = false;
                                 break;
                             case 3:
-                                action = $"{item.NAME} 메가치명타!\n최대 체력 {item.PLUS_HP * 9} 증가";
+                                action = $"메가치명타!\n최대 체력 {item.PLUS_HP * 9} 증가";
                                 Grape(item.PLUS_HP * 9);
                                 cri2 = false;
                                 break;
@@ -441,13 +444,13 @@ public class BattleManager : MonoBehaviour
                                 Grape(item.PLUS_HP);
                                 break;
                             case 2:
-                                action = $"{item.NAME} 치명타!\n체력 {item.HP * 3} 회복\n최대 체력 {item.PLUS_HP * 3} 증가";
+                                action = $"치명타!\n체력 {item.HP * 3} 회복\n최대 체력 {item.PLUS_HP * 3} 증가";
                                 Apple(item.HP * 3);
                                 Grape(item.PLUS_HP * 3);
                                 cri1 = false;
                                 break;
                             case 3:
-                                action = $"{item.NAME} 메가치명타!\n체력 {item.HP * 9} 회복\n최대 체력 {item.PLUS_HP * 9} 증가";
+                                action = $"메가치명타!\n체력 {item.HP * 9} 회복\n최대 체력 {item.PLUS_HP * 9} 증가";
                                 Apple(item.HP * 9);
                                 Grape(item.PLUS_HP * 9);
                                 cri2 = false;
@@ -474,14 +477,14 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 hp *= 3;
                                 shild *= 3;
-                                action = $"{item.NAME} 치명타!\n체력 {hp} 회복\n방어도 {shild} 회복";
+                                action = $"치명타!\n체력 {hp} 회복\n방어도 {shild} 회복";
                                 Meat(hp, shild);
                                 cri1 = false;
                                 break;
                             case 3:
                                 hp *= 9;
                                 shild *= 9;
-                                action = $"{item.NAME} 메가치명타!\n체력 {hp} 회복\n방어도 {shild} 회복";
+                                action = $"메가치명타!\n체력 {hp} 회복\n방어도 {shild} 회복";
                                 Meat(hp, shild);
                                 cri2 = false;
                                 break;
@@ -511,13 +514,13 @@ public class BattleManager : MonoBehaviour
                                 break;
 
                             case 2:
-                                action = $"{item.NAME} 치명타!\n물공 {item.PLUSATK * 3}\n마공 {item.PLUSMATK * 3} 증가";
+                                action = $"치명타!\n물공 {item.PLUSATK * 3}\n마공 {item.PLUSMATK * 3} 증가";
                                 Energy(item.PLUSATK * 3, item.PLUSMATK * 3);
                                 cri1 = false;
                                 break;
 
                             case 3:
-                                action = $"{item.NAME} 메가치명타!\nn물공 {item.PLUSATK * 9}\n마공 {item.PLUSMATK * 9} 증가";
+                                action = $"메가치명타!\nn물공 {item.PLUSATK * 9}\n마공 {item.PLUSMATK * 9} 증가";
                                 Energy(item.PLUSATK * 9, item.PLUSMATK * 9);
                                 cri2 = false;
                                 break;
@@ -547,13 +550,13 @@ public class BattleManager : MonoBehaviour
                                 break;
 
                             case 2:
-                                action = $"{item.NAME} 치명타!\n물공 {item.PLUSATK * 3} 증가";
+                                action = $"치명타!\n물공 {item.PLUSATK * 3} 증가";
                                 Energy(item.PLUSATK * 3, 0);
                                 cri1 = false;
                                 break;
 
                             case 3:
-                                action = $"{item.NAME} 메가치명타!\nn물공 {item.PLUSATK * 9} 증가";
+                                action = $"메가치명타!\nn물공 {item.PLUSATK * 9} 증가";
                                 Energy(item.PLUSATK * 9, 0);
                                 cri2 = false;
                                 break;
@@ -583,13 +586,13 @@ public class BattleManager : MonoBehaviour
                                 break;
 
                             case 2:
-                                action = $"{item.NAME} 치명타!\n마공 {item.PLUSMATK * 3} 증가";
+                                action = $"치명타!\n마공 {item.PLUSMATK * 3} 증가";
                                 Energy(0, item.PLUSMATK * 3);
                                 cri1 = false;
                                 break;
 
                             case 3:
-                                action = $"{item.NAME} 메가치명타!\nn마공 {item.PLUSMATK * 9} 증가";
+                                action = $"메가치명타!\nn마공 {item.PLUSMATK * 9} 증가";
                                 Energy(0, item.PLUSMATK * 9);
                                 cri2 = false;
                                 break;
@@ -612,13 +615,13 @@ public class BattleManager : MonoBehaviour
                                 player.UpdatePosionUI();
                                 break;
                             case 2:
-                                action = $"{item.NAME} 치명타!\n독 중독 {item.POISON * 3}";
+                                action = $"치명타!\n독 중독 {item.POISON * 3}";
                                 player.poison += (item.POISON * 3);
                                 player.UpdatePosionUI();
                                 cri1 = false;
                                 break;
                             case 3:
-                                action = $"{item.NAME} 메가치명타!\n독 중독  {item.POISON * 9}";
+                                action = $"메가치명타!\n독 중독  {item.POISON * 9}";
                                 player.poison += (item.POISON * 9);
                                 player.UpdatePosionUI();
                                 cri2 = false;
@@ -644,14 +647,14 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"{item.NAME} 치명타!\n물공 {att}\n독 중독 {item.POISON * 3}";
+                                action = $"치명타!\n물공 {att}\n독 중독 {item.POISON * 3}";
                                 player.poison += (item.POISON * 3);
                                 player.UpdatePosionUI();
                                 cri1 = false;
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"{item.NAME} 메가치명타!\n물공 {att}\n독 중독 {item.POISON * 9}";
+                                action = $"메가치명타!\n물공 {att}\n독 중독 {item.POISON * 9}";
                                 player.poison += (item.POISON * 9);
                                 player.UpdatePosionUI();
                                 cri2 = false;
@@ -676,7 +679,7 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case 2:
                                 att = player.att2 + (item.MATK * 3);
-                                action = $"{item.NAME} 치명타!\n마공 {att}";
+                                action = $"치명타!\n마공 {att}";
                                 cri1 = false;
                                 break;
                             case 3:
@@ -711,13 +714,13 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 att1 = (Random.Range(item.MINATK, item.ATK) * 3) + player.att1;
                                 att2 = (Random.Range(item.MINMATK, item.MATK) * 3) + player.att2;
-                                action = $"{item.NAME} 치명타!\n물공 {att1} , 마공 {att2}";
+                                action = $"치명타!\n물공 {att1} , 마공 {att2}";
                                 cri1 = false;
                                 break;
                             case 3:
                                 att1 = (Random.Range(item.MINATK, item.ATK) * 9) + player.att1;
                                 att2 = (Random.Range(item.MINMATK, item.MATK) * 9) + player.att2;
-                                action = $"{item.NAME} 메가치명타!\n물공 {att1} , 마공 {att2}";
+                                action = $"메가치명타!\n물공 {att1} , 마공 {att2}";
                                 cri2 = false;
                                 break;
                         }
@@ -746,7 +749,7 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case 2:
                                 att = (item.MATK * 3) + player.att2;
-                                action = $"{item.NAME} 치명타!\n마공 {att}";
+                                action = $"치명타!\n마공 {att}";
                                 cri1 = false;
                                 break;
                             case 3:
@@ -776,12 +779,12 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case 2:
                                 att = (item.ATK * 3) + player.att1;
-                                action = $"{item.NAME} 치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att}";
                                 cri1 = false;
                                 break;
                             case 3:
                                 att = (item.ATK * 9) + player.att1; ;
-                                action = $"{item.NAME} 메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att}";
                                 cri2 = false;
                                 break;
                         }
@@ -809,12 +812,12 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case 2:
                                 att = (Random.Range(item.MINMATK, item.ATK) * 3) + player.att1;
-                                action = $"{item.NAME} 치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att}";
                                 cri1 = false;
                                 break;
                             case 3:
                                 att = (Random.Range(item.MINMATK, item.ATK) * 9) + player.att1;
-                                action = $"{item.NAME} 메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att}";
                                 cri2 = false;
                                 break;
                         }
@@ -831,7 +834,7 @@ public class BattleManager : MonoBehaviour
                     {
                         //print("공격30 물리");
                         float att = 0;
-                        float r = (Random.Range(item.STUNED, 1)) * 100;
+                        float r = (Random.Range(0, 1));
 
                         switch (item.COUNT)
                         {
@@ -841,24 +844,24 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case 2:
                                 att = (item.ATK * 3) + player.att1;
-                                action = $"{item.NAME} 치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att}";
                                 cri1 = false;
-                                r = 99;
+                                r = 1;
                                 break;
                             case 3:
                                 att = (item.ATK * 9) + player.att1;
-                                action = $"{item.NAME} 메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att}";
                                 cri2 = false;
-                                r = 99;
+                                r = 1;
                                 break;
                         }
 
-                        print($"스턴체크 + {r > 90}");
+                        print($"스턴체크 + {r > (1 - item.STUNED)}");
 
                         //이미 스턴 상태이면 해제되지 않도록
                         if (!stuned1)
                         {
-                            if (r > 90)
+                            if (r > (1 - item.STUNED))
                             {
                                 stuned1 = true;
                             }
@@ -882,29 +885,29 @@ public class BattleManager : MonoBehaviour
                     {
                         //print("공격40 물리");
                         float att = 0;
-                        float r = (Random.Range(item.STUNED, 1)) * 100;
+                        float r = (Random.Range(0, 1));
 
                         switch (item.COUNT)
                         {
                             case 1:
-                                att = Random.Range(item.MINATK,item.ATK) + player.att1;
+                                att = Random.Range(item.MINATK, item.ATK) + player.att1;
                                 action = $"물공 {att}";
                                 break;
                             case 2:
                                 att = (Random.Range(item.MINATK, item.ATK) * 3) + player.att1;
-                                action = $"{item.NAME}치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att}";
                                 cri1 = false;
-                                r = Random.Range(85, 100);
+                                r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att = (Random.Range(item.MINATK, item.ATK) * 9) + player.att1;
-                                action = $"{item.NAME}메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att}";
                                 cri2 = false;
-                                r = 99;
+                                r = 1;
                                 break;
                         }
 
-                        print($"스턴체크 + {r > 90}");
+                        print($"스턴체크 + {r > (1 - item.STUNED)}");
 
                         if (!stuned2)
                         {
@@ -939,12 +942,12 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case 2:
                                 att = (Random.Range(item.MINMATK, item.MATK) * 3) + player.att2;
-                                action = $"{item.NAME}치명타!\n마공 {att}";
+                                action = $"치명타!\n마공 {att}";
                                 cri1 = false;
                                 break;
                             case 3:
                                 att = (Random.Range(item.MINMATK, item.MATK) * 9) + player.att2;
-                                action = $"{item.NAME}메가치명타!\n마공 {att}";
+                                action = $"메가치명타!\n마공 {att}";
                                 cri2 = false;
                                 break;
                         }
@@ -966,25 +969,25 @@ public class BattleManager : MonoBehaviour
                         {
                             case 1:
                                 action = $"방어도 {shild} 회복\n최대 방어도 {plus_sh}";
-                                Shield(shild , plus_sh);
+                                Shield(shild, plus_sh);
                                 break;
                             case 2:
                                 shild *= 3;
                                 plus_sh *= 3;
-                                action = $"{item.NAME}치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
+                                action = $"치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
                                 Shield(shild, plus_sh);
                                 cri1 = false;
                                 break;
                             case 3:
                                 shild *= 9;
                                 plus_sh *= 9;
-                                action = $"{item.NAME}메가치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
+                                action = $"메가치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
                                 Shield(shild, plus_sh);
                                 cri2 = false;
                                 break;
                         }
 
-                     
+
                         itemPrefab = item.EFFECT;
                         itemPos = player.shildBar.transform.position;
 
@@ -1001,13 +1004,13 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case 2:
                                 shild *= 3;
-                                action = $"{item.NAME}치명타!\n방어도 {shild} 회복";
+                                action = $"치명타!\n방어도 {shild} 회복";
                                 Shield(shild, 0);
                                 cri1 = false;
                                 break;
                             case 3:
                                 shild *= 9;
-                                action = $"{item.NAME}메가치명타!\n방어도 {shild} 회복";
+                                action = $"메가치명타!\n방어도 {shild} 회복";
                                 Shield(shild, 0);
                                 cri2 = false;
                                 break;
@@ -1041,12 +1044,12 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case 2:
                                 gold *= 3;
-                                action = $"{item.NAME}치명타!\n{gold}골드 획득";
+                                action = $"치명타!\n{gold}골드 획득";
                                 cri1 = false;
                                 break;
                             case 3:
                                 gold *= 9;
-                                action = $"{item.NAME}메가치명타!\n{gold}골드 획득";
+                                action = $"메가치명타!\n{gold}골드 획득";
                                 cri2 = false;
                                 break;
                         }
@@ -1086,12 +1089,12 @@ public class BattleManager : MonoBehaviour
                                 break;
                             case 2:
                                 gold *= 3;
-                                action = $"{item.NAME}치명타!\n{gold}골드 획득";
+                                action = $"치명타!\n{gold}골드 획득";
                                 cri1 = false;
                                 break;
                             case 3:
                                 gold *= 9;
-                                action = $"{item.NAME}메가치명타!\n{gold}골드 획득";
+                                action = $"메가치명타!\n{gold}골드 획득";
                                 cri2 = false;
                                 break;
                         }
@@ -1150,7 +1153,7 @@ public class BattleManager : MonoBehaviour
                                 shild *= 3;
                                 plus_sh *= 3;
 
-                                action = $"{item.NAME}치명타!\n"+
+                                action = $"치명타!\n" +
                                          $"물공 {att1},마공 {att2} 증가\n" +
                                          $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
@@ -1166,7 +1169,7 @@ public class BattleManager : MonoBehaviour
                                 plus_hp *= 9;
                                 shild *= 9;
                                 plus_sh *= 9;
-                                action = $"{item.NAME}메가치명타!\n"+
+                                action = $"메가치명타!\n" +
                                          $"물공 {att1},마공 {att2} 증가\n" +
                                          $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
@@ -1215,7 +1218,7 @@ public class BattleManager : MonoBehaviour
                                 shild *= 3;
                                 plus_sh *= 3;
 
-                                action = $"{item.NAME}치명타!\n" +
+                                action = $"치명타!\n" +
                                          $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
 
@@ -1228,7 +1231,7 @@ public class BattleManager : MonoBehaviour
                                 plus_hp *= 9;
                                 shild *= 9;
                                 plus_sh *= 9;
-                                action = $"{item.NAME}메가치명타!\n" +
+                                action = $"메가치명타!\n" +
                                          $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
 
@@ -1273,7 +1276,7 @@ public class BattleManager : MonoBehaviour
                                 plus_sh *= 3;
                                 blood *= 3;
 
-                                action = $"{item.NAME}치명타!\n" +
+                                action = $"치명타!\n" +
                                          $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"흡혈 {blood}";
 
@@ -1286,7 +1289,7 @@ public class BattleManager : MonoBehaviour
                                 plus_sh *= 9;
                                 blood *= 9;
 
-                                action = $"{item.NAME}메가치명타!\n" +
+                                action = $"메가치명타!\n" +
                                          $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"흡혈 {blood}";
 
@@ -1324,7 +1327,7 @@ public class BattleManager : MonoBehaviour
                                 action = $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"독 중독 {item.POISON}";
                                 Shield(shild, plus_sh);
-                               
+
                                 //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
                                 player.poison += item.POISON;
                                 player.UpdatePosionUI();
@@ -1333,7 +1336,7 @@ public class BattleManager : MonoBehaviour
                                 shild *= 3;
                                 plus_sh *= 3;
 
-                                action = $"{item.NAME}치명타!\n" +
+                                action = $"치명타!\n" +
                                          $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"독 중독 {item.POISON}";
 
@@ -1347,7 +1350,7 @@ public class BattleManager : MonoBehaviour
                                 shild *= 9;
                                 plus_sh *= 9;
 
-                                action = $"{item.NAME}메가치명타!\n" +
+                                action = $"메가치명타!\n" +
                                          $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"독 중독 {item.POISON}";
 
@@ -1360,9 +1363,7 @@ public class BattleManager : MonoBehaviour
                         }
                     }
 
-
-                    itemDict[item.NAME] = 1;
-
+                    //itemDict[item.NAME] = 1;
                     energy1++;
                     energy2++;
                     energy3++;
@@ -1393,20 +1394,9 @@ public class BattleManager : MonoBehaviour
                     {
                         num++;
                         Status($"{item.NAME}\n{action}");
-
                     }
 
                     yield return new WaitForSeconds(1.5f);
-                    //print($"{num} , {currentEffects.Length} ");
-                    //아이템이 한바퀴 돌았을 때
-                    if (num == currentEffects.Length || enemy.death)
-                    {
-
-                        //턴 넘기기
-                        playerTurn = false;
-                        isEnemyturnning = false;
-                    }
-
                     //아이템 오브젝트 파괴
                     for (int i = 0; i < currentEffects.Length; i++)
                     {
@@ -1414,6 +1404,19 @@ public class BattleManager : MonoBehaviour
                         {
                             Destroy(currentEffects[i]);
                         }
+                    }
+                    if (enemy.hp <= 0)
+                    {
+                        //적사망(승리)
+                        StartCoroutine(EnemyDeath());
+                        yield break;
+                    }
+                    //아이템이 한바퀴 돌았을 때
+                    if (num == currentEffects.Length)
+                    {
+                        //턴 넘기기
+                        playerTurn = false;
+                        isEnemyturnning = false;
                     }
                 }
             }

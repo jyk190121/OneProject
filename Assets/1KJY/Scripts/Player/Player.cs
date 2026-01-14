@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //[RequireComponent(typeof(TextMeshPro))]
-[RequireComponent(typeof(Player))]
+//[RequireComponent(typeof(Player))]
 public class Player : MonoBehaviour
 {
 

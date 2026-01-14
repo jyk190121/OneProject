@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
-  m_Name: Butcher
+  m_Name: Zombie
   m_EditorClassIdentifier: 
-  enemyName: Butcher
-  enemyPrefab: {fileID: 8074491022817363098, guid: 32b4c8e894fcd654d93a9cc3a2c6955c, type: 3}
-  maxHp: 300
-  maxSh: 300
-  minAtt1: 20
-  baseAtt1: 40
-  minAtt2: 20
-  baseAtt2: 60
+  enemyName: Zombie
+  enemyPrefab: {fileID: 5284643900520674695, guid: 027b1c9cd4f5b4344995f03cc92fd18e, type: 3}
+  maxHp: 0
+  maxSh: 0
+  minAtt1: 0
+  baseAtt1: 0
+  minAtt2: 0
+  baseAtt2: 0

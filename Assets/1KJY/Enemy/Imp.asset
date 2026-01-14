@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
-  m_Name: Bat
+  m_Name: Imp
   m_EditorClassIdentifier: 
-  enemyName: Bat
-  enemyPrefab: {fileID: 5840038882737305133, guid: f4602107911282542bfd45e2bf6bb648, type: 3}
-  maxHp: 100
-  maxSh: 50
+  enemyName: Imp
+  enemyPrefab: {fileID: 3969665838359622139, guid: c68d316493781284bb1e2f62f16d006c, type: 3}
+  maxHp: 300
+  maxSh: 100
   minAtt1: 10
-  baseAtt1: 20
-  minAtt2: 10
-  baseAtt2: 40
+  baseAtt1: 70
+  minAtt2: 20
+  baseAtt2: 80

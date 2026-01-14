@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //[RequireComponent(typeof(TextMeshPro))]
-//[RequireComponent(typeof(Image))]
+[RequireComponent(typeof(Player))]
 public class Player : MonoBehaviour
 {
 
@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI shildBarTxt;
     public TextMeshProUGUI goldTxt;         //보유 골드 텍스트
 
-    //�������� ���� ������Ʈ
     public TextMeshProUGUI poisonTxt;
 
     public float hp;       //ü��
@@ -25,7 +24,7 @@ public class Player : MonoBehaviour
     public float poison;   //�� ����������
     public int gold;       //보유골드
 
-    //�ʱ⼳��
+    //새로하기
     public void HpShildSet()
     {
         maxHp = 100;

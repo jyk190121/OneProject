@@ -12,6 +12,8 @@ public class ItemManager : MonoBehaviour
     [Header("보유 아이템 리스트")]
     [SerializeField] private List<Item> initialItems;
 
+    public int gold;
+
     public static ItemManager Instance;
     void Awake()
     {
@@ -41,7 +43,6 @@ public class ItemManager : MonoBehaviour
     public void BuyItem(Item newItem)
     {
         //플레이어 골드체크
-        //if(player)
 
         foreach (Item item in initialItems)
         {
@@ -77,8 +78,14 @@ public class ItemManager : MonoBehaviour
         foreach (Item item in initialItems)
         {
             item.ENHANCE = 0;
+            gold = 0;
         }
     }
 
+    public int GetGold() { return gold; }
+    public void SetGold(int gold) { this.gold = gold; }
+    
+    public void PlusGold(int gold) { this.gold += gold; }
+    public void MinusGold(int gold) { this.gold -= gold; }
 
 }

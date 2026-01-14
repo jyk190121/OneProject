@@ -49,7 +49,7 @@ public class EnemyManager : MonoBehaviour
         }
 
         EnemyObject targetData;
-        var currentStageData = stages[stageIdx];
+        StageData currentStageData = stages[stageIdx];
 
         // 2. 라운드 데이터 존재 확인
         if (round <= 4)

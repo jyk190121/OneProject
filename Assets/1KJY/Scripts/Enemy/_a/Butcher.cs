@@ -8,13 +8,11 @@ public class Butcher : Enemy
     public override void Attack()
     {
         base.Attack();
-        att1 = Random.Range(20, 40);
     }
 
     override public void SpecialAttack()
     {
         base.SpecialAttack();
-        att2 = Random.Range(20, 61);
     }
     override public float ShildRecover()
     {

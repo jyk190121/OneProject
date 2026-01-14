@@ -2,24 +2,16 @@ using UnityEngine;
 
 public class Bat : Enemy
 {
-    protected override void InitStats()
-    {
-        maxHp = 100;
-        maxSh = 50;
-        att1 = 10;
-        att2 = 10;
-    }
+    protected override void InitStats() { }
 
     public override void Attack()
     {
         base.Attack();                 
-        att1 = Random.Range(10, 20);   
     }
 
     override public void SpecialAttack()
     {
         base.SpecialAttack();
-        att2 = Random.Range(10, 41);
     }
 
     override public float ShildRecover()

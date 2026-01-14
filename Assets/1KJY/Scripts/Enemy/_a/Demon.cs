@@ -9,13 +9,11 @@ public class Demon : Enemy
     public override void Attack()
     {
         base.Attack();                  // 부모의 애니메이션 실행
-        att1 = Random.Range(10, 100);   // 데몬만의 공격력 계산
     }
 
     override public void SpecialAttack()
     {
         base.SpecialAttack(); 
-        att2 = Random.Range(60, 91); 
     }
 
     override public float ShildRecover()

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 /// <summary>
 /// 1. 보유 아이템 인벤토리 노출
 /// 2. 상점
@@ -20,18 +21,22 @@ public class StoreManager : MonoBehaviour
     List<Item> items;
 
     ItemManager itemManager;
+    StageManager stageManager;
 
-    Player player;
+    public TextMeshProUGUI goldTxt;
+    public Button nextBtn;
 
     void Awake()
     {
         itemManager = FindAnyObjectByType<ItemManager>();
-        player = FindAnyObjectByType<Player>();
+        stageManager = FindAnyObjectByType<StageManager>();
 
-        if(itemManager != null)
+        if (itemManager != null)
         {
             items = itemManager.CurrentItems();
+            goldTxt.text = itemManager.GetGold().ToString();
         }
+       
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -50,15 +55,14 @@ public class StoreManager : MonoBehaviour
         {
             UpdateSlot(i, items[i]);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        if (stageManager != null)
+        {
+            nextBtn.onClick.AddListener(() => NextStage(stageManager.SelectedStage));
+        }
         
-    }
 
-    void UpdateSlot(int index, Item item)
+    }
+    public void UpdateSlot(int index, Item item)
     {
         GameObject newItemObj = Instantiate(itemInvenPrefab, itemsBG[index].transform, false);
 
@@ -82,5 +86,10 @@ public class StoreManager : MonoBehaviour
         if (slot == null) slot = newItemObj.AddComponent<ItemSlot>();
 
         slot.Setup(item);
+    }
+
+    void NextStage(int stageNum)
+    {
+        GameSceneManager.Instance.LoadSceneAsync("BattleScene");
     }
 }

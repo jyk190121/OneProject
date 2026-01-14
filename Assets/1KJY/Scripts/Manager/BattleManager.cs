@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -51,8 +50,8 @@ public class BattleManager : MonoBehaviour
     bool playerSlotCheck;
     bool isEnemyturnning;
 
-    bool cri1;              //ġ��Ÿ
-    bool cri2;              //�ް�ġ��Ÿ
+    //bool cri1;              //ġ��Ÿ
+    //bool cri2;              //�ް�ġ��Ÿ
 
     public bool stuned1;    //��˽���
     public bool stuned2;    //��޵�������
@@ -66,8 +65,14 @@ public class BattleManager : MonoBehaviour
     EnemyManager enemyManager;
     ItemManager itemManager;
 
-    public GameObject goldParent;           //골드 프리팹 생성할 위치
-    public GameObject goldPrefab;           //캔버스에 보여줄 프리팹(골드)
+    public GameObject goldParent;               //골드 프리팹 생성할 위치
+    public GameObject goldPrefab;               //캔버스에 보여줄 프리팹(골드)
+
+    public TextMeshProUGUI nextEnemyActionTxt;  // 적 다음 행동
+    bool enemyActionCeheck = false;             // 1턴에 1번
+    int r;
+
+    int round;
 
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
@@ -111,6 +116,18 @@ public class BattleManager : MonoBehaviour
         if (player != null && enemy != null && stopBtn != null)
         {
             StatusTurn();
+
+            if(!enemyActionCeheck)
+            {
+                r = Random.Range(0, 10); //0~9
+                if (stuned1 || stuned2) nextEnemyActionTxt.text = "기절상태";
+                else if (r == 0) nextEnemyActionTxt.text = "특수공격(마법)";
+                else if (r < 7 && r != 0) nextEnemyActionTxt.text = "일반공격(물리)";
+                else if (r > 5 && r < 8) nextEnemyActionTxt.text = $"방어도 {enemy.ShildRecover()} 회복";
+                else nextEnemyActionTxt.text = $"체력 {enemy.Healing()} 회복";
+
+                enemyActionCeheck = true;
+            }
 
             Keyboard key = Keyboard.current;
             if (key == null) return;
@@ -156,7 +173,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    StartEnemyTurn();
+                    StartEnemyTurn(r);
                 }
             }
         }
@@ -251,6 +268,7 @@ public class BattleManager : MonoBehaviour
         // 턴 게임이 시작되면 플레이어 턴으로
         playerTurn = true;
         enemyTurn = !playerTurn;
+        enemyActionCeheck = false;
 
         playerSlotCheck = true;
 
@@ -315,15 +333,15 @@ public class BattleManager : MonoBehaviour
         {
             if (string.IsNullOrEmpty(name)) continue;
 
-            if (name == lastItem)
-            {
-                // 갯수 누적
-                if (itemDict.ContainsKey(name)) itemDict[name]++;
-            }
-            else
-            {
-                if (itemDict.ContainsKey(name)) itemDict[name] = 1;
-            }
+            //if (name == lastItem)
+            //{
+            //    // 갯수 누적
+            //    if (itemDict.ContainsKey(name)) itemDict[name]++;
+            //}
+            //else
+            //{
+            //    if (itemDict.ContainsKey(name)) itemDict[name] = 1;
+            //}
 
             // [단계 2] 이름에 맞는 실제 Item 데이터 찾기 (allItemDatas에서)
             Item data = allItemDatas.Find(x => x.NAME == name);
@@ -333,7 +351,7 @@ public class BattleManager : MonoBehaviour
             }
 
             //print($"{itemDict[name]} 콤보확인");
-            lastItem = name;
+            //lastItem = name;
         }
 
         int num = 0;
@@ -353,6 +371,20 @@ public class BattleManager : MonoBehaviour
         {
             foreach (Item item in matchedItems)
             {
+                if (item.NAME == lastItem)
+                {
+                    // 갯수 누적
+                    if (itemDict.ContainsKey(item.NAME)) itemDict[item.NAME]++;
+                }
+                else
+                {
+                    if (itemDict.ContainsKey(item.NAME)) itemDict[item.NAME] = 1;
+                }
+
+                lastItem = item.NAME;
+
+                //print($"개수 카운트{itemDict[item.NAME]}");
+
                 if (itemDict[item.NAME] >= 0 &&
                   itemDict[item.NAME] < 3)
                 {
@@ -361,12 +393,12 @@ public class BattleManager : MonoBehaviour
                 else if (itemDict[item.NAME] >= 3 &&
                          itemDict[item.NAME] < 5)
                 {
-                    matchedItems[2].COUNT = 2;
+                    item.COUNT = 2;
                 }
                 else if (itemDict[item.NAME] == 5)
                 {
                     //item.COUNT = 3;
-                    matchedItems[matchedItems.Count].COUNT = 3;
+                    item.COUNT = 3;
                 }
                 else
                 {
@@ -397,13 +429,11 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 action = $"치명타!\n체력 {item.HP * 3} 회복";
                                 Apple(item.HP * 3);
-                                cri1 = false;
                                 break;
                             // 메가치명타
                             case 3:
                                 action = $"메가치명타!\n체력 {item.HP * 9} 회복";
                                 Apple(item.HP * 9);
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -421,12 +451,10 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 action = $"치명타!\n최대 체력 {item.PLUS_HP * 3} 증가";
                                 Grape(item.PLUS_HP * 3);
-                                cri1 = false;
                                 break;
                             case 3:
                                 action = $"메가치명타!\n최대 체력 {item.PLUS_HP * 9} 증가";
                                 Grape(item.PLUS_HP * 9);
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -447,13 +475,11 @@ public class BattleManager : MonoBehaviour
                                 action = $"치명타!\n체력 {item.HP * 3} 회복\n최대 체력 {item.PLUS_HP * 3} 증가";
                                 Apple(item.HP * 3);
                                 Grape(item.PLUS_HP * 3);
-                                cri1 = false;
                                 break;
                             case 3:
                                 action = $"메가치명타!\n체력 {item.HP * 9} 회복\n최대 체력 {item.PLUS_HP * 9} 증가";
                                 Apple(item.HP * 9);
                                 Grape(item.PLUS_HP * 9);
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -479,14 +505,12 @@ public class BattleManager : MonoBehaviour
                                 shild *= 3;
                                 action = $"치명타!\n체력 {hp} 회복\n방어도 {shild} 회복";
                                 Meat(hp, shild);
-                                cri1 = false;
                                 break;
                             case 3:
                                 hp *= 9;
                                 shild *= 9;
                                 action = $"메가치명타!\n체력 {hp} 회복\n방어도 {shild} 회복";
                                 Meat(hp, shild);
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -516,13 +540,11 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 action = $"치명타!\n물공 {item.PLUSATK * 3}\n마공 {item.PLUSMATK * 3} 증가";
                                 Energy(item.PLUSATK * 3, item.PLUSMATK * 3);
-                                cri1 = false;
                                 break;
 
                             case 3:
                                 action = $"메가치명타!\nn물공 {item.PLUSATK * 9}\n마공 {item.PLUSMATK * 9} 증가";
                                 Energy(item.PLUSATK * 9, item.PLUSMATK * 9);
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -552,13 +574,11 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 action = $"치명타!\n물공 {item.PLUSATK * 3} 증가";
                                 Energy(item.PLUSATK * 3, 0);
-                                cri1 = false;
                                 break;
 
                             case 3:
                                 action = $"메가치명타!\nn물공 {item.PLUSATK * 9} 증가";
                                 Energy(item.PLUSATK * 9, 0);
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -588,13 +608,11 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 action = $"치명타!\n마공 {item.PLUSMATK * 3} 증가";
                                 Energy(0, item.PLUSMATK * 3);
-                                cri1 = false;
                                 break;
 
                             case 3:
                                 action = $"메가치명타!\nn마공 {item.PLUSMATK * 9} 증가";
                                 Energy(0, item.PLUSMATK * 9);
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -618,13 +636,11 @@ public class BattleManager : MonoBehaviour
                                 action = $"치명타!\n독 중독 {item.POISON * 3}";
                                 player.poison += (item.POISON * 3);
                                 player.UpdatePosionUI();
-                                cri1 = false;
                                 break;
                             case 3:
                                 action = $"메가치명타!\n독 중독  {item.POISON * 9}";
                                 player.poison += (item.POISON * 9);
                                 player.UpdatePosionUI();
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -650,14 +666,12 @@ public class BattleManager : MonoBehaviour
                                 action = $"치명타!\n물공 {att}\n독 중독 {item.POISON * 3}";
                                 player.poison += (item.POISON * 3);
                                 player.UpdatePosionUI();
-                                cri1 = false;
                                 break;
                             case 3:
                                 att *= 9;
                                 action = $"메가치명타!\n물공 {att}\n독 중독 {item.POISON * 9}";
                                 player.poison += (item.POISON * 9);
                                 player.UpdatePosionUI();
-                                cri2 = false;
                                 break;
                         }
                         //물리데미지 적용
@@ -680,12 +694,10 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 att = player.att2 + (item.MATK * 3);
                                 action = $"치명타!\n마공 {att}";
-                                cri1 = false;
                                 break;
                             case 3:
                                 att = player.att2 + (item.MATK * 9);
                                 action = $"메가치명타!\n마공 {att}";
-                                cri2 = false;
                                 break;
                         }
 
@@ -715,13 +727,11 @@ public class BattleManager : MonoBehaviour
                                 att1 = (Random.Range(item.MINATK, item.ATK) * 3) + player.att1;
                                 att2 = (Random.Range(item.MINMATK, item.MATK) * 3) + player.att2;
                                 action = $"치명타!\n물공 {att1} , 마공 {att2}";
-                                cri1 = false;
                                 break;
                             case 3:
                                 att1 = (Random.Range(item.MINATK, item.ATK) * 9) + player.att1;
                                 att2 = (Random.Range(item.MINMATK, item.MATK) * 9) + player.att2;
                                 action = $"메가치명타!\n물공 {att1} , 마공 {att2}";
-                                cri2 = false;
                                 break;
                         }
 
@@ -750,12 +760,10 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 att = (item.MATK * 3) + player.att2;
                                 action = $"치명타!\n마공 {att}";
-                                cri1 = false;
                                 break;
                             case 3:
                                 att = (item.MATK * 9) + player.att2;
                                 action = $"{item.NAME} 메가치명타\n마공 {att}";
-                                cri2 = false;
                                 break;
                         }
 
@@ -780,12 +788,10 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 att = (item.ATK * 3) + player.att1;
                                 action = $"치명타!\n물공 {att}";
-                                cri1 = false;
                                 break;
                             case 3:
                                 att = (item.ATK * 9) + player.att1; ;
                                 action = $"메가치명타!\n물공 {att}";
-                                cri2 = false;
                                 break;
                         }
 
@@ -795,8 +801,6 @@ public class BattleManager : MonoBehaviour
                         AttDamage(att);
 
                         enemy.UpdateHpShildSet();
-
-
 
                     }
                     if (item.NAME.Equals("일반도끼"))
@@ -813,12 +817,10 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 att = (Random.Range(item.MINMATK, item.ATK) * 3) + player.att1;
                                 action = $"치명타!\n물공 {att}";
-                                cri1 = false;
                                 break;
                             case 3:
                                 att = (Random.Range(item.MINMATK, item.ATK) * 9) + player.att1;
                                 action = $"메가치명타!\n물공 {att}";
-                                cri2 = false;
                                 break;
                         }
 
@@ -845,13 +847,11 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 att = (item.ATK * 3) + player.att1;
                                 action = $"치명타!\n물공 {att}";
-                                cri1 = false;
                                 r = 1;
                                 break;
                             case 3:
                                 att = (item.ATK * 9) + player.att1;
                                 action = $"메가치명타!\n물공 {att}";
-                                cri2 = false;
                                 r = 1;
                                 break;
                         }
@@ -896,13 +896,11 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 att = (Random.Range(item.MINATK, item.ATK) * 3) + player.att1;
                                 action = $"치명타!\n물공 {att}";
-                                cri1 = false;
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att = (Random.Range(item.MINATK, item.ATK) * 9) + player.att1;
                                 action = $"메가치명타!\n물공 {att}";
-                                cri2 = false;
                                 r = 1;
                                 break;
                         }
@@ -943,12 +941,10 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 att = (Random.Range(item.MINMATK, item.MATK) * 3) + player.att2;
                                 action = $"치명타!\n마공 {att}";
-                                cri1 = false;
                                 break;
                             case 3:
                                 att = (Random.Range(item.MINMATK, item.MATK) * 9) + player.att2;
                                 action = $"메가치명타!\n마공 {att}";
-                                cri2 = false;
                                 break;
                         }
 
@@ -976,14 +972,12 @@ public class BattleManager : MonoBehaviour
                                 plus_sh *= 3;
                                 action = $"치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
                                 Shield(shild, plus_sh);
-                                cri1 = false;
                                 break;
                             case 3:
                                 shild *= 9;
                                 plus_sh *= 9;
                                 action = $"메가치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
                                 Shield(shild, plus_sh);
-                                cri2 = false;
                                 break;
                         }
 
@@ -1006,13 +1000,11 @@ public class BattleManager : MonoBehaviour
                                 shild *= 3;
                                 action = $"치명타!\n방어도 {shild} 회복";
                                 Shield(shild, 0);
-                                cri1 = false;
                                 break;
                             case 3:
                                 shild *= 9;
                                 action = $"메가치명타!\n방어도 {shild} 회복";
                                 Shield(shild, 0);
-                                cri2 = false;
                                 break;
                         }
 
@@ -1045,12 +1037,10 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 gold *= 3;
                                 action = $"치명타!\n{gold}골드 획득";
-                                cri1 = false;
                                 break;
                             case 3:
                                 gold *= 9;
                                 action = $"메가치명타!\n{gold}골드 획득";
-                                cri2 = false;
                                 break;
                         }
 
@@ -1063,7 +1053,7 @@ public class BattleManager : MonoBehaviour
                             goldEffectRander.sortingOrder = 50;
                         }
 
-                        player.gold += gold;
+                        itemManager.PlusGold(gold);
                         player.UpdateGoldUI();
                     }
 
@@ -1090,12 +1080,10 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 gold *= 3;
                                 action = $"치명타!\n{gold}골드 획득";
-                                cri1 = false;
                                 break;
                             case 3:
                                 gold *= 9;
                                 action = $"메가치명타!\n{gold}골드 획득";
-                                cri2 = false;
                                 break;
                         }
 
@@ -1108,7 +1096,7 @@ public class BattleManager : MonoBehaviour
                             goldEffectRander.sortingOrder = 50;
                         }
 
-                        player.gold += gold;
+                        itemManager.PlusGold(gold);
                         player.UpdateGoldUI();
                     }
 
@@ -1160,7 +1148,6 @@ public class BattleManager : MonoBehaviour
 
                                 Magic(att1, att2, hp, plus_hp, shild, plus_sh);
 
-                                cri1 = false;
                                 break;
                             case 3:
                                 att1 *= 9;
@@ -1176,7 +1163,6 @@ public class BattleManager : MonoBehaviour
 
                                 Magic(att1, att2, hp, plus_hp, shild, plus_sh);
 
-                                cri2 = false;
                                 break;
                         }
 
@@ -1224,7 +1210,6 @@ public class BattleManager : MonoBehaviour
 
                                 Magic(0, 0, hp, plus_hp, shild, plus_sh);
 
-                                cri1 = false;
                                 break;
                             case 3:
                                 hp *= 9;
@@ -1237,7 +1222,6 @@ public class BattleManager : MonoBehaviour
 
                                 Magic(0, 0, hp, plus_hp, shild, plus_sh);
 
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -1282,7 +1266,6 @@ public class BattleManager : MonoBehaviour
 
                                 Shield(shild, plus_sh);
                                 Blood(blood);
-                                cri1 = false;
                                 break;
                             case 3:
                                 shild *= 9;
@@ -1295,7 +1278,6 @@ public class BattleManager : MonoBehaviour
 
                                 Shield(shild, plus_sh);
                                 Blood(blood);
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -1344,7 +1326,6 @@ public class BattleManager : MonoBehaviour
                                 //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
                                 player.poison += (item.POISON * 3);
                                 player.UpdatePosionUI();
-                                cri1 = false;
                                 break;
                             case 3:
                                 shild *= 9;
@@ -1358,7 +1339,6 @@ public class BattleManager : MonoBehaviour
                                 //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
                                 player.poison += (item.POISON * 9);
                                 player.UpdatePosionUI();
-                                cri2 = false;
                                 break;
                         }
                     }
@@ -1446,6 +1426,7 @@ public class BattleManager : MonoBehaviour
 
         else
         {
+            nextEnemyActionTxt.text = "";
             statusTxt.color = Color.red;
             statusTxt.text = $"{action}";
         }
@@ -1472,12 +1453,12 @@ public class BattleManager : MonoBehaviour
     //    print("적 생성 완료");
     //}
 
-    void StartEnemyTurn()
+    void StartEnemyTurn(int r)
     {
-        StartCoroutine(EnemyTurn());
+        StartCoroutine(EnemyTurn(r));
     }
 
-    IEnumerator EnemyTurn()
+    IEnumerator EnemyTurn(int r)
     {
         isEnemyturnning = true;
         enemyTurn = false;
@@ -1496,7 +1477,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            int r = Random.Range(0, 10); //0~9
+            //int r = Random.Range(0, 10); //0~9
             print("적 행동 " + r);
             //공격확률(0~6)
             if (r < 7)
@@ -1697,7 +1678,7 @@ public class BattleManager : MonoBehaviour
         //Animator anim = enemy.GetComponent<Animator>();
         //anim.Play("Death");
         if (enemy.death) yield break;
-        //enemy.death = true;
+        enemy.death = true;
 
         //적 죽음 애니메이션
         enemy.Death();
@@ -1711,11 +1692,24 @@ public class BattleManager : MonoBehaviour
         Destroy(enemy.gameObject);
 
         //라운드 확인 작업필요
+        round++;
 
+        stageManager.Round = round;
+
+        if (round > 5)
+        {
+            currentStageIndex++;
+            round = 1;
+            stageManager.Round = 1;
+            stageManager.UnlockNextStage(currentStageIndex);
+        }
+        //enemyManager.SpawnEnemy(currentStageIndex, round);
+
+        //print($"현재 스테이지 {currentStageIndex}, 현재 라운드 {round}");
         yield return new WaitForSeconds(1.5f);
         Destroy(enemyEffect);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
 
         //안끝났다면 다음 라운드 이동
 
@@ -1854,8 +1848,9 @@ public class BattleManager : MonoBehaviour
         //enemies[r] = FindAnyObjectByType<Enemy>();
         //enemy = enemies[r];
         //EnemyCreate(currentStageIndex);
+        round = stageManager.Round;
 
-        enemyManager.SpawnEnemy(currentStageIndex, 1);
+        enemyManager.SpawnEnemy(currentStageIndex, round);
 
         enemy = enemyManager.currentEnemy;
 
@@ -1872,8 +1867,6 @@ public class BattleManager : MonoBehaviour
         itemPrefab = GetComponent<GameObject>();
         currentEffects = new GameObject[slotCount];
         isEnemyturnning = false;
-        cri1 = false;
-        cri2 = false;
         stuned1 = false;
         stuned2 = false;
 

@@ -1,6 +1,7 @@
+using System.Collections;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -20,34 +21,35 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    void OnEnable()
-    {
-        //씬 로드 완료 이벤트 구축
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
+    //void OnEnable()
+    //{
+    //    //씬 로드 완료 이벤트 구축
+    //    SceneManager.sceneLoaded += OnSceneLoaded;
+    //}
 
-    void OnDisable()
-    {
-        //이벤트 구축 해제(메모리 누수 및 에러 방지)
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+    //void OnDisable()
+    //{
+    //    //이벤트 구축 해제(메모리 누수 및 에러 방지)
+    //    SceneManager.sceneLoaded -= OnSceneLoaded;
+    //}
 
-    void InitializeBattle()
-    {
-        //StageManager에서 넘겨준 스테이지 번호 확인
-        StageManager stageManager = FindAnyObjectByType<StageManager>();
-        int stage = stageManager.SelectedStage;
+    //void InitializeBattle()
+    //{
+    //    //StageManager에서 넘겨준 스테이지 번호 확인
+    //    StageManager stageManager = FindAnyObjectByType<StageManager>();
+    //    int stage = stageManager.SelectedStage;
+    //    int round = stageManager.Round;
 
-        //EnemyManager.Instance.Spawn(stage);
-    }
+    //    EnemyManager.Instance.SpawnEnemy(stage, round);
+    //}
 
-    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if(scene.name == "BattleScene")
-        {
-            InitializeBattle();
-        }
-    }
+    //public void OnSceneLoaded(Scene scene, LoadSceneMode mode = LoadSceneMode.Single)
+    //{
+    //    if(scene.name == "BattleScene")
+    //    {
+    //        InitializeBattle();
+    //    }
+    //}
 
     // 기본 로드 방식 (동기)
     public void LoadScene(string sceneName)
@@ -58,6 +60,10 @@ public class GameSceneManager : MonoBehaviour
     // 비동기 로드 방식 (추천: 로딩 화면 구현 시 유리)
     public void LoadSceneAsync(string sceneName)
     {
+        //if (sceneName == "BattleScene")
+        //{
+        //    InitializeBattle();
+        //}
         StartCoroutine(LoadSceneCoroutine(sceneName));
     }
 

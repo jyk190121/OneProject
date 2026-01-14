@@ -8,13 +8,11 @@ public class CrystalGolem : Enemy
     public override void Attack()
     {
         base.Attack();
-        att1 = Random.Range(20, 30);
     }
 
     override public void SpecialAttack()
     {
         base.SpecialAttack();
-        att2 = Random.Range(20, 41);
     }
 
     override public float ShildRecover()

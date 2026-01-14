@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
     public float att1;     //물리공격력
     public float att2;     //마법공격력
     public float poison;   //�� ����������
-    public int gold;       //보유골드
 
     //새로하기
     public void HpShildSet()
@@ -33,7 +32,6 @@ public class Player : MonoBehaviour
         shild = 0;
         att1 = 0;
         att2 = 0;
-        gold = 0;
         poison = 0;
 
         UpdateHpShildSet();
@@ -58,11 +56,7 @@ public class Player : MonoBehaviour
 
     public void UpdateGoldUI()
     {
-        goldTxt.text = gold.ToString();
+        goldTxt.text = ItemManager.Instance.GetGold().ToString();
     }
 
-    public void UseGold(int gold)
-    {
-        this.gold -= gold;
-    }
 }

@@ -38,7 +38,7 @@ public class ItemManager : MonoBehaviour
     public void AddItem(Item item)
     {
         initialItems.Add(item);
-        Debug.Log($"{item}아이템 추가");
+        //Debug.Log($"{item}아이템 추가");
     }
     //구매
     public void BuyItem(Item newItem)

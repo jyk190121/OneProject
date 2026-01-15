@@ -1721,27 +1721,31 @@ public class BattleManager : MonoBehaviour
             itemManager.Init();
 
             currentStageIndex++;
-            stageManager.UnlockNextStage(currentStageIndex);
+            stageManager.UnlockNextStage(currentStageIndex + 1);
         }
         //enemyManager.SpawnEnemy(currentStageIndex, round);
 
-        print($"현재 스테이지 {currentStageIndex +1}, 현재 라운드 {stageManager.Round}");
         yield return new WaitForSeconds(1.5f);
         Destroy(enemyEffect);
 
         yield return new WaitForSeconds(1.5f);
 
         //안끝났다면 다음 라운드 이동
+        print($"현재 스테이지 {currentStageIndex + 1}, 현재 라운드 {stageManager.Round}");
 
         //스테이지 상승 후 Round 1로 초기화 및 StartScene로
         if (stageManager.Round > 5)
         {
             stageManager.Round = 1;
-            GameSceneManager.Instance.LoadSceneAsync("StartScene");
-            yield break;
+
+            GameSceneManager.Instance.LoadSceneAsync("StageScene");
+            yield return null;
         }
-        //끝났다면 업그레이드 상점으로 이동
-        GameSceneManager.Instance.LoadScene("UpgradeStoreScene");
+        else
+        {
+            //끝났다면 업그레이드 상점으로 이동
+            GameSceneManager.Instance.LoadScene("UpgradeStoreScene");
+        }
 
         yield return null;
     }

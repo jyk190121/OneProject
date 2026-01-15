@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 /// <summary>
 /// 현재 해금된 스테이지 값저장
 /// </summary>
@@ -46,6 +47,23 @@ public class StageManager : MonoBehaviour
         {
             UnlockedStage = stageNum;
             PlayerPrefs.SetInt("UnlockedStageIndex", UnlockedStage);
+            PlayerPrefs.Save();
+
+            OnStageUnlocked?.Invoke(UnlockedStage);
+        }
+    }
+
+
+    private void Update()
+    {
+        if(Keyboard.current.f2Key.wasPressedThisFrame == true)
+        {
+            UnlockNextStage(5);
+        }
+
+        if (Keyboard.current.f3Key.wasPressedThisFrame == true)
+        {
+            PlayerPrefs.SetInt("UnlockedStageIndex", 1);
             PlayerPrefs.Save();
 
             OnStageUnlocked?.Invoke(UnlockedStage);

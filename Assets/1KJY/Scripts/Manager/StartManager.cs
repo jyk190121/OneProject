@@ -156,7 +156,6 @@ public class StartManager : MonoBehaviour
 
     void EndGame()
     {
-        ItemManager.Instance.Init();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

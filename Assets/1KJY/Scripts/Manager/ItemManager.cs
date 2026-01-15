@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 public class ItemManager : MonoBehaviour
 {
     // 데이터 변경 시 UI 등에 알림을 주기 위한 이벤트
-    public static event Action<Item> OnItemAdd;
+    public static event Action<String> OnItemAdd;
 
     // 인스펙터에서 프로젝트에 있는 모든 아이템
     public List<Item> allItemDatas; 
@@ -46,7 +46,7 @@ public class ItemManager : MonoBehaviour
         {
             initialItems.Add(item);
             SaveItems(); // 아이템 리스트 전체 저장
-            OnItemAdd?.Invoke(item);
+            OnItemAdd?.Invoke(item.NAME);
         }
     }
 
@@ -62,62 +62,90 @@ public class ItemManager : MonoBehaviour
         PlayerPrefs.SetString("SavedItems", itemIds);
         PlayerPrefs.Save();
     }
-
-    public void LoadItems()
+    private void LoadItems()
     {
-        
-        string savedData = PlayerPrefs.GetString("SavedItems", "");
-        if (string.IsNullOrEmpty(savedData)) return;
+        if (!PlayerPrefs.HasKey("SavedInventory")) return;
 
-        string[] ids = savedData.Split(',');
+        string saveData = PlayerPrefs.GetString("SavedInventory");
+        if (string.IsNullOrEmpty(saveData)) return;
+
+        string[] names = saveData.Split(',');
         initialItems.Clear();
 
-        foreach (string idStr in ids)
+        foreach (string name in names)
         {
-            int id = int.Parse(idStr);
-            // 전체 아이템 리스트(allItems)에서 ID가 일치하는 아이템 검색
-            Item foundItem = allItemDatas.Find(x => x.ID == id);
+            // 전체 데이터베이스(allItemDatas)에서 이름이 같은 아이템을 찾아 추가
+            Item foundItem = allItemDatas.Find(x => x.NAME == name);
             if (foundItem != null)
             {
-                initialItems.Add(foundItem);
-                //모든 아이템 강화는 게임 시작 시 초기화
                 Init();
+                initialItems.Add(foundItem);
             }
         }
     }
+    //public void LoadItems()
+    //{
+        
+    //    string savedData = PlayerPrefs.GetString("SavedItems", "");
+    //    if (string.IsNullOrEmpty(savedData)) return;
 
-    //구매
-    public void BuyItem(Item newItem)
-    {
-        //플레이어 골드체크
+    //    string[] ids = savedData.Split(',');
+    //    initialItems.Clear();
 
-        foreach (Item item in initialItems)
-        {
-            if (item.ID != newItem.ID)
-            {
-                AddItem(item);
-            }
-            else
-            {
-                ItemEnhance(item);
-                //아이템 수치 증가 필요
-            }
-        }
-    }
+    //    foreach (string idStr in ids)
+    //    {
+    //        int id = int.Parse(idStr);
+    //        // 전체 아이템 리스트(allItems)에서 ID가 일치하는 아이템 검색
+    //        Item foundItem = allItemDatas.Find(x => x.ID == id);
+    //        if (foundItem != null)
+    //        {
+    //            initialItems.Add(foundItem);
+    //            //모든 아이템 강화는 게임 시작 시 초기화
+    //            LoadEnhanceLevel(foundItem);
+    //        }
+    //    }
+    //}
 
-    //1강 보다 2강이 비싸고, 2강보다 3강이 비싸도록
-    public void ItemEnhance(Item item)
-    {
-        if (item.ENHANCE < 3)
-        {
-            item.ENHANCE++;
-        }
-        else
-        {
-            print("최대 강화에 도달");
-        }
+    // 아이템 로드 시 호출
+    //void LoadEnhanceLevel(Item item)
+    //{
+    //    int savedLevel = PlayerPrefs.GetInt($"Item_{item.NAME}_Enhance", 0);
+    //    item.ENHANCE = savedLevel;
+    //    gold = 0;
+    //}
 
-    }
+    ////구매
+    //public void BuyItem(Item newItem)
+    //{
+    //    //플레이어 골드체크
+
+    //    foreach (Item item in initialItems)
+    //    {
+    //        if (item.ID != newItem.ID)
+    //        {
+    //            AddItem(item);
+    //        }
+    //        else
+    //        {
+    //            ItemEnhance(item);
+    //            //아이템 수치 증가 필요
+    //        }
+    //    }
+    //}
+
+    ////1강 보다 2강이 비싸고, 2강보다 3강이 비싸도록
+    //public void ItemEnhance(Item item)
+    //{
+    //    if (item.ENHANCE < 3)
+    //    {
+    //        item.ENHANCE++;
+    //    }
+    //    else
+    //    {
+    //        print("최대 강화에 도달");
+    //    }
+
+    //}
 
     public void Init()
     {

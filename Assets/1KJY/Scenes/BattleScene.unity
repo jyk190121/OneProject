@@ -4171,6 +4171,7 @@ MonoBehaviour:
   nextEnemyActionTxt: {fileID: 2081568717}
   stageTxt: {fileID: 114680975}
   roundTxt: {fileID: 24381965}
+  enemyName: {fileID: 0}
 --- !u!1 &7884598384099916420
 GameObject:
   m_ObjectHideFlags: 0

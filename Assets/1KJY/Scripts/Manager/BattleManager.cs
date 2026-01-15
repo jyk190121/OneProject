@@ -74,6 +74,7 @@ public class BattleManager : MonoBehaviour
 
     public TextMeshProUGUI stageTxt;
     public TextMeshProUGUI roundTxt;
+    //public TextMeshProUGUI enemyName;
 
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
@@ -1470,10 +1471,11 @@ public class BattleManager : MonoBehaviour
 
     void StartEnemyTurn(int r)
     {
-        StartCoroutine(EnemyTurn(r));
+        int actionInt = r;
+        StartCoroutine(EnemyTurn(actionInt));
     }
 
-    IEnumerator EnemyTurn(int r)
+    IEnumerator EnemyTurn(int action)
     {
         isEnemyturnning = true;
         enemyTurn = false;
@@ -1495,9 +1497,9 @@ public class BattleManager : MonoBehaviour
             //int r = Random.Range(0, 10); //0~9
             //print("적 행동 " + r);
             //공격확률(0~6)
-            if (r < 7)
+            if (action < 7)
             {
-                if (r == 0)
+                if (action == 0)
                 {
                     //특수공격
                     EnemySpecialAttack();
@@ -1509,7 +1511,7 @@ public class BattleManager : MonoBehaviour
                 }
             }
             //방어도 회복(6~7)
-            else if (r > 5 && r < 8)
+            else if (action > 5 && action < 8)
             {
                 EnemyShildRecover();
             }
@@ -1540,6 +1542,10 @@ public class BattleManager : MonoBehaviour
             enemy.hp -= player.poison;
             Status($"<color=yellow> 독 피해 : {player.poison}");
             player.poison -= 2f;
+            if (player.poison <= 0)
+            {
+                player.poison = 0;
+            }
             enemy.AnimDamage();
 
             enemy.UpdateHpShildSet();
@@ -1756,8 +1762,6 @@ public class BattleManager : MonoBehaviour
         playerTurn = false;
         enemyTurn = false;
 
-        //아이템 강화, 골드 초기화
-        itemManager.Init();
         yield return new WaitForSeconds(3f);
 
         //SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);

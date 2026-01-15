@@ -189,11 +189,14 @@ public class StageUI : MonoBehaviour
 
     void EnterStage(int stageNum)
     {
+        //아이템 강화, 골드 초기화
+        ItemManager.Instance.Init();
         bool isLocked = stageNum > unlockedStageIndex;
         //열린 스테이지 선택 시 해당 스테이지로 이동
         if (!isLocked)
         {
             StageManager.Instance.SelectedStage = stageNum;
+            if(stageNum != 1) ItemManager.Instance.SetGold(stageNum * 20);
             //Debug.Log($"{stageManager.SelectedStage}번 스테이지로 진입합니다.");
             GameSceneManager.Instance.LoadSceneAsync("ItemSelectScene");
         }

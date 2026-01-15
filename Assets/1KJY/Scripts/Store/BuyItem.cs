@@ -314,7 +314,6 @@ public class BuyItem : MonoBehaviour
         failImg.gameObject.SetActive(false);
     }
 
-
     void UpdateInfo(Item item, int index)
     {
         ItemEnhance slot = buyItemBtns[index].gameObject.GetComponent<ItemEnhance>();

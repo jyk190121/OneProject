@@ -1,7 +1,7 @@
-using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 랜덤하게 아이템 판매 노출
@@ -113,8 +113,76 @@ public class BuyItem : MonoBehaviour
 
                     buyItemPrices[i].text = $"{finalPrice}";
                 }
+
+                //4.버튼 선택 시 플레이어 골드보유량 체크해서 구매여부 확인
+                buyItemBtns[i].onClick.AddListener(() => SelectBuyItem(storeItems[i] , finalPrice));
             }
         }
     }
 
+
+    void SelectBuyItem(Item item, int storePrice)
+    {
+        //강화표시 여부로 확인(보유아이템)
+        bool selectItem = items.Find(x => x.NAME == item.NAME);
+
+        //플레이어 골드 보유량 체크
+        if (itemManager.GetGold() >= storePrice)
+        {
+            itemManager.MinusGold(storePrice);
+
+            //미보유 아이템의 경우
+            if (!selectItem)
+            {
+                BuyItem_Success(item);
+            }
+            else
+            {
+                BuyItem_Enhance(item, storePrice);
+            }
+        }
+
+        else
+        {
+            BuyItem_Fail();
+        }
+
+    }
+
+    void BuyItem_Success(Item item)
+    {
+        itemManager.AddItem(item);
+
+        //구매 성공 표시 UI
+        print("구매성공 : 새로운 아이템");
+
+        //구매된 아이템은 Null로 변경
+        item = null;
+    }
+
+    void BuyItem_Enhance(Item item, int price)
+    {
+        if(item.ENHANCE < 3)
+        {
+            item.ENHANCE++;
+
+            //아이템 강화 시 능력치 변경
+
+            //구매된 아이템은 Null로 변경
+            print("구매성공 : 강화");
+            item = null;
+        }
+        else
+        {
+            //강화 불가 표시 UI 및 골드 회수
+            print("구매불가 : 강화불가");
+            itemManager.PlusGold(price);
+        }
+    }
+
+    void BuyItem_Fail()
+    {
+        //구매 실패 표시 UI
+        print("구매불가 : 돈 부족");
+    }
 }

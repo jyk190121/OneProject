@@ -131,4 +131,9 @@ public class GameSceneManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    public string SceneName()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
 }

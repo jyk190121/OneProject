@@ -105,26 +105,26 @@ public class StartManager : MonoBehaviour
         if (key == null) return;
 
         //Enter는 EventSystem이 자동으로 Invoke해주기 때문에 처리가 필요없음
-        
-        //// 1. 엔터 키 입력 감지(현재 버튼 실행)
-        //if (Keyboard.current.enterKey.wasPressedThisFrame == true)
-        //{
-        //    // 2. 현재 이벤트 시스템에서 선택된(포커스된) 오브젝트 가져오기
-        //    GameObject currentSelected = currentObj;
 
-        //    if (currentSelected != null)
-        //    {
-        //        // 3. 해당 오브젝트에 버튼 컴포넌트가 있는지 확인
-        //        Button btn = currentSelected.GetComponent<Button>();
-        //        if (btn != null)
-        //        {
-        //            // 4. 버튼의 onClick 이벤트 실행
-        //            btn.onClick.Invoke();
-        //            Debug.Log($"{currentSelected.name} 실행");
-        //        }
-        //    }
-        //}
-        
+        // 1. 스페이스 키 입력 감지(현재 버튼 실행)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame == true)
+        {
+            // 2. 현재 이벤트 시스템에서 선택된(포커스된) 오브젝트 가져오기
+            GameObject currentSelected = currentObj;
+
+            if (currentSelected != null)
+            {
+                // 3. 해당 오브젝트에 버튼 컴포넌트가 있는지 확인
+                Button btn = currentSelected.GetComponent<Button>();
+                if (btn != null)
+                {
+                    // 4. 버튼의 onClick 이벤트 실행
+                    btn.onClick.Invoke();
+                    //Debug.Log($"{currentSelected.name} 실행");
+                }
+            }
+        }
+
         //선택된 버튼 확인
         UpdateSelectionOutline();
 

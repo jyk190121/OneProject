@@ -30,7 +30,7 @@ MonoBehaviour:
   SHILD: 0
   POISON: 0
   BLOOD: 0
-  COUNT: 0
-  EFFECT: {fileID: 9070474633162843459, guid: e93dd4b39ca6db54dad24ac563fe3540, type: 3}
+  COUNT: 1
   STUNED: 0
+  EFFECT: {fileID: 9070474633162843459, guid: e93dd4b39ca6db54dad24ac563fe3540, type: 3}
   EXPLAIN: "\uB9C8\uBC95\uACF5\uACA9 30"

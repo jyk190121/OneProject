@@ -15,7 +15,7 @@ public class Item : ScriptableObject
     private int id;
 
     // 읽기 전용 프로퍼티
-    public int ID => id;        //아이템 ID (오브젝트 생성 시 자동부여, 쓸일이 있을지는..)
+    public int ID => id * (ENHANCE + 1);        //아이템 ID (오브젝트 생성 시 자동부여, 쓸일이 있을지는..)
     public string NAME;         //아이템 이름
     public Sprite IMAGE;        //아이템 이미지
 
@@ -24,7 +24,7 @@ public class Item : ScriptableObject
     public int ENHANCE;         //강화 횟수(최대 3강) 임의로
     public int GOLD;            //골드 (아이템으로 얻게되는 화폐)
 
-    [Header("아이템 스텟")]
+    [Header("아이템 기본 스텟")]
     public int MINATK;          //최소 물리공격력 스텟
     public int MINMATK;         //최소 마법공격력 스텟
     public int ATK;             //(최대)물리공격력 스텟
@@ -39,6 +39,27 @@ public class Item : ScriptableObject
     public float BLOOD;         //흡열 수치(HP 강탈)
     public int COUNT;           //치명타, 메가치명타 (콤보카운트)
 
+    [Header("기절확률")]
+    [Range(0, 1)]
+    public float STUNED;
+
+
+    //강화수치 계산
+    [Header("강화된 아이템 스텟")]
+    public int ENHANCE_MINATK => MINATK * (ENHANCE+1);
+    public int ENHANCE_MINMATK => MINMATK * (ENHANCE + 1);
+    public int ENHANCE_ATK => ATK * (ENHANCE + 1);
+    public int ENHANCE_MATK => MATK * (ENHANCE + 1);
+    public int ENHANCE_PLUSATK => PLUSATK * (ENHANCE + 1);
+    public int ENHANCE_PLUSMATK => PLUSMATK * (ENHANCE + 1);
+    public float ENHANCE_PLUS_HP => PLUS_HP * (ENHANCE + 1);
+    public float ENHANCE_PLUS_SHILD => PLUS_SHILD * (ENHANCE + 1);
+    public float ENHANCE_HP => HP * (ENHANCE + 1);
+    public float ENHANCE_SHILD => SHILD * (ENHANCE + 1);
+    public float ENHANCE_POISON => POISON * (ENHANCE + 1);
+    public float ENHANCE_BLOOD => BLOOD * (ENHANCE + 1);
+    public float ENHANCE_STUNED => STUNED + ((ENHANCE / 10));
+
     [Header("아이템 이팩트")]
     public GameObject EFFECT;
 
@@ -52,9 +73,6 @@ public class Item : ScriptableObject
     //    }
     //}
 
-    [Header("기절확률")]
-    [Range(0, 1)]
-    public float STUNED;
 
     [Header("아이템 설명")]
     [TextArea(minLines: 1, maxLines: 10)]

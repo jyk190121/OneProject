@@ -24,6 +24,7 @@ public class StageUI : MonoBehaviour
 
     StageManager stageManager;
 
+    GameObject currentObj;
     void Awake()
     {
         //StageManager에서 넘겨준 스테이지 번호 확인
@@ -116,26 +117,7 @@ public class StageUI : MonoBehaviour
             //print("배경 클릭!");
         }
     }
-
-    void Update()
-    {
-        // 현재 선택된 오브젝트가 없는지 확인 (배경 클릭으로 인해)
-        if (EventSystem.current.currentSelectedGameObject == null)
-        {
-            Keyboard key = Keyboard.current;
-            if (key == null) return;
-
-            if (key.aKey.wasPressedThisFrame || key.dKey.wasPressedThisFrame || 
-                key.leftArrowKey.wasPressedThisFrame || key.rightArrowKey.wasPressedThisFrame)
-            {
-                // 이전에 선택했던 스테이지가 있다면 그곳으로, 없다면 0번으로
-                int resumeIndex = (selectedStageIndex != -1) ? selectedStageIndex - 1 : 0;
-                stageButtons[Mathf.Clamp(resumeIndex, 0, stageButtons.Length - 1)].Select();
-            }
-        }
-    }
-
-
+  
     // 마우스 클릭 시 호출
     void OnMouseClick(int stageNum)
     {

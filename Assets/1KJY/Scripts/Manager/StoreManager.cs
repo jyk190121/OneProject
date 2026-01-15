@@ -33,8 +33,10 @@ public class StoreManager : MonoBehaviour
 
         if (itemManager != null)
         {
-            items = itemManager.CurrentItems();
-            goldTxt.text = itemManager.GetGold().ToString();
+            //아이템 구매 시에도 업데이트 필요
+            UpdateUI();
+            //items = itemManager.CurrentItems();
+            //goldTxt.text = itemManager.GetGold().ToString();
         }
        
     }
@@ -82,8 +84,8 @@ public class StoreManager : MonoBehaviour
         {
             itemImg.sprite = item.IMAGE;
         }
-        ItemSlot slot = newItemObj.GetComponent<ItemSlot>();
-        if (slot == null) slot = newItemObj.AddComponent<ItemSlot>();
+        ItemEnhance slot = newItemObj.GetComponent<ItemEnhance>();
+        if (slot == null) slot = newItemObj.AddComponent<ItemEnhance>();
 
         slot.Setup(item);
     }
@@ -91,5 +93,11 @@ public class StoreManager : MonoBehaviour
     void NextStage(int stageNum)
     {
         GameSceneManager.Instance.LoadSceneAsync("BattleScene");
+    }
+
+    public void UpdateUI()
+    {
+        items = itemManager.CurrentItems();
+        goldTxt.text = itemManager.GetGold().ToString();
     }
 }

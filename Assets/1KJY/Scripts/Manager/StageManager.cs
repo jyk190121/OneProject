@@ -41,6 +41,7 @@ public class StageManager : MonoBehaviour
     // 스테이지 클리어 시 호출
     public void UnlockNextStage(int stageNum)
     {
+        print("호출되나");
         if (stageNum > UnlockedStage)
         {
             UnlockedStage = stageNum;

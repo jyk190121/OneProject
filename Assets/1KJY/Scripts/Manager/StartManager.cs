@@ -107,7 +107,7 @@ public class StartManager : MonoBehaviour
         //Enter는 EventSystem이 자동으로 Invoke해주기 때문에 처리가 필요없음
 
         // 1. 스페이스 키 입력 감지(현재 버튼 실행)
-        if (Keyboard.current.spaceKey.wasPressedThisFrame == true)
+        if (key.spaceKey.wasPressedThisFrame == true)
         {
             // 2. 현재 이벤트 시스템에서 선택된(포커스된) 오브젝트 가져오기
             GameObject currentSelected = currentObj;
@@ -156,6 +156,7 @@ public class StartManager : MonoBehaviour
 
     void EndGame()
     {
+        ItemManager.Instance.Init();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

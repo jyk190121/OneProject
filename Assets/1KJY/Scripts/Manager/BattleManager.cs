@@ -72,6 +72,9 @@ public class BattleManager : MonoBehaviour
     bool enemyActionCeheck = false;             // 1턴에 1번
     int r;
 
+    public TextMeshProUGUI stageTxt;
+    public TextMeshProUGUI roundTxt;
+
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
         {"고급도끼", 0},
@@ -107,6 +110,9 @@ public class BattleManager : MonoBehaviour
     void Awake()
     {
         InitializeSceneObjects();
+        stageTxt.text = $"스테이지 {stageManager.SelectedStage}";
+        if (stageManager.Round != 5) roundTxt.text = $"{stageManager.Round} 라운드";
+        else roundTxt.text = "보스";
     }
 
     void Update()
@@ -541,7 +547,7 @@ public class BattleManager : MonoBehaviour
                                 break;
 
                             case 3:
-                                action = $"메가치명타!\nn물공 {item.ENHANCE_PLUSATK * 9}\n마공 {item.ENHANCE_PLUSMATK * 9} 증가";
+                                action = $"메가치명타!\n물공 {item.ENHANCE_PLUSATK * 9}\n마공 {item.ENHANCE_PLUSMATK * 9} 증가";
                                 Energy(item.ENHANCE_PLUSATK * 9, item.ENHANCE_PLUSMATK * 9);
                                 break;
                         }
@@ -575,7 +581,7 @@ public class BattleManager : MonoBehaviour
                                 break;
 
                             case 3:
-                                action = $"메가치명타!\nn물공 {item.ENHANCE_PLUSATK * 9} 증가";
+                                action = $"메가치명타!\n물공 {item.ENHANCE_PLUSATK * 9} 증가";
                                 Energy(item.ENHANCE_PLUSATK * 9, 0);
                                 break;
                         }
@@ -609,7 +615,7 @@ public class BattleManager : MonoBehaviour
                                 break;
 
                             case 3:
-                                action = $"메가치명타!\nn마공 {item.ENHANCE_PLUSMATK * 9} 증가";
+                                action = $"메가치명타!\n마공 {item.ENHANCE_PLUSMATK * 9} 증가";
                                 Energy(0, item.ENHANCE_PLUSMATK * 9);
                                 break;
                         }
@@ -907,7 +913,7 @@ public class BattleManager : MonoBehaviour
 
                         if (!stuned2)
                         {
-                            if (r > 90)
+                            if (r > (1 - item.ENHANCE_STUNED))
                             {
                                 stuned2 = true;
                             }
@@ -1026,7 +1032,7 @@ public class BattleManager : MonoBehaviour
                             }
                         }
 
-                        int gold = item.GOLD;
+                        int gold = item.ENHABCE_GOLD;
                         switch (item.COUNT)
                         {
                             case 1:
@@ -1074,7 +1080,7 @@ public class BattleManager : MonoBehaviour
                             }
                         }
 
-                        int gold = item.GOLD;
+                        int gold = item.ENHABCE_GOLD;
                         switch (item.COUNT)
                         {
                             case 1:
@@ -1546,9 +1552,10 @@ public class BattleManager : MonoBehaviour
                 StartCoroutine(EnemyDeath());
                 yield break;
             }
-        }
 
-        yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.5f);
+            Destroy(enemyEffect);
+        }
 
         playerTurn = true;
         playerSlotCheck = true;
@@ -1710,6 +1717,9 @@ public class BattleManager : MonoBehaviour
 
         if (stageManager.Round > 5)
         {
+            //아이템 강화, 골드 초기화
+            itemManager.Init();
+
             currentStageIndex++;
             stageManager.UnlockNextStage(currentStageIndex);
         }
@@ -1723,11 +1733,10 @@ public class BattleManager : MonoBehaviour
 
         //안끝났다면 다음 라운드 이동
 
-        //스테이지 상승 후 StartScene로
+        //스테이지 상승 후 Round 1로 초기화 및 StartScene로
         if (stageManager.Round > 5)
         {
             stageManager.Round = 1;
-
             GameSceneManager.Instance.LoadSceneAsync("StartScene");
             yield break;
         }
@@ -1743,6 +1752,8 @@ public class BattleManager : MonoBehaviour
         playerTurn = false;
         enemyTurn = false;
 
+        //아이템 강화, 골드 초기화
+        itemManager.Init();
         yield return new WaitForSeconds(3f);
 
         //SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);

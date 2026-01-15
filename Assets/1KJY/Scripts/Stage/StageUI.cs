@@ -22,14 +22,14 @@ public class StageUI : MonoBehaviour
     int selectedStageIndex = -1;                         // 현재 선택된 스테이지 (-1은 선택 없음)
     int unlockedStageIndex;                              // 현재 해금된 최대 스테이지
 
-    StageManager stageManager;
+    //StageManager stageManager;
 
-    GameObject currentObj;
     void Awake()
     {
         //StageManager에서 넘겨준 스테이지 번호 확인
-        stageManager = FindAnyObjectByType<StageManager>();
-        unlockedStageIndex = stageManager.UnlockedStage;
+        //stageManager = FindAnyObjectByType<StageManager>();
+        unlockedStageIndex = StageManager.Instance.UnlockedStage;
+        print($"해금된 스테이지는 {unlockedStageIndex}");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -193,8 +193,8 @@ public class StageUI : MonoBehaviour
         //열린 스테이지 선택 시 해당 스테이지로 이동
         if (!isLocked)
         {
-            stageManager.SelectedStage = stageNum;
-            Debug.Log($"{stageManager.SelectedStage}번 스테이지로 진입합니다.");
+            StageManager.Instance.SelectedStage = stageNum;
+            //Debug.Log($"{stageManager.SelectedStage}번 스테이지로 진입합니다.");
             GameSceneManager.Instance.LoadSceneAsync("ItemSelectScene");
         }
         //잠긴 스테이지 선택 시 이동불가

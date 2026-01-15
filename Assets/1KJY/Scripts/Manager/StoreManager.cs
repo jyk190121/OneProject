@@ -52,16 +52,13 @@ public class StoreManager : MonoBehaviour
             itemsBG.Add(bg);
         }
 
-        //받아온 아이템 인벤토리에 보여주기
-        for (int i = 0; i < items.Count; i++)
-        {
-            UpdateSlot(i, items[i]);
-        }
+
         if (stageManager != null)
         {
             nextBtn.onClick.AddListener(() => NextStage(stageManager.SelectedStage));
+            CurrentItemUpdate();
         }
-        
+
 
     }
     public void UpdateSlot(int index, Item item)
@@ -95,9 +92,49 @@ public class StoreManager : MonoBehaviour
         GameSceneManager.Instance.LoadSceneAsync("BattleScene");
     }
 
+    //public void UpdateUI()
+    //{
+    //    items = itemManager.CurrentItems();
+    //    goldTxt.text = itemManager.GetGold().ToString();
+    //}
+
+    //public void CurrentItemUpdate()
+    //{
+    //    //받아온 아이템 인벤토리에 보여주기
+    //    for (int i = 0; i < items.Count; i++)
+    //    {
+    //        UpdateSlot(i, items[i]);
+    //    }
+    //}
+
     public void UpdateUI()
     {
         items = itemManager.CurrentItems();
         goldTxt.text = itemManager.GetGold().ToString();
+
+        //// UI 갱신 시 인벤토리 아이템들도 다시 그려줍니다.
+        //CurrentItemUpdate();
     }
+
+    public void CurrentItemUpdate()
+    {
+        // 1. 기존에 생성된 아이템 오브젝트들을 모두 제거 (중복 생성 방지)
+        foreach (GameObject bg in itemsBG)
+        {
+            if (bg != null) Destroy(bg);
+        }
+        itemsBG.Clear();
+
+        // 2. 현재 보유한 아이템 개수만큼 배경(Slot)과 아이템 이미지를 생성
+        for (int i = 0; i < items.Count; i++)
+        {
+            // 배경 생성
+            GameObject bg = Instantiate(itemInvenBGPrefab, CurrentPanel.transform);
+            itemsBG.Add(bg);
+
+            // 아이템 이미지 생성 (UpdateSlot 호출)
+            UpdateSlot(i, items[i]);
+        }
+    }
+
 }

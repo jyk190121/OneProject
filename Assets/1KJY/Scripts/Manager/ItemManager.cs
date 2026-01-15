@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 /// <summary>
 /// 1. 기본 아이템 3개 설정 (아이템보유)
 /// 2. 수집된 아이템 CollectItemList에 넘겨주기
@@ -79,6 +80,14 @@ public class ItemManager : MonoBehaviour
         {
             item.ENHANCE = 0;
             gold = 0;
+        }
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current.f1Key.wasPressedThisFrame == true)
+        {
+            ItemManager.Instance.SetGold(10000);
         }
     }
 

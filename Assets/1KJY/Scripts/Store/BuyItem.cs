@@ -268,6 +268,8 @@ public class BuyItem : MonoBehaviour
         //print("구매성공 : 새로운 아이템");
         successTxt.text = $"{item.NAME} 아이템 구매에 성공하였다";
         successImg.gameObject.SetActive(true);
+
+        storeManager.CurrentItemUpdate();
     }
 
     void BuyItem_Enhance(Item item, int price)

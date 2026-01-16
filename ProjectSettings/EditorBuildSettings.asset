@@ -6,28 +6,28 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/1KJY/Scenes/LoadingScene.unity
+    path: Assets/1KJY/1. Scenes/LoadingScene.unity
     guid: 52443f18ab1e04f4bae939c2c7294121
   - enabled: 1
-    path: Assets/1KJY/Scenes/StartScene.unity
+    path: Assets/1KJY/1. Scenes/StartScene.unity
     guid: a420977b854e30c4eb177a914bd8d333
   - enabled: 1
-    path: Assets/1KJY/Scenes/StageScene.unity
+    path: Assets/1KJY/1. Scenes/StageScene.unity
     guid: 536fc761503682c44a9aaa9166e8598a
   - enabled: 1
-    path: Assets/1KJY/Scenes/BattleScene.unity
+    path: Assets/1KJY/1. Scenes/BattleScene.unity
     guid: 2c81c41971f82324182a75104b597683
   - enabled: 1
-    path: Assets/1KJY/Scenes/UpgradeStoreScene.unity
+    path: Assets/1KJY/1. Scenes/UpgradeStoreScene.unity
     guid: 49264247b9c62ce49b7f593a8251fab0
   - enabled: 1
-    path: Assets/1KJY/Scenes/GameOverScene.unity
+    path: Assets/1KJY/1. Scenes/GameOverScene.unity
     guid: bb18ef3cc30f60042993dac8698e4cae
   - enabled: 1
-    path: Assets/1KJY/Scenes/ItemSelectScene.unity
+    path: Assets/1KJY/1. Scenes/ItemSelectScene.unity
     guid: 3b71a5cdb8fec754a8a6d4960147a908
   - enabled: 1
-    path: Assets/1KJY/Scenes/ItemListScene.unity
+    path: Assets/1KJY/1. Scenes/ItemListScene.unity
     guid: 8ed49cc3e4eda104399b5cc4ab8741da
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

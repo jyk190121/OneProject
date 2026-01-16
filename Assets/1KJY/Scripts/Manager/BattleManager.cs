@@ -656,7 +656,7 @@ public class BattleManager : MonoBehaviour
                         itemPos = Vector3.up;
                         //물공 10~25
                         //독 중독5
-                        float att = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK);
+                        float att = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) + player.att1;
                         switch (item.COUNT)
                         {
                             //일반

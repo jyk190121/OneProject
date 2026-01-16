@@ -71,7 +71,7 @@ public class StageManager : MonoBehaviour
 
         //    OnStageUnlocked?.Invoke(UnlockedStage);
         //}
-        if(Input.GetKeyDown(Key.F2))
+        if(Input.GetKeyDown(Key.F5))
         {
             ResetStage();
         }

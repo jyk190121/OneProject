@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rat_1
   m_EditorClassIdentifier: 
   enemyName: Rat
-  enemyPrefab: {fileID: 2695397109250390434, guid: e755b6ac08a90bd43bda31f4eaabfb36, type: 3}
+  enemyPrefab: {fileID: 2695397109250390434, guid: e7e24b7af024ea74193b276bb7b800aa, type: 3}
   maxHp: 30
   maxSh: 10
   minAtt1: 5

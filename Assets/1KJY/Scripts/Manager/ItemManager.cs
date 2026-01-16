@@ -185,7 +185,7 @@ public class ItemManager : MonoBehaviour
             SetGold(2000);
         }
 
-        if(Input.GetKeyDown(Key.F5))
+        if(Input.GetKeyDown(Key.F2))
         {
             //모든 아이템 득
             foreach(Item item in allItemDatas)
@@ -194,7 +194,7 @@ public class ItemManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(Key.F6))
+        if (Input.GetKeyDown(Key.F5))
         {
             print("아이템 초기화");
             ResetItem();

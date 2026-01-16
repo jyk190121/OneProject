@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Butcher_1
   m_EditorClassIdentifier: 
   enemyName: Butcher
-  enemyPrefab: {fileID: 8074491022817363098, guid: 32b4c8e894fcd654d93a9cc3a2c6955c, type: 3}
+  enemyPrefab: {fileID: 8074491022817363098, guid: a5fe4cbe607d5c34ba2a45ceb3a7d386, type: 3}
   maxHp: 300
   maxSh: 300
   minAtt1: 20

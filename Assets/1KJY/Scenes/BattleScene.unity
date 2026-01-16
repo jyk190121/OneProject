@@ -4126,13 +4126,20 @@ MonoBehaviour:
     - {fileID: 11400000, guid: a42c084c3d0ff8c4494c7702a2b9fc99, type: 2}
     - {fileID: 11400000, guid: ec84ad6d397616940b6e6f5bb161f2ad, type: 2}
     - {fileID: 11400000, guid: c8f9fdb03e47cba40a02606e28d89ee2, type: 2}
-    bossEnemy: {fileID: 11400000, guid: 8e3113ada7028344c8e95163e9e142d6, type: 2}
+    bossEnemy: {fileID: 11400000, guid: dd44adf4a5d73834692b5e423fdf5c94, type: 2}
   - stageName: "\uC2A4\uD14C\uC774\uC9C03"
     normalEnemies:
     - {fileID: 11400000, guid: f73cfd47c28469f4b9c9d36bc7097b78, type: 2}
-    - {fileID: 11400000, guid: 8e3113ada7028344c8e95163e9e142d6, type: 2}
+    - {fileID: 11400000, guid: dd44adf4a5d73834692b5e423fdf5c94, type: 2}
     - {fileID: 11400000, guid: 3a76ea64cb658eb4b90fd49285798e49, type: 2}
     - {fileID: 11400000, guid: 7985faa0c2b3c5d48af0c0c61e6d409e, type: 2}
+    bossEnemy: {fileID: 11400000, guid: 3436063458629ab4ab731838f644a210, type: 2}
+  - stageName: "\uC2A4\uD14C\uC774\uC9C04"
+    normalEnemies:
+    - {fileID: 11400000, guid: 48fc92c488eb0b8419506ebf4a944430, type: 2}
+    - {fileID: 11400000, guid: c0e6a06734c76414094b9e8572d93d00, type: 2}
+    - {fileID: 11400000, guid: b8bdcfc6ffebf7541850e7e780640a1d, type: 2}
+    - {fileID: 11400000, guid: 8e3113ada7028344c8e95163e9e142d6, type: 2}
     bossEnemy: {fileID: 11400000, guid: 3436063458629ab4ab731838f644a210, type: 2}
   enemyPrefab: {fileID: 2695397109250390434, guid: e755b6ac08a90bd43bda31f4eaabfb36, type: 3}
   spawnPoint: {fileID: 6300810757127734352}
@@ -4171,7 +4178,6 @@ MonoBehaviour:
   nextEnemyActionTxt: {fileID: 2081568717}
   stageTxt: {fileID: 114680975}
   roundTxt: {fileID: 24381965}
-  enemyName: {fileID: 0}
 --- !u!1 &7884598384099916420
 GameObject:
   m_ObjectHideFlags: 0

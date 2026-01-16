@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 8074491022817363096}
   - component: {fileID: -7888433957677392344}
   m_Layer: 6
-  m_Name: Butcher
+  m_Name: Butcher 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be3bf35da171f749b686f6526bd97c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 7985faa0c2b3c5d48af0c0c61e6d409e, type: 2}
+  data: {fileID: 11400000, guid: 3a76ea64cb658eb4b90fd49285798e49, type: 2}
   hpBar: {fileID: 0}
   shildBar: {fileID: 0}
   hp: 0

@@ -866,13 +866,10 @@ public class BattleManager : MonoBehaviour
                         //이미 스턴 상태이면 해제되지 않도록
                         if (!stuned1)
                         {
-                            if (r > (1 - item.ENHANCE_STUNED))
+                            // 1 - 스턴확률(0.2라면 0.8)보다 r이 크면 성공
+                            if (r > (1f - item.ENHANCE_STUNED))
                             {
                                 stuned1 = true;
-                            }
-                            else
-                            {
-                                stuned1 = false;
                             }
                         }
 
@@ -910,19 +907,18 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-                        print($"스턴체크 + {r > (1 - item.ENHANCE_STUNED)}");
+                        //print($"스턴체크 + {r > (1 - item.ENHANCE_STUNED)}");
 
+                        // 스턴 체크: 이미 스턴이 걸려있지 않을 때만 확률 검사
                         if (!stuned2)
                         {
-                            if (r > (1 - item.ENHANCE_STUNED))
+                            if (r > (1f - item.ENHANCE_STUNED))
                             {
                                 stuned2 = true;
-                            }
-                            else
-                            {
-                                stuned2 = false;
+                                print("스턴 성공!");
                             }
                         }
+
                         itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
 
@@ -1579,9 +1575,9 @@ public class BattleManager : MonoBehaviour
         enemy.Attack();
         StartCoroutine(AttackEffect());
 
-        float enemyDam = Random.Range(enemy.minAtt1, enemy.att1); 
+        int enemyDam = (int)Random.Range(enemy.minAtt1, enemy.att1); 
 
-        string action = $"공격 {(int)enemyDam}";
+        string action = $"공격 {enemyDam}";
         Status(action);
 
         if (player.shild >= enemyDam)

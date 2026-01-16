@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: SkeletonMage
   enemyPrefab: {fileID: 6679783802021260202, guid: 0f9692da27a35e64fb6c73920e21165e, type: 3}
-  maxHp: 0
-  maxSh: 0
-  minAtt1: 0
-  baseAtt1: 0
-  minAtt2: 0
-  baseAtt2: 0
+  maxHp: 50
+  maxSh: 900
+  minAtt1: 10
+  baseAtt1: 60
+  minAtt2: 70
+  baseAtt2: 150

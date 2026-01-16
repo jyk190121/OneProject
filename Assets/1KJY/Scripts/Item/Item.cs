@@ -58,7 +58,7 @@ public class Item : ScriptableObject
     public float ENHANCE_SHILD => SHILD * (ENHANCE + 1);
     public float ENHANCE_POISON => POISON * (ENHANCE + 1);
     public float ENHANCE_BLOOD => BLOOD * (ENHANCE + 1);
-    public float ENHANCE_STUNED => STUNED + ((ENHANCE / 10));
+    public float ENHANCE_STUNED => STUNED + ((ENHANCE / 10f));
     public int ENHABCE_GOLD => GOLD * (ENHANCE + 1);
 
     [Header("아이템 이팩트")]

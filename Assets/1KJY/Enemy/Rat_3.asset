@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
-  m_Name: SkeletonArcher
+  m_Name: Rat_3
   m_EditorClassIdentifier: 
-  enemyName: SkeletonArcher
-  enemyPrefab: {fileID: 7773741634138198696, guid: e3f10a49adf9da94196f359c3bc3cece, type: 3}
-  maxHp: 200
-  maxSh: 150
-  minAtt1: 10
-  baseAtt1: 150
-  minAtt2: 30
-  baseAtt2: 120
+  enemyName: Rat
+  enemyPrefab: {fileID: 2695397109250390434, guid: 4af320e6bc9489245acd3b16210a6a92, type: 3}
+  maxHp: 100
+  maxSh: 50
+  minAtt1: 20
+  baseAtt1: 40
+  minAtt2: 22
+  baseAtt2: 40

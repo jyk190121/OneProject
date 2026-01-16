@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
-  m_Name: SkeletonWarrior
+  m_Name: SkeletonWarrior_2
   m_EditorClassIdentifier: 
   enemyName: SkeletonWarrior
   enemyPrefab: {fileID: 312320201983474571, guid: 3aa6818780362f946a7ff630e00e7f65, type: 3}
-  maxHp: 200
-  maxSh: 200
+  maxHp: 300
+  maxSh: 300
   minAtt1: 60
   baseAtt1: 90
-  minAtt2: 10
-  baseAtt2: 40
+  minAtt2: 40
+  baseAtt2: 80

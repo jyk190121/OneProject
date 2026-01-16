@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
 //업그레이드 상점용
 public class ItemSellEnhance : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
@@ -44,34 +44,39 @@ public class ItemSellEnhance : MonoBehaviour, IPointerEnterHandler, IPointerExit
         //판매 UI 호출 (판매하시겠습니까? Yes / No 선택 Action)
         if (eventData.button == PointerEventData.InputButton.Left)
         {
+
             if (itemData == null) return;
 
+            int price = itemData.PRICE / 3;
+            if (price <= 0) price = 1;
+
             // 팝업 매니저에게 메시지와 '실행할 함수'를 전달
-            sellItemPopup.ShowConfirm(
-                $"<color=green>{itemData.NAME}</color>을(를) 판매하시겠습니깡?\n<color=yellow>{itemData.PRICE}</color>골드",
-                () => ExecuteSell() // 'Yes'를 누르면 실행될 람다식(Action)
+                sellItemPopup.ShowConfirm(
+                $"<color=green>{itemData.NAME}</color>을(를) 판매하시겠습니깡?\n<color=yellow>{price}</color>골드",
+                () => ExecuteSell(price) // 'Yes'를 누르면 실행될 람다식(Action)
             );
         }
     }
 
     // 실제 판매 처리 로직
-    private void ExecuteSell()
+    private void ExecuteSell(int p)
     {
-        Debug.Log($"[판매완료] {itemData.NAME}을 판매하여 {itemData.PRICE} 골드를 획득했습니다.");
-        ItemManager.Instance.SellItem(itemData);
+        Debug.Log($"[판매완료] {itemData.NAME}을 판매하여 {p} 골드를 획득했습니다.");
+        ItemManager.Instance.SellItem(itemData,p);
         storeManager.UpdateUI();
-        // 1. 골드 추가 로직 (예시)
-        // InventoryManager.Instance.AddGold(itemData.PRICE / 2);
 
-        // 2. 인벤토리에서 제거 및 UI 갱신
-        // ItemManager.Instance.RemoveItem(itemData);
-        // FindAnyObjectByType<StoreManager>().UpdateUI();
-
-        // 3. 현재 이 슬롯 오브젝트 파괴 (또는 초기화)
-        if (transform.parent != null)
+        // 2. [추가] 상점 UI(BuyItem)의 강화 이미지도 꺼줘야 함
+        BuyItem buyItemScript = FindAnyObjectByType<BuyItem>();
+        if (buyItemScript != null)
         {
-            Destroy(transform.parent.gameObject);
+            buyItemScript.RemoveEnhanceImg(itemData);
         }
+
+        // 3. 인벤토리 UI 갱신
+        storeManager.UpdateUI();
+
+        // 4. 오브젝트 파괴
+        if (transform.parent != null) Destroy(transform.parent.gameObject);
         Destroy(gameObject);
     }
 }

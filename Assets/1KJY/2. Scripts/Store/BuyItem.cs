@@ -14,7 +14,7 @@ public class BuyItem : MonoBehaviour
 
     ItemManager itemManager;
     List<Item> allItems;
-    List<Item> items;                           //보유 아이템
+    List<Item> items;             //보유 아이템
     List<Item> storeItems = new List<Item>();   //상점에 팔 아이템
     //List<int> usedIndices = new List<int>(); // 이번 상점에서 이미 뽑힌 아이템 인덱스 추적
     //Player player;
@@ -33,99 +33,6 @@ public class BuyItem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //itemManager = FindAnyObjectByType<ItemManager>();
-        ////player = FindAnyObjectByType<Player>();
-        //if (itemManager == null) return;
-
-        //items = itemManager.CurrentItems();
-        //allItems = itemManager.allItemDatas;
-
-        //// [수정 2] 상점 아이템 리스트 초기화 (이전 찌꺼기 제거)
-        //storeItems.Clear();
-
-        //// 버튼 5개 각각 랜덤 아이템 노출
-        //for (int i = 0; i < buyItemBtns.Length; i++)
-        //{
-        //    // 1. 초기 상태: 강화 표시 끄고 버튼 비활성화
-        //    enhanceImgs[i].gameObject.SetActive(false);
-        //    buyItemBtns[i].interactable = false;
-
-        //    // 2. 랜덤 인덱스 결정 (중복 방지 포함)
-        //    int r = -1;
-        //    int maxAttempts = 10; // 무한 루프 방지용
-
-        //    while (maxAttempts > 0)
-        //    {
-        //        r = Random.Range(-1, allItems.Count);
-
-        //        // 빈 칸(-1)이 아니면서 이미 뽑힌 아이템이면 다시 뽑기
-        //        if (r != -1 && usedIndices.Contains(r))
-        //        {
-        //            maxAttempts--;
-        //            continue;
-        //        }
-        //        break;
-        //    }
-
-        //    if (r == -1)
-        //    {
-        //        storeItems.Add(null);
-        //        buyItemImgs[i].gameObject.SetActive(false);
-        //        buyItemPrices[i].text = "";
-        //    }
-        //    else
-        //    {
-        //        usedIndices.Add(r); // 뽑힌 아이템 기록
-        //        Item selectedItem = allItems[r];
-        //        storeItems.Add(selectedItem);
-
-        //        enhanceImgs[i].gameObject.SetActive(false);
-
-        //        // UI 세팅
-        //        buyItemImgs[i].gameObject.SetActive(true);
-        //        buyItemImgs[i].sprite = selectedItem.IMAGE;
-        //        buyItemBtns[i].interactable = true;
-
-        //        // 3. 강화 표시 로직 (중요: 보유 아이템 전체에서 검색)
-        //        // 인벤토리(items) 리스트에서 상점 아이템과 ID가 같은 아이템을 찾음
-        //        Item myItem = items.Find(x => x.NAME == selectedItem.NAME);
-
-        //        int finalPrice = selectedItem.PRICE;
-
-        //        if (myItem != null)
-        //        {
-        //            Debug.Log($"[상점] {selectedItem.NAME} 발견! 내 인벤토리 강화도: {myItem.ENHANCE}");
-        //            // [결과] 내 인벤토리에 이 아이템이 있을 때만 실행됨
-        //            enhanceImgs[i].gameObject.SetActive(true);
-
-        //            if (myItem.ENHANCE >= 3)
-        //            {
-        //                //아이템 미노출로 변경
-        //                storeItems.Add(null);
-        //                buyItemImgs[i].gameObject.SetActive(false);
-        //                buyItemPrices[i].text = "";
-        //                buyItemBtns[i].interactable = false;
-        //            }
-        //            else
-        //            {
-        //                // 강화 비용 계산 (예: 강화 수치만큼 가격 상승)
-        //                finalPrice *= (int)Mathf.Pow(2, myItem.ENHANCE);
-        //                buyItemPrices[i].text = $"{finalPrice}";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Debug.Log($"[상점] {selectedItem.NAME}는 내 인벤토리에 없음.");
-        //            // [결과] 보유하지 않은 아이템은 기본 가격 표시
-        //            enhanceImgs[i].gameObject.SetActive(false);
-
-        //            buyItemPrices[i].text = $"{finalPrice}";
-        //        }
-
-        //        //4.버튼 선택 시 플레이어 골드보유량 체크해서 구매여부 확인
-        //        buyItemBtns[i].onClick.AddListener(() => SelectBuyItem(storeItems[i] , finalPrice));
-        //    }
-        //}
         storeManager = FindAnyObjectByType<StoreManager>();
 
         itemManager = FindAnyObjectByType<ItemManager>();
@@ -253,7 +160,7 @@ public class BuyItem : MonoBehaviour
 
         else
         {
-            failTxt.text = $"{item.NAME} 구매불가 : 골드 부족";
+            failTxt.text = $"<color=green>{item.NAME}</color> 구매불가 : 골드 부족";
 
             BuyItem_Fail();
         }
@@ -266,7 +173,7 @@ public class BuyItem : MonoBehaviour
 
         //구매 성공 표시 UI
         //print("구매성공 : 새로운 아이템");
-        successTxt.text = $"{item.NAME} 아이템 구매에 성공하였다";
+        successTxt.text = $"<color=green>{item.NAME}</color> 아이템 구매에 성공하였다";
         successImg.gameObject.SetActive(true);
 
         storeManager.CurrentItemUpdate();
@@ -283,14 +190,14 @@ public class BuyItem : MonoBehaviour
             //구매된 아이템은 Null로 변경
             //print("구매성공 : 강화");
             //item = null;
-            successTxt.text = $"{item.NAME} 아이템 강화에 성공하였다";
+            successTxt.text = $"<color=green>{item.NAME}</color> 아이템 강화에 성공하였다";
             successImg.gameObject.SetActive(true);
         }
         else
         {
             //강화 불가 표시 UI 및 골드 회수
             print("구매불가 : 강화불가");
-            successTxt.text = $"{item.NAME} 최대강화 초과";
+            successTxt.text = $"<color=green>{item.NAME}</color> 최대강화 초과";
             itemManager.PlusGold(price);
         }
     }
@@ -320,5 +227,22 @@ public class BuyItem : MonoBehaviour
         if (slot == null) slot = buyItemBtns[index].gameObject.AddComponent<ItemEnhance>();
 
         slot.Setup(item);
+    }
+
+    public void RemoveEnhanceImg(Item itemData)
+    {
+        // 중요: items(보유리스트)가 아니라 storeItems(상점에 노출된 리스트)와 비교해야 합니다.
+        for (int i = 0; i < storeItems.Count; i++)
+        {
+            // 상점 슬롯에 아이템이 있고, 그 이름이 방금 판 아이템 이름과 같다면
+            if (storeItems[i] != null && storeItems[i].NAME.Equals(itemData.NAME))
+            {
+                // 해당 상점 슬롯의 강화 이미지를 비활성화
+                if (enhanceImgs[i] != null)
+                {
+                    enhanceImgs[i].gameObject.SetActive(false);
+                }
+            }
+        }
     }
 }

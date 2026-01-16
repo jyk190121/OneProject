@@ -25,8 +25,6 @@ public class ItemManager : MonoBehaviour
     // GameOver 시 새로 획득한 아이템 -> OverScene에 반영
     List<Item> newItems = new List<Item>();
 
-
-
     [Header("보유 아이템 리스트")]
     [SerializeField] private List<Item> initialItems;
 
@@ -74,12 +72,11 @@ public class ItemManager : MonoBehaviour
     }
 
     //아이템 판매
-    public void SellItem(Item item)
+    public void SellItem(Item item, int price)
     {
-        //print("실제 아이템 판매");
-        if (!selectItems.Contains(item))
+        if (selectItems.Contains(item))
         {
-            PlusGold(item.PRICE);
+            PlusGold(price);
             selectItems.Remove(item);
         }
     }

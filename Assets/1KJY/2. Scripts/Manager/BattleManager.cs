@@ -1547,6 +1547,8 @@ public class BattleManager : MonoBehaviour
             enemy.UpdateHpShildSet();
             player.UpdatePosionUI();
 
+            yield return new WaitForSeconds(1.5f);
+            Destroy(enemyEffect);
 
             if (enemy.hp <= 0)
             {
@@ -1554,9 +1556,6 @@ public class BattleManager : MonoBehaviour
                 StartCoroutine(EnemyDeath());
                 yield break;
             }
-
-            yield return new WaitForSeconds(1.5f);
-            Destroy(enemyEffect);
         }
 
         playerTurn = true;

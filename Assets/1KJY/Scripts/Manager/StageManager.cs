@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// 현재 해금된 스테이지 값저장
 /// </summary>
+
+//InputManager처럼
+using Key = UnityEngine.InputSystem.Key;
 public class StageManager : MonoBehaviour
 {
     // 싱글톤 인스턴스
@@ -56,17 +59,26 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-        if(Keyboard.current.f2Key.wasPressedThisFrame == true)
+        //if(Keyboard.current.f2Key.wasPressedThisFrame == true)
+        //{
+        //    UnlockNextStage(5);
+        //}
+
+        //if (Keyboard.current.f3Key.wasPressedThisFrame == true)
+        //{
+        //    PlayerPrefs.SetInt("UnlockedStageIndex", 1);
+        //    PlayerPrefs.Save();
+
+        //    OnStageUnlocked?.Invoke(UnlockedStage);
+        //}
+        if(Input.GetKeyDown(Key.F2))
         {
-            UnlockNextStage(5);
+            ResetStage();
         }
 
-        if (Keyboard.current.f3Key.wasPressedThisFrame == true)
+        if(Input.GetKeyDown(Key.F3))
         {
-            PlayerPrefs.SetInt("UnlockedStageIndex", 1);
-            PlayerPrefs.Save();
-
-            OnStageUnlocked?.Invoke(UnlockedStage);
+            UnlockNextStage(5);
         }
     }
 
@@ -78,5 +90,12 @@ public class StageManager : MonoBehaviour
     //    return isLocked;
     //}
 
+    public void ResetStage()
+    {
+        PlayerPrefs.SetInt("UnlockedStageIndex", 1);
+        PlayerPrefs.Save();
+
+        OnStageUnlocked?.Invoke(UnlockedStage);
+    }
 }
 

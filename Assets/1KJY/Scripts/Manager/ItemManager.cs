@@ -6,13 +6,19 @@ using UnityEngine.InputSystem;
 /// 1. 기본 아이템 3개 설정 (아이템보유)
 /// 2. 수집된 아이템 CollectItemList에 넘겨주기
 /// </summary>
+
+//InputManager처럼
+using Key = UnityEngine.InputSystem.Key;
 public class ItemManager : MonoBehaviour
 {
     // 데이터 변경 시 UI 등에 알림을 주기 위한 이벤트
-    public static event Action<String> OnItemAdd;
+    public static event Action<Item> OnItemAdd;
 
     // 인스펙터에서 프로젝트에 있는 모든 아이템
     public List<Item> allItemDatas; 
+
+    // 인스펙터에서 초기 아이템 설정
+    public List<Item> resetItem;
 
     [Header("보유 아이템 리스트")]
     [SerializeField] private List<Item> initialItems;
@@ -46,20 +52,22 @@ public class ItemManager : MonoBehaviour
         {
             initialItems.Add(item);
             SaveItems(); // 아이템 리스트 전체 저장
-            OnItemAdd?.Invoke(item.NAME);
+            OnItemAdd?.Invoke(item);
         }
     }
 
     // 아이템 리스트를 문자열로 변환하여 저장
     void SaveItems()
     {
-        string itemIds = "";
-        for (int i = 0; i < initialItems.Count; i++)
+        List<string> nameList = new List<string>();
+        foreach (Item item in initialItems)
         {
-            itemIds += initialItems[i].ID.ToString();
-            if (i < initialItems.Count - 1) itemIds += ","; // ID 사이를 쉼표로 구분
+            nameList.Add(item.NAME); // ID가 불안정하다면 NAME으로 저장
         }
-        PlayerPrefs.SetString("SavedItems", itemIds);
+
+        // 이름들을 "사과,포도,검" 형태의 문자열로 변환
+        string saveData = string.Join(",", nameList);
+        PlayerPrefs.SetString("SavedInventory", saveData);
         PlayerPrefs.Save();
     }
     private void LoadItems()
@@ -157,11 +165,39 @@ public class ItemManager : MonoBehaviour
         }
     }
 
+    //게임 새로하기 시
+    public void ResetItem()
+    {
+        initialItems.Clear();
+
+        //초기 아이템 설정
+        foreach(Item item in resetItem)
+        {
+            AddItem(item);
+        }
+
+    }
+
     private void Update()
     {
-        if (Keyboard.current.f1Key.wasPressedThisFrame == true)
+        if (Input.GetKeyDown(Key.F1))
         {
-            ItemManager.Instance.SetGold(2000);
+            SetGold(2000);
+        }
+
+        if(Input.GetKeyDown(Key.F5))
+        {
+            //모든 아이템 득
+            foreach(Item item in allItemDatas)
+            {
+                AddItem(item);
+            }
+        }
+
+        if (Input.GetKeyDown(Key.F6))
+        {
+            print("아이템 초기화");
+            ResetItem();
         }
     }
 

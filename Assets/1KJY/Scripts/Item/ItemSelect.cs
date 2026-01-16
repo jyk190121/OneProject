@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -214,6 +215,7 @@ public class ItemSelect : MonoBehaviour
         selectKeyboardOutline.gameObject.SetActive(true);
         selectKeyboardOutline.position = targetRect.position;
         selectKeyboardOutline.sizeDelta = targetRect.sizeDelta;
+
     }
 
     // 아이템 정보만 미리 보여주는 함수 (선택 전)

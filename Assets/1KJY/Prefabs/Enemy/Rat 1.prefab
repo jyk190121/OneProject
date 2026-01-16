@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2695397109250390436}
   - component: {fileID: 7874697686563640301}
   m_Layer: 6
-  m_Name: Rat
+  m_Name: Rat 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

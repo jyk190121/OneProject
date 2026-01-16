@@ -1628,7 +1628,7 @@ public class BattleManager : MonoBehaviour
     }
     private void EnemyShildRecover()
     {
-        enemy.ShildRecover();
+        //enemy.ShildRecover();
         StartCoroutine(ShildEffect());
 
         string action = $"방어도 {enemy.ShildRecover()}회복";
@@ -1643,7 +1643,7 @@ public class BattleManager : MonoBehaviour
     }
     private void EnemyHealing()
     {
-        enemy.Healing();
+        //enemy.Healing();
         StartCoroutine(HealEffect());
 
         string action = $"체력 {enemy.Healing()}회복";
@@ -1680,22 +1680,22 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator ShildEffect()
     {
-        //enemy.ShildRecover();
+        enemy.ShildRecover();
         GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[0]);
         enemyEffect.transform.position = enemy.transform.position;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
         Destroy(enemyEffect);
     }
 
     IEnumerator HealEffect()
     {
-        //enemy.Healing();
+        enemy.Healing();
         GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[1]);
         enemyEffect.transform.position = enemy.transform.position;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
         Destroy(enemyEffect);
     }
@@ -1769,6 +1769,9 @@ public class BattleManager : MonoBehaviour
 
         //AudioManager.audioManager.StopBGM();
         //AudioManager.audioManager.PlayBGM("Intro");
+
+        stageManager.Round = 1;
+
         GameSceneManager.Instance.LoadScene("GameOverScene");
         //SceneManager.LoadScene("StartScene");
     }

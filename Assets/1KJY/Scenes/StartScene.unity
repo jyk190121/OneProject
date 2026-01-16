@@ -237,6 +237,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dad0b87b22817da4193427f3ba4f9871, type: 2}
   - {fileID: 11400000, guid: e08f0ed8463aea6488dba2c8e46a0b63, type: 2}
   - {fileID: 11400000, guid: cbc5d3addf87f894c9a84c8f64f4fd75, type: 2}
+  resetItem:
+  - {fileID: 11400000, guid: 5eb868dcef44c2b47b2e2d52ab17b892, type: 2}
+  - {fileID: 11400000, guid: a6e45486d48922a4a9f91d41f4cabc59, type: 2}
+  - {fileID: 11400000, guid: ab731145b99f9c74595b54029fd1ea94, type: 2}
   initialItems:
   - {fileID: 11400000, guid: 5eb868dcef44c2b47b2e2d52ab17b892, type: 2}
   - {fileID: 11400000, guid: a6e45486d48922a4a9f91d41f4cabc59, type: 2}
@@ -2034,7 +2038,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 418214104}
         m_TargetAssemblyTypeName: StartManager, Assembly-CSharp
         m_MethodName: OnSliderChanged
         m_Mode: 1

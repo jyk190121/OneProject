@@ -255,11 +255,11 @@ public class ItemManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(Key.F5))
-        {
-            print("아이템 초기화");
-            ResetItem();
-        }
+        //if (Input.GetKeyDown(Key.F5))
+        //{
+        //    print("아이템 초기화");
+        //    ResetItem();
+        //}
     }
 
     public int GetGold() { return gold; }

@@ -25,14 +25,21 @@ public class OverUI : MonoBehaviour
             newItemList = itemManager.GetNewItems();
         }
 
+        // 1. 리스트가 null인 경우를 대비해 여기서 한 번 더 확인하거나 상단에서 초기화 필수
+        if (newItemPrefabs == null) newItemPrefabs = new List<GameObject>();
+        if (newItemList == null) return;
+
+        // 2. 생성과 동시에 리스트에 추가
         foreach (Item item in newItemList)
         {
             GameObject itemObj = Instantiate(itemPrefab, itemPrefabParent.transform);
             newItemPrefabs.Add(itemObj);
 
             Image itemImg = itemObj.GetComponent<Image>();
-            itemImg.sprite = item.IMAGE;
+            if (itemImg != null) itemImg.sprite = item.IMAGE;
         }
+
+        // 3. 이제 리스트에 데이터가 있으므로 UpdateSlot 호출 가능
         for (int i = 0; i < newItemPrefabs.Count; i++)
         {
             UpdateSlot(newItemList[i], i);

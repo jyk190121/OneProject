@@ -381,7 +381,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPrefabParent: {fileID: 1500318776}
   itemPrefab: {fileID: 7469829335876404183, guid: ed79357bbab276542a87cac9a6d74f2f, type: 3}
-  newItemPrefabs: []
   goldText: {fileID: 1219842239}
 --- !u!114 &395683122
 MonoBehaviour:
@@ -560,8 +559,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

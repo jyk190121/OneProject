@@ -70,7 +70,7 @@ public class BattleManager : MonoBehaviour
 
     public TextMeshProUGUI nextEnemyActionTxt;  // 적 다음 행동
     bool enemyActionCeheck = false;             // 1턴에 1번
-    int r;
+    int actionEnemy;
 
     public TextMeshProUGUI stageTxt;
     public TextMeshProUGUI roundTxt;
@@ -124,14 +124,14 @@ public class BattleManager : MonoBehaviour
 
             if(!enemyActionCeheck)
             {
-                r = Random.Range(0, 10); //0~9
-                if (stuned1 || stuned2) nextEnemyActionTxt.text = "기절상태";
-                else if (r == 0) nextEnemyActionTxt.text = "특수공격(마법)";
-                else if (r < 7 && r != 0) nextEnemyActionTxt.text = "일반공격(물리)";
-                else if (r > 5 && r < 8) nextEnemyActionTxt.text = $"방어도 {enemy.ShildRecover()} 회복";
-                else nextEnemyActionTxt.text = $"체력 {enemy.Healing()} 회복";
+                actionEnemy = Random.Range(0, 10); //0~9
+                if (actionEnemy <= 1) nextEnemyActionTxt.text = "특수공격(마법)";
+                else if (actionEnemy == 7) nextEnemyActionTxt.text = $"방어도 {enemy.ShildRecover()} 회복";
+                else if (actionEnemy == 8) nextEnemyActionTxt.text = $"체력 {enemy.Healing()} 회복";
+                else  nextEnemyActionTxt.text = "일반공격(물리)";
 
                 enemyActionCeheck = true;
+                print($"적행동 정상동작? :{actionEnemy}");
             }
 
             Keyboard key = Keyboard.current;
@@ -178,7 +178,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    StartEnemyTurn(r);
+                    StartEnemyTurn();
                 }
             }
         }
@@ -841,7 +841,7 @@ public class BattleManager : MonoBehaviour
                     {
                         //print("공격30 물리");
                         float att = 0;
-                        float r = (Random.Range(0, 1));
+                        float r = (Random.Range(0f, 1f));
 
                         switch (item.COUNT)
                         {
@@ -866,11 +866,12 @@ public class BattleManager : MonoBehaviour
                         //이미 스턴 상태이면 해제되지 않도록
                         if (!stuned1)
                         {
+                            print($"스턴 상태 정상동작? {r}");
                             // 1 - 스턴확률(0.2라면 0.8)보다 r이 크면 성공
                             if (r > (1f - item.ENHANCE_STUNED))
                             {
                                 stuned1 = true;
-                            }
+                                nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";                            }
                         }
 
 
@@ -887,7 +888,7 @@ public class BattleManager : MonoBehaviour
                     {
                         //print("공격40 물리");
                         float att = 0;
-                        float r = (Random.Range(0, 1));
+                        float r = (Random.Range(0f, 1f));
 
                         switch (item.COUNT)
                         {
@@ -912,10 +913,11 @@ public class BattleManager : MonoBehaviour
                         // 스턴 체크: 이미 스턴이 걸려있지 않을 때만 확률 검사
                         if (!stuned2)
                         {
+                            print($"스턴 상태 정상동작? {r}");
                             if (r > (1f - item.ENHANCE_STUNED))
                             {
                                 stuned2 = true;
-                                print("스턴 성공!");
+                                nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";
                             }
                         }
 
@@ -1375,7 +1377,7 @@ public class BattleManager : MonoBehaviour
                     SpriteRenderer goldEffectRederer = currentEffects[num].GetComponent<SpriteRenderer>();
                     if (effectRender != null)
                     {
-                        effectRender.sortingOrder = 50;
+                        effectRender.sortingOrder = 500;
                     }
                     if (goldEffectRederer != null)
                     {
@@ -1465,13 +1467,12 @@ public class BattleManager : MonoBehaviour
     //    print("적 생성 완료");
     //}
 
-    void StartEnemyTurn(int r)
+    void StartEnemyTurn()
     {
-        int actionInt = r;
-        StartCoroutine(EnemyTurn(actionInt));
+        StartCoroutine(EnemyTurn());
     }
 
-    IEnumerator EnemyTurn(int action)
+    IEnumerator EnemyTurn()
     {
         isEnemyturnning = true;
         enemyTurn = false;
@@ -1492,27 +1493,19 @@ public class BattleManager : MonoBehaviour
         {
             //int r = Random.Range(0, 10); //0~9
             //print("적 행동 " + r);
-            //공격확률(0~6)
-            if (action < 7)
+
+            if (actionEnemy <= 1)
             {
-                if (action == 0)
-                {
-                    //특수공격
-                    EnemySpecialAttack();
-                }
-                else
-                {
-                    //일반공격
-                    EnermyAttack();
-                }
+                //특수공격
+                EnemySpecialAttack();
             }
             //방어도 회복(6~7)
-            else if (action > 5 && action < 8)
+            else if (actionEnemy == 7)
             {
                 EnemyShildRecover();
             }
             //체력 회복(8~9)
-            else
+            else if (actionEnemy == 8)
             {
                 EnemyHealing();
 
@@ -1525,6 +1518,11 @@ public class BattleManager : MonoBehaviour
                         player.poison = 0;
                     }
                 }
+            }
+            else
+            {
+                //일반공격
+                EnermyAttack();
             }
         }
 

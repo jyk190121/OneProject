@@ -7,14 +7,14 @@ public class ItemSellEnhance : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private Item itemData;
     private ItemInfo itemInfo;
     string description;
-    SellItemPopup sellItemPopup;
+    Popup sellItemPopup;
     StoreManager storeManager;
     ItemManager itemManager;
     public void Setup(Item newItem)
     {
         itemData = newItem;
         itemInfo = FindAnyObjectByType<ItemInfo>();
-        sellItemPopup = FindAnyObjectByType<SellItemPopup>();
+        sellItemPopup = FindAnyObjectByType<Popup>();
         storeManager = FindAnyObjectByType<StoreManager>();
         itemManager = FindAnyObjectByType<ItemManager>();
     }
@@ -98,7 +98,7 @@ public class ItemSellEnhance : MonoBehaviour, IPointerEnterHandler, IPointerExit
     // 실제 판매 처리 로직
     private void ExecuteSell(int p)
     {
-        Debug.Log($"[판매완료] {itemData.NAME}을 판매하여 {p} 골드를 획득했습니다.");
+        print($"[판매완료] {itemData.NAME}을 판매하여 {p} 골드를 획득했습니다.");
         itemManager.SellItem(itemData,p);
 
         // 상점 UI(BuyItem)의 강화 이미지도 꺼줘야 함

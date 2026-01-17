@@ -1,6 +1,8 @@
+using NUnit.Framework.Interfaces;
+using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 //[RequireComponent(typeof(TextMeshPro))]
@@ -30,11 +32,16 @@ public class StartManager : MonoBehaviour
     //private int selectedBtnIndex = -1;                // 현재 선택된 스테이지 (-1은 선택 없음)
     GameObject currentObj;
 
+    public Button newStartBtn;                          // 새로 시작 버튼 
+    Popup newStartpopup;                                // 새로운 게임 시작 시 호출할 팝업
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //게임 시작 시 포커스될 버튼
-        gameStartBtn.Select();
+        newStartBtn.Select();
+
+        newStartpopup = FindAnyObjectByType<Popup>();
 
         // 처음엔 테두리를 숨김
         if (selectionOutline != null) selectionOutline.gameObject.SetActive(false);
@@ -44,6 +51,7 @@ public class StartManager : MonoBehaviour
         Cursor.SetCursor(cursorTexture, hotSpot, CursorMode.ForceSoftware);
 
         gameStartBtn.onClick.AddListener(GameStart);
+        newStartBtn.onClick.AddListener(NewGameStart);      // 추가
         endBtn.onClick.AddListener(GameEndYorN);
         endY.onClick.AddListener(EndGame);
         endN.onClick.AddListener(EnterGame);
@@ -135,6 +143,29 @@ public class StartManager : MonoBehaviour
     {
         GameSceneManager.Instance.LoadSceneAsync("StageScene");
     }
+
+    //새로하기
+    void NewGameStart()
+    {
+        newStartpopup.yesBtn.Select();
+        //새로 시작하시겠습니까?? (이전 진행정보가 모두 사라집니다) Yes/No
+        // 팝업 매니저에게 메시지와 '실행할 함수'를 전달
+        newStartpopup.ShowConfirm(
+                    $"새로 시작하시겠습니까??\n<color=red>이전 진행정보가 모두 사라집니다</color>",
+                    () => ExecuteNewGame() // 'Yes'를 누르면 실행될 람다식(Action)
+                    );
+
+    }
+
+    void ExecuteNewGame()
+    {
+        //아이템, 스테이지 정보 초기화
+        ItemManager.Instance.ResetItem();
+        StageManager.Instance.ResetStage();
+
+        GameSceneManager.Instance.LoadSceneAsync("StageScene");
+    }
+
 
     void GameEndYorN()
     {

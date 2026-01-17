@@ -5294,7 +5294,7 @@ GameObject:
   - component: {fileID: 1664345540}
   - component: {fileID: 1664345542}
   - component: {fileID: 1664345543}
-  - component: {fileID: 1664345544}
+  - component: {fileID: 1664345545}
   m_Layer: 0
   m_Name: StoreManager
   m_TagString: Untagged
@@ -5393,7 +5393,7 @@ MonoBehaviour:
   buyBtn:
   - {fileID: 367078973}
   - {fileID: 1700715780}
---- !u!114 &1664345544
+--- !u!114 &1664345545
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

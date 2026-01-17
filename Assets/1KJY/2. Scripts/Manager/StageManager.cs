@@ -71,10 +71,10 @@ public class StageManager : MonoBehaviour
 
         //    OnStageUnlocked?.Invoke(UnlockedStage);
         //}
-        if(Input.GetKeyDown(Key.F5))
-        {
-            ResetStage();
-        }
+        //if(Input.GetKeyDown(Key.F5))
+        //{
+        //    ResetStage();
+        //}
 
         if(Input.GetKeyDown(Key.F3))
         {
@@ -92,10 +92,7 @@ public class StageManager : MonoBehaviour
 
     public void ResetStage()
     {
-        PlayerPrefs.SetInt("UnlockedStageIndex", 1);
-        PlayerPrefs.Save();
-
-        OnStageUnlocked?.Invoke(UnlockedStage);
+        UnlockedStage = 1;
     }
 }
 

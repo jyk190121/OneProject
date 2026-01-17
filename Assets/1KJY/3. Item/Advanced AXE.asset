@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   NAME: "\uACE0\uAE09\uB3C4\uB07C"
   IMAGE: {fileID: 21300000, guid: 3971c5b0624abbd469aa40f9d8818232, type: 3}
-  PRICE: 15
+  PRICE: 50
   ENHANCE: 0
   GOLD: 0
   MINATK: 20
@@ -30,7 +30,7 @@ MonoBehaviour:
   SHILD: 0
   POISON: 0
   BLOOD: 0
-  COUNT: 0
+  COUNT: 1
   STUNED: 0.5
   EFFECT: {fileID: 1758473627833946668, guid: 5d7aa98ecec1f294e92bef2d47ea869c, type: 3}
   EXPLAIN: "\uBB3C\uB9AC\uACF5\uACA9 20~59\n\n\uAE30\uC808\uD655\uB960 50%~"

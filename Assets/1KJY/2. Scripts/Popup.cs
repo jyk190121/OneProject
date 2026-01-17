@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-public class SellItemPopup : MonoBehaviour
+public class Popup : MonoBehaviour
 {
     public GameObject popupPanel;
     public TextMeshProUGUI messageTxt;
@@ -17,7 +17,7 @@ public class SellItemPopup : MonoBehaviour
 
         // 버튼 이벤트 연결
         yesBtn.onClick.AddListener(OnYesClicked);
-        noBtn.onClick.AddListener(() => popupPanel.SetActive(false));
+        noBtn.onClick.AddListener(() => OnNoClicked());
     }
 
     // 외부에서 호출할 함수: 메시지와 실행할 액션을 전달받음
@@ -32,5 +32,14 @@ public class SellItemPopup : MonoBehaviour
     {
         onYesAction?.Invoke(); // 저장된 액션 실행
         popupPanel.SetActive(false);
+    }
+
+    private void OnNoClicked()
+    {
+        popupPanel.SetActive(false);
+        if(GameSceneManager.Instance.SceneName() == "StartScene")
+        {
+            GameSceneManager.Instance.RestartScene();
+        }
     }
 }

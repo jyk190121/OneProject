@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 /// <summary>
 /// 1. Stage 버튼 선택 시 해당 스테이지로 이동
@@ -23,6 +22,13 @@ public class StageUI : MonoBehaviour
     int unlockedStageIndex;                              // 현재 해금된 최대 스테이지
 
     //StageManager stageManager;
+
+    public Button backBtn;                              // 스테이지 뒤로 이동 버튼
+    public Button frontBtn;                             // 스테이지 앞으로 이동 버튼
+
+    // 1. 클래스 상단 변수에 현재 포커스된 인덱스 저장용 변수 추가(기존 selectedStageIndex 활용 가능)
+    // 여기서는 이해를 돕기 위해 명시적으로 관리합니다.
+    int currentFocusIndex = 0;
 
     void Awake()
     {
@@ -116,6 +122,9 @@ public class StageUI : MonoBehaviour
             backgroundCancelBtn.onClick.AddListener(CancelSelection);
             //print("배경 클릭!");
         }
+
+        backBtn.onClick.AddListener(OnClickBack);
+        frontBtn.onClick.AddListener(OnClickFront);
     }
   
     // 마우스 클릭 시 호출
@@ -149,7 +158,13 @@ public class StageUI : MonoBehaviour
     {
         //중복 호출 방지
         if (selectedStageIndex == stageNum) return;
-        
+
+        // 인덱스는 stageNum - 1
+        currentFocusIndex = stageNum - 1;
+
+        // ... 기존 로직 (텍스트 변경, 테두리 이동 등) ...
+        selectedStageIndex = stageNum;
+
         bool isLocked = stageNum > unlockedStageIndex;
 
         //받아온 스테이지 선택된 상태
@@ -206,5 +221,27 @@ public class StageUI : MonoBehaviour
             stageText.text = "진입 불가!";
         }
     }
+
+    // 3. OnClickBack / OnClickFront 함수 수정
+    public void OnClickBack()
+    {
+        // EventSystem 참조 대신, 우리가 저장해둔 currentFocusIndex를 사용합니다.
+        if (currentFocusIndex > 0)
+        {
+            currentFocusIndex--;
+            stageButtons[currentFocusIndex].Select();
+        }
+    }
+
+    public void OnClickFront()
+    {
+        // stageButtons.Length 범위를 벗어나지 않도록 체크
+        if (currentFocusIndex < stageButtons.Length - 1)
+        {
+            currentFocusIndex++;
+            stageButtons[currentFocusIndex].Select();
+        }
+    }
+
 }
 

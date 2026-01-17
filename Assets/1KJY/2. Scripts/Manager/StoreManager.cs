@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 /// <summary>
 /// 1. 보유 아이템 인벤토리 노출
 /// 2. 상점
@@ -13,10 +14,12 @@ using TMPro;
 /// </summary>
 public class StoreManager : MonoBehaviour
 {
-    public GameObject CurrentPanel;                     //현재 보유한 아이템 보여줄 판넬
+    public GameObject currentPanel;                     //현재 보유한 아이템 보여줄 판넬
     public GameObject itemInvenPrefab;                  //보유한 아이템 이미지(프리팹)
     public GameObject itemInvenBGPrefab;                //보유한 아이템 이미지 배경(프리팹)
     List<GameObject> itemsBG = new List<GameObject>();
+    public GameObject sellFailPanel;                    //판매실패 시 보여줄 판넬
+    public Button sellFailCheckBtn;                     //판매실패 확인 버튼
 
     List<Item> items;
 
@@ -38,7 +41,6 @@ public class StoreManager : MonoBehaviour
             //items = itemManager.CurrentItems();
             //goldTxt.text = itemManager.GetGold().ToString();
         }
-       
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,7 +50,7 @@ public class StoreManager : MonoBehaviour
         //배경슬롯 준비
         for (int i=0; i< items.Count; i++)
         {
-            GameObject bg = Instantiate(itemInvenBGPrefab, CurrentPanel.transform);
+            GameObject bg = Instantiate(itemInvenBGPrefab, currentPanel.transform);
             itemsBG.Add(bg);
         }
 
@@ -59,6 +61,10 @@ public class StoreManager : MonoBehaviour
             CurrentItemUpdate();
         }
 
+        if(itemManager != null)
+        {
+            sellFailCheckBtn.onClick.AddListener(() => CloseFailUI());
+        }
 
     }
     public void UpdateSlot(int index, Item item)
@@ -129,7 +135,7 @@ public class StoreManager : MonoBehaviour
         for (int i = 0; i < items.Count; i++)
         {
             // 배경 생성
-            GameObject bg = Instantiate(itemInvenBGPrefab, CurrentPanel.transform);
+            GameObject bg = Instantiate(itemInvenBGPrefab, currentPanel.transform);
             itemsBG.Add(bg);
 
             // 아이템 이미지 생성 (UpdateSlot 호출)
@@ -137,4 +143,20 @@ public class StoreManager : MonoBehaviour
         }
     }
 
+
+    public void SellFailUI()
+    {
+        //// 이미 켜져 있다면 끄고 다시 켜서 '재실행' 효과를 줌
+        //if (sellFailPanel.activeSelf)
+        //{
+        //    sellFailPanel.SetActive(false);
+        //}
+
+        sellFailPanel.SetActive(true);
+    }
+
+    void CloseFailUI()
+    {
+        sellFailPanel.gameObject.SetActive(false);
+    }
 }

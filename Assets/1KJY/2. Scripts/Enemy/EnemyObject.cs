@@ -16,6 +16,9 @@ public class EnemyObject : ScriptableObject
     [Header("마법공격력")]
     public float minAtt2;
     public float baseAtt2;
+    [Header("회복")]
+    public float recovery;
+    public float heal;
 
     // 필요하다면 특정 적 전용 사운드나 이펙트도 여기에 추가
     // public AudioClip crySound;

@@ -14,18 +14,14 @@ public class Succubus : Enemy
         base.SpecialAttack();
     }
 
-    override public float ShildRecover()
+    override public void ShildRecover()
     {
         base.ShildRecover();
-
-        return 1200f;
     }
 
-    override public float Healing()
+    override public void Healing()
     {
         base.Healing();
-
-        return 1200f;
     }
 
     //override public void Attack()

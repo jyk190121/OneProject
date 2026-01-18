@@ -15,18 +15,14 @@ public class DragonRed : Enemy
         base.SpecialAttack();
     }
 
-    override public float ShildRecover()
+    override public void ShildRecover()
     {
         base.ShildRecover();
-
-        return 5000f;
     }
 
-    override public float Healing()
+    override public void Healing()
     {
         base.Healing();
-
-        return 5000f;
     }
 
     //override public void Attack()

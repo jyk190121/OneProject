@@ -4143,46 +4143,46 @@ MonoBehaviour:
     bossEnemy: {fileID: 11400000, guid: 8e3113ada7028344c8e95163e9e142d6, type: 2}
   - stageName: "\uC2A4\uD14C\uC774\uC9C05"
     normalEnemies:
+    - {fileID: 11400000, guid: ca50aae9fb894814ebdbac3b33d748df, type: 2}
+    - {fileID: 11400000, guid: 092811cb2b78e924fa79740b4f3e1a35, type: 2}
+    - {fileID: 11400000, guid: c0e6a06734c76414094b9e8572d93d00, type: 2}
+    - {fileID: 11400000, guid: c0e4769a03050a34bab368509fd5edcd, type: 2}
+    bossEnemy: {fileID: 11400000, guid: d33a5352f09399c498b663997e684dc7, type: 2}
+  - stageName: "\uC2A4\uD14C\uC774\uC9C06"
+    normalEnemies:
     - {fileID: 11400000, guid: 5b3651531fd22294faad5b052f9d8823, type: 2}
     - {fileID: 11400000, guid: 915d2c709d5071646847de3d2d60edf2, type: 2}
     - {fileID: 11400000, guid: a0c07c077a449ba499a6562f9d97c538, type: 2}
     - {fileID: 11400000, guid: c553e4ff96eb40845932001581d3ad1b, type: 2}
-    bossEnemy: {fileID: 11400000, guid: ac4e5da5b8abbe5499d09f1fdefb8396, type: 2}
-  - stageName: "\uC2A4\uD14C\uC774\uC9C06"
-    normalEnemies:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
     bossEnemy: {fileID: 11400000, guid: ac4e5da5b8abbe5499d09f1fdefb8396, type: 2}
   - stageName: "\uC2A4\uD14C\uC774\uC9C07"
     normalEnemies:
-    - {fileID: 11400000, guid: 5b3651531fd22294faad5b052f9d8823, type: 2}
-    - {fileID: 11400000, guid: 915d2c709d5071646847de3d2d60edf2, type: 2}
-    - {fileID: 11400000, guid: a0c07c077a449ba499a6562f9d97c538, type: 2}
-    - {fileID: 11400000, guid: c553e4ff96eb40845932001581d3ad1b, type: 2}
-    bossEnemy: {fileID: 11400000, guid: ac4e5da5b8abbe5499d09f1fdefb8396, type: 2}
+    - {fileID: 11400000, guid: d41ecf7a000e1534ea7b0b81e38ec171, type: 2}
+    - {fileID: 11400000, guid: 7d5e0ae4bfc07c9479b56b0e8a1834dc, type: 2}
+    - {fileID: 11400000, guid: 0d6c0b9a954f2c3478954b0d90ae4c5c, type: 2}
+    - {fileID: 11400000, guid: 59158e6b2475424498fd5d591a555a8e, type: 2}
+    bossEnemy: {fileID: 11400000, guid: fdb50c8e5776bbb43bbc983665e2bbfe, type: 2}
   - stageName: "\uC2A4\uD14C\uC774\uC9C08"
     normalEnemies:
-    - {fileID: 11400000, guid: 5b3651531fd22294faad5b052f9d8823, type: 2}
-    - {fileID: 11400000, guid: 915d2c709d5071646847de3d2d60edf2, type: 2}
-    - {fileID: 11400000, guid: a0c07c077a449ba499a6562f9d97c538, type: 2}
-    - {fileID: 11400000, guid: c553e4ff96eb40845932001581d3ad1b, type: 2}
-    bossEnemy: {fileID: 11400000, guid: ac4e5da5b8abbe5499d09f1fdefb8396, type: 2}
+    - {fileID: 11400000, guid: 8e3113ada7028344c8e95163e9e142d6, type: 2}
+    - {fileID: 11400000, guid: d33a5352f09399c498b663997e684dc7, type: 2}
+    - {fileID: 11400000, guid: fdb50c8e5776bbb43bbc983665e2bbfe, type: 2}
+    - {fileID: 11400000, guid: 228e1fbfbeb99264a8a59cc986c16f10, type: 2}
+    bossEnemy: {fileID: 11400000, guid: 6adac41f82dcdb64b8328da8e1c75fbd, type: 2}
   - stageName: "\uC2A4\uD14C\uC774\uC9C09"
     normalEnemies:
-    - {fileID: 11400000, guid: 5b3651531fd22294faad5b052f9d8823, type: 2}
-    - {fileID: 11400000, guid: 915d2c709d5071646847de3d2d60edf2, type: 2}
-    - {fileID: 11400000, guid: a0c07c077a449ba499a6562f9d97c538, type: 2}
-    - {fileID: 11400000, guid: c553e4ff96eb40845932001581d3ad1b, type: 2}
-    bossEnemy: {fileID: 11400000, guid: ac4e5da5b8abbe5499d09f1fdefb8396, type: 2}
+    - {fileID: 11400000, guid: 6adac41f82dcdb64b8328da8e1c75fbd, type: 2}
+    - {fileID: 11400000, guid: 2cb06ad89f0847340b5b38fb9506b681, type: 2}
+    - {fileID: 11400000, guid: 5acb2e5b13159314fa144caca3d7ba4e, type: 2}
+    - {fileID: 11400000, guid: 917e005b337d48a4eba187e91cf2e831, type: 2}
+    bossEnemy: {fileID: 11400000, guid: 11a99ac30c694ae4c9131903f7841436, type: 2}
   - stageName: "\uC2A4\uD14C\uC774\uC9C010"
     normalEnemies:
-    - {fileID: 11400000, guid: 5b3651531fd22294faad5b052f9d8823, type: 2}
-    - {fileID: 11400000, guid: 915d2c709d5071646847de3d2d60edf2, type: 2}
-    - {fileID: 11400000, guid: a0c07c077a449ba499a6562f9d97c538, type: 2}
-    - {fileID: 11400000, guid: c553e4ff96eb40845932001581d3ad1b, type: 2}
-    bossEnemy: {fileID: 11400000, guid: ac4e5da5b8abbe5499d09f1fdefb8396, type: 2}
+    - {fileID: 11400000, guid: 7742684cd18582a42b929c15b684d2fb, type: 2}
+    - {fileID: 11400000, guid: 6d4ae81840fc9e446858f432f6f4a99b, type: 2}
+    - {fileID: 11400000, guid: 9e56d5675c3f86c48be7da5bd6ac97bd, type: 2}
+    - {fileID: 11400000, guid: 42bdc24dfdf7a0043bc32c47199f664d, type: 2}
+    bossEnemy: {fileID: 11400000, guid: e5dae52bb74444c4f84a2c5e11d3f600, type: 2}
   enemyPrefab: {fileID: 2695397109250390434, guid: e755b6ac08a90bd43bda31f4eaabfb36, type: 3}
   spawnPoint: {fileID: 6300810757127734352}
 --- !u!114 &7388636426433586931

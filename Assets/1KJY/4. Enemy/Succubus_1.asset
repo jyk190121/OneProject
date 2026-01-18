@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
-  m_Name: Succubus
+  m_Name: Succubus_1
   m_EditorClassIdentifier: 
   enemyName: Succubus
-  enemyPrefab: {fileID: 2511095851095899296, guid: 0d91a1e718ea6d343be4026cdffa51c6, type: 3}
+  enemyPrefab: {fileID: 2511095851095899296, guid: 437dddca08179704d8ee8e0ca7b207b0, type: 3}
   maxHp: 50000
   maxSh: 5000
   minAtt1: 50
   baseAtt1: 999
   minAtt2: 50
   baseAtt2: 999
+  recovery: 1000
+  heal: 5000

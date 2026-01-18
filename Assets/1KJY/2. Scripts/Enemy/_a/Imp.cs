@@ -14,17 +14,13 @@ public class Imp : Enemy
         base.SpecialAttack();
     }
 
-    override public float ShildRecover()
+    override public void ShildRecover()
     {
         base.ShildRecover();
-
-        return 20f;
     }
 
-    override public float Healing()
+    override public void Healing()
     {
         base.Healing();
-
-        return 20f;
     }
 }

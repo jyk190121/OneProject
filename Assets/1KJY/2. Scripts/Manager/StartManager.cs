@@ -1,5 +1,3 @@
-using NUnit.Framework.Interfaces;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -34,6 +32,8 @@ public class StartManager : MonoBehaviour
 
     public Button newStartBtn;                          // 새로 시작 버튼 
     Popup newStartpopup;                                // 새로운 게임 시작 시 호출할 팝업
+
+    public Button arenaBtn;                             // 아레나모드 버튼 (10스테이지 클리어 후 활성화)
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -72,6 +72,17 @@ public class StartManager : MonoBehaviour
         if (backgroundCancelBtn != null)
         {
             backgroundCancelBtn.onClick.AddListener(CancelSelection);
+        }
+
+        if (StageManager.Instance.UnlockedStage < 10)
+        {
+            Image arenaBtnImg = arenaBtn.GetComponent<Image>();
+            arenaBtnImg.color = new Color(0.5f, 0.5f, 0.5f, 0.5f); // 반투명하게
+        }
+        else
+        {
+            Image arenaBtnImg = arenaBtn.GetComponent<Image>();
+            arenaBtnImg.color = new Color(1f, 1f, 1f, 1f);
         }
     }
 

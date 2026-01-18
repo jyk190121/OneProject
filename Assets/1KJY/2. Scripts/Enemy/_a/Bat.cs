@@ -14,18 +14,14 @@ public class Bat : Enemy
         base.SpecialAttack();
     }
 
-    override public float ShildRecover()
+    override public void ShildRecover()
     {
         base.ShildRecover();
-
-        return 20f;
     }
 
-    override public float Healing()
+    override public void Healing()
     {
         base.Healing();
-
-        return 30f;
     }
 
     //override public void Attack()

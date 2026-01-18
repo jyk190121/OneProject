@@ -14,18 +14,14 @@ public class SkeletonMage : Enemy
         base.SpecialAttack();
     }
 
-    override public float ShildRecover()
+    override public void ShildRecover()
     {
         base.ShildRecover();
-
-        return 1000f;
     }
 
-    override public float Healing()
+    override public void Healing()
     {
         base.Healing();
-
-        return 50f;
     }
 
     //override public void Attack()

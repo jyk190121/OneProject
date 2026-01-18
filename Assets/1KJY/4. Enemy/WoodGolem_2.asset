@@ -20,3 +20,5 @@ MonoBehaviour:
   baseAtt1: 99
   minAtt2: 50
   baseAtt2: 99
+  recovery: 600
+  heal: 600

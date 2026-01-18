@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7773741634138198702}
   - component: {fileID: 8182579877813493946}
   m_Layer: 6
-  m_Name: SkeletonArcher
+  m_Name: SkeletonArcher 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

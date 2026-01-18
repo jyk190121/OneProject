@@ -28,11 +28,14 @@ public class StoreManager : MonoBehaviour
 
     public TextMeshProUGUI goldTxt;
     public Button nextBtn;
+    public Button prevBtn;
+    Popup popup;
 
     void Awake()
     {
         itemManager = FindAnyObjectByType<ItemManager>();
         stageManager = FindAnyObjectByType<StageManager>();
+        popup = FindAnyObjectByType<Popup>();
 
         if (itemManager != null)
         {
@@ -66,6 +69,8 @@ public class StoreManager : MonoBehaviour
             sellFailCheckBtn.onClick.AddListener(() => CloseFailUI());
         }
 
+        // 스테이지 선택창으로 돌아가기
+        prevBtn.onClick.AddListener(() => BackStageScene());
     }
     public void UpdateSlot(int index, Item item)
     {
@@ -158,5 +163,19 @@ public class StoreManager : MonoBehaviour
     void CloseFailUI()
     {
         sellFailPanel.gameObject.SetActive(false);
+    }
+
+    void BackStageScene()
+    {
+        popup.ShowConfirm(
+                  $"스테이지 선택 화면으로 나가시겠습니까??\n<color=red>아이템 강화 및 현재 보유골드는 초기화됩니다</color>",
+                  () => ExecuteNewGame() // 'Yes'를 누르면 실행될 람다식(Action)
+                  );
+    }
+
+    void ExecuteNewGame()
+    {
+        itemManager.Init();
+        GameSceneManager.Instance.LoadSceneAsync("StageScene");
     }
 }

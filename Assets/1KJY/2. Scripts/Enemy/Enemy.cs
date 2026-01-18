@@ -1,8 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+//[System.Serializable]
+//public struct EnemyAction
+//{
+//    public string actionName;
+//    public float damageMultiplier;
+//    public bool isMagic;
+//    public float shieldAmount;
+//}
+
 public abstract class Enemy : MonoBehaviour
 {
+
+    //public List<EnemyAction> patternList;
+    //int currentPatternIndex = 0;
+
+    //public EnemyAction GetNextAction()
+    //{
+    //    var action = patternList[currentPatternIndex];
+    //    currentPatternIndex = (currentPatternIndex + 1) % patternList.Count;
+    //    return action;
+    //}
+
     [Header("Data Reference")]
     public EnemyObject data;        // 이 적의 데이터 설계도
 
@@ -18,6 +38,9 @@ public abstract class Enemy : MonoBehaviour
     public float att1;               // 적 물리공격력
     public float minAtt2;            // 적 최소 마법공격력
     public float att2;               // 적 마법공격력
+    public float recovery;           // 적 방어도 회복력
+    public float heal;               // 적 체력 회복력
+
     public bool death;               // 적 죽음 확인
     public Animator animator;        // 적 애니메이션
 
@@ -67,6 +90,8 @@ public abstract class Enemy : MonoBehaviour
         att1 = data.baseAtt1;
         minAtt2 = data.minAtt2;
         att2 = data.baseAtt2;
+        recovery = data.recovery;
+        heal = data.heal;
 
         UpdateUI();
     }
@@ -86,9 +111,11 @@ public abstract class Enemy : MonoBehaviour
         att1 = data.baseAtt1;
         minAtt2 = data.minAtt2;
         att2 = data.baseAtt2;
+        recovery = data.recovery;
+        heal = data.heal;
     }
 
-    virtual public void HpShildSet() 
+    virtual public void HpShildSet()
     {
         // 1. 자식이 정의한 수치를 먼저 세팅
         InitStats();
@@ -134,12 +161,12 @@ public abstract class Enemy : MonoBehaviour
         shildBar.fillAmount = shild / maxSh;
     }
 
-    virtual public void AnimDamage() 
+    virtual public void AnimDamage()
     {
         //Animator animator = GetComponentInChildren<Animator>();
         animator.SetTrigger("Damage");
 
-        if(hp < 0)
+        if (hp < 0)
         {
             hp = 0;
             Death();
@@ -165,20 +192,16 @@ public abstract class Enemy : MonoBehaviour
     //    int r = Random.Range(60, 91);
     //    att2 = r;
     //}
-    virtual public float ShildRecover()
+    virtual public void ShildRecover()
     {
         //Animator animator = GetComponentInChildren<Animator>();
         animator.SetTrigger("TalkTrigger");
-
-        return 0;
     }
 
-    virtual public float Healing()
+    virtual public void Healing()
     {
         //Animator animator = GetComponentInChildren<Animator>();
         animator.SetTrigger("JumpTrigger");
-
-        return 0;
     }
 
     virtual public void Stuned()

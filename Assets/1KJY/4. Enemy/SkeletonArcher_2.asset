@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
-  m_Name: Zombie
+  m_Name: SkeletonArcher_2
   m_EditorClassIdentifier: 
-  enemyName: Zombie
-  enemyPrefab: {fileID: 5284643900520674695, guid: 027b1c9cd4f5b4344995f03cc92fd18e, type: 3}
-  maxHp: 15000
-  maxSh: 10000
-  minAtt1: 30
-  baseAtt1: 350
+  enemyName: SkeletonArcher
+  enemyPrefab: {fileID: 7773741634138198696, guid: e3f10a49adf9da94196f359c3bc3cece, type: 3}
+  maxHp: 2000
+  maxSh: 250
+  minAtt1: 10
+  baseAtt1: 120
   minAtt2: 30
-  baseAtt2: 100
+  baseAtt2: 120
+  recovery: 220
+  heal: 440

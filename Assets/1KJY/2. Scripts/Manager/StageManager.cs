@@ -78,7 +78,7 @@ public class StageManager : MonoBehaviour
 
         if(Input.GetKeyDown(Key.F3))
         {
-            UnlockNextStage(5);
+            UnlockNextStage(10);
         }
     }
 
@@ -93,6 +93,8 @@ public class StageManager : MonoBehaviour
     public void ResetStage()
     {
         UnlockedStage = 1;
+        PlayerPrefs.SetInt("UnlockedStageIndex", UnlockedStage);
+        PlayerPrefs.Save();
     }
 }
 

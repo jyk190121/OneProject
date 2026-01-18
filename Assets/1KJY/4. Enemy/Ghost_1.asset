@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
-  m_Name: SkeletonArcher
+  m_Name: Ghost_1
   m_EditorClassIdentifier: 
-  enemyName: SkeletonArcher
-  enemyPrefab: {fileID: 7773741634138198696, guid: e3f10a49adf9da94196f359c3bc3cece, type: 3}
-  maxHp: 2000
-  maxSh: 200
-  minAtt1: 10
+  enemyName: Ghost
+  enemyPrefab: {fileID: 6981722426433150837, guid: c7ba699d54ffef146a65ae69b8cb2961, type: 3}
+  maxHp: 1000
+  maxSh: 1000
+  minAtt1: 60
   baseAtt1: 150
-  minAtt2: 30
-  baseAtt2: 120
+  minAtt2: 20
+  baseAtt2: 60
+  recovery: 100
+  heal: 100

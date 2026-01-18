@@ -75,6 +75,7 @@ public class BattleManager : MonoBehaviour
     public TextMeshProUGUI stageTxt;
     public TextMeshProUGUI roundTxt;
     //public TextMeshProUGUI enemyName;
+    int turn;
 
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
@@ -148,21 +149,6 @@ public class BattleManager : MonoBehaviour
                 // 스톱 버튼 비활성화
                 stopBtn.gameObject.SetActive(false);
 
-            }
-
-            // 적 턴
-            // 공격 1회 or 특수능력 1회 or 방어 or 체력회복 
-            if (enemyTurn && !isEnemyturnning)
-            {
-                if (enemy.hp <= 0)
-                {
-                    // 적 사망(승리)
-                    StartCoroutine(EnemyDeath());
-                }
-                else
-                {
-                    StartEnemyTurn();
-                }
             }
         }
     }
@@ -253,14 +239,21 @@ public class BattleManager : MonoBehaviour
 
     void SpinStart()
     {
-        StartPlayerTurn();
+        //StartPlayerTurn();
 
-        // 플레이어 슬롯이 돌아가기 시작하는 시점에 딱 한 번만 결정
-        if (playerSlotCheck && !enemyActionCeheck)
+        if (!enemyActionCeheck)
         {
-            DetermineEnemyNextAction();
-            enemyActionCeheck = true; // 플레이어 턴 동안 다시 실행 안 되게 막음
+            turn++;
+            //DetermineEnemyNextAction(); // 여기서 한 번만 결정
+            enemyActionCeheck = true;
         }
+
+        //// 플레이어 슬롯이 돌아가기 시작하는 시점에 딱 한 번만 결정
+        //if (playerSlotCheck && !enemyActionCeheck)
+        //{
+        //    //DetermineEnemyNextAction();
+        //    enemyActionCeheck = true; // 플레이어 턴 동안 다시 실행 안 되게 막음
+        //}
 
         // 턴 게임이 시작되면 플레이어 턴으로
         playerTurn = true;
@@ -284,7 +277,7 @@ public class BattleManager : MonoBehaviour
         stopBtn.gameObject.SetActive(true);
 
         // 2. 적의 다음 행동 미리 결정 (플레이어 턴에 보여주기 위해)
-        //DetermineEnemyNextAction();
+        DetermineEnemyNextAction();
     }
 
     void DetermineEnemyNextAction()
@@ -292,11 +285,11 @@ public class BattleManager : MonoBehaviour
         actionEnemy = Random.Range(0, 10);
 
         if (actionEnemy <= 1) nextEnemyActionTxt.text = "특수공격(마법)";
-        else if (actionEnemy == 7) nextEnemyActionTxt.text = $"방어도 {enemy.ShildRecover()} 회복";
-        else if (actionEnemy == 8) nextEnemyActionTxt.text = $"체력 {enemy.Healing()} 회복";
+        else if (actionEnemy == 7) nextEnemyActionTxt.text = $"방어도 {enemy.recovery} 회복";
+        else if (actionEnemy == 8) nextEnemyActionTxt.text = $"체력 {enemy.heal} 회복";
         else nextEnemyActionTxt.text = "일반공격(물리)";
 
-        print($"[의도 결정] 적의 다음 행동: {actionEnemy}");
+        //print($"[의도 결정] 적의 다음 행동: {actionEnemy}");
     }
 
 
@@ -337,40 +330,54 @@ public class BattleManager : MonoBehaviour
     // 애니메이션 효과 or 파티클 생성 + 데미지 계산
     IEnumerator ItemEffect(string[] items)
     {
-        //이전 아이템명과 동일한지 체크
-        string lastItem = null;
+        ////이전 아이템명과 동일한지 체크
+        //string lastItem = null;
 
-        // [단계 1] 중복 갯수 초기화 및 계산
-        // 딕셔너리의 모든 값을 0으로 리셋
+        //// [단계 1] 중복 갯수 초기화 및 계산
+        //// 딕셔너리의 모든 값을 0으로 리셋
+        //List<string> keys = new List<string>(itemDict.Keys);
+        //foreach (string key in keys) itemDict[key] = 0;
+
+        //List<Item> matchedItems = new List<Item>();
+
+        //foreach (string name in items)
+        //{
+        //    if (string.IsNullOrEmpty(name)) continue;
+
+        //    //if (name == lastItem)
+        //    //{
+        //    //    // 갯수 누적
+        //    //    if (itemDict.ContainsKey(name)) itemDict[name]++;
+        //    //}
+        //    //else
+        //    //{
+        //    //    if (itemDict.ContainsKey(name)) itemDict[name] = 1;
+        //    //}
+
+        //    // [단계 2] 이름에 맞는 실제 Item 데이터 찾기 (allItemDatas에서)
+        //    Item data = allItemDatas.Find(x => x.NAME == name);
+        //    if (data != null)
+        //    {
+        //        matchedItems.Add(data);
+        //    }
+
+        //    //print($"{itemDict[name]} 콤보확인");
+        //    //lastItem = name;
+        //}
+
+        // 1. 초기화 로직 (딕셔너리 리셋 등 기존 코드 유지)
         List<string> keys = new List<string>(itemDict.Keys);
         foreach (string key in keys) itemDict[key] = 0;
-
         List<Item> matchedItems = new List<Item>();
 
         foreach (string name in items)
         {
-            if (string.IsNullOrEmpty(name)) continue;
-
-            //if (name == lastItem)
-            //{
-            //    // 갯수 누적
-            //    if (itemDict.ContainsKey(name)) itemDict[name]++;
-            //}
-            //else
-            //{
-            //    if (itemDict.ContainsKey(name)) itemDict[name] = 1;
-            //}
-
-            // [단계 2] 이름에 맞는 실제 Item 데이터 찾기 (allItemDatas에서)
             Item data = allItemDatas.Find(x => x.NAME == name);
-            if (data != null)
-            {
-                matchedItems.Add(data);
-            }
-
-            //print($"{itemDict[name]} 콤보확인");
-            //lastItem = name;
+            if (data != null) matchedItems.Add(data);
         }
+
+        // 2. 아이템별 순차 처리
+        string lastItem = null;
 
         int num = 0;
         string action = "";
@@ -383,23 +390,33 @@ public class BattleManager : MonoBehaviour
         int ring3 = 0;
         int goldIndex = 0;
         int stone = 0;
-        
+
         // 슬롯 아이템에 따른 효과 적용
         if (matchedItems != null)
         {
             foreach (Item item in matchedItems)
             {
-                if (item.NAME == lastItem)
-                {
-                    // 갯수 누적
-                    if (itemDict.ContainsKey(item.NAME)) itemDict[item.NAME]++;
-                }
-                else
-                {
-                    if (itemDict.ContainsKey(item.NAME)) itemDict[item.NAME] = 1;
-                }
+                //if (item.NAME == lastItem)
+                //{
+                //    // 갯수 누적
+                //    if (itemDict.ContainsKey(item.NAME)) itemDict[item.NAME]++;
+                //}
+                //else
+                //{
+                //    if (itemDict.ContainsKey(item.NAME)) itemDict[item.NAME] = 1;
+                //}
 
+                //lastItem = item.NAME;
+
+                // 콤보 계산 로직
+                if (item.NAME == lastItem) itemDict[item.NAME]++;
+                else itemDict[item.NAME] = 1;
                 lastItem = item.NAME;
+
+                // COUNT 설정 (1:일반, 2:치명, 3:메가)
+                if (itemDict[item.NAME] < 3) item.COUNT = 1;
+                else if (itemDict[item.NAME] < 5) item.COUNT = 2;
+                else item.COUNT = 3;
 
                 //print($"개수 카운트{itemDict[item.NAME]}");
 
@@ -431,7 +448,15 @@ public class BattleManager : MonoBehaviour
                     // 각 아이템에 맞는 애니메이션
                     if (item.NAME.Equals("사과"))
                     {
-                        itemPrefab = item.EFFECT;
+                        //itemPrefab = item.EFFECT;
+                        // 이펙트 프리팹 생성 (Instantiate 코드 추가 필요)
+                        if (item.EFFECT != null)
+                        {
+                           itemPrefab = item.EFFECT;
+                        }
+
+                        // 3. 연출을 위한 대기 시간 부여 (핵심!)
+                        yield return new WaitForSeconds(0.8f);
 
                         itemPos = player.hpBar.transform.position;
 
@@ -454,11 +479,20 @@ public class BattleManager : MonoBehaviour
                                 Apple(item.ENHANCE_HP * 9);
                                 break;
                         }
+
+                        yield return new WaitForSeconds(0.5f);
                     }
                     if (item.NAME.Equals("포도"))
                     {
-                        itemPrefab = item.EFFECT;
                         itemPos = player.hpBar.transform.position;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
+
                         switch (item.COUNT)
                         {
                             // 일반
@@ -475,12 +509,20 @@ public class BattleManager : MonoBehaviour
                                 Grape(item.ENHANCE_PLUS_HP * 9);
                                 break;
                         }
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("딸기"))
                     {
-                        itemPrefab = item.EFFECT;
                         itemPos = player.hpBar.transform.position;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
+
                         switch (item.COUNT)
                         {
                             // 일반
@@ -500,12 +542,19 @@ public class BattleManager : MonoBehaviour
                                 Grape(item.ENHANCE_PLUS_HP * 9);
                                 break;
                         }
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("고기"))
                     {
-                        itemPrefab = item.EFFECT;
                         itemPos = player.hpBar.transform.position;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                         float hp = item.ENHANCE_HP;
                         float shild = item.ENHANCE_SHILD;
@@ -531,6 +580,7 @@ public class BattleManager : MonoBehaviour
                                 Meat(hp, shild);
                                 break;
                         }
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("에너지") || item.NAME.Equals("특수에너지"))
@@ -542,7 +592,12 @@ public class BattleManager : MonoBehaviour
                                 int slotIndex = energy1 % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = item.EFFECT;
+                                if (item.EFFECT != null)
+                                {
+                                    itemPrefab = item.EFFECT;
+                                }
+
+                                yield return new WaitForSeconds(0.8f);
                                 break;
                             }
                         }
@@ -565,6 +620,7 @@ public class BattleManager : MonoBehaviour
                                 Energy(item.ENHANCE_PLUSATK * 9, item.ENHANCE_PLUSMATK * 9);
                                 break;
                         }
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("물리에너지") || item.NAME.Equals("물리에너지_대"))
@@ -576,7 +632,12 @@ public class BattleManager : MonoBehaviour
                                 int slotIndex = energy2 % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = item.EFFECT;
+                                if (item.EFFECT != null)
+                                {
+                                    itemPrefab = item.EFFECT;
+                                }
+
+                                yield return new WaitForSeconds(0.8f);
                                 break;
                             }
                         }
@@ -599,6 +660,7 @@ public class BattleManager : MonoBehaviour
                                 Energy(item.ENHANCE_PLUSATK * 9, 0);
                                 break;
                         }
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("마법에너지") || item.NAME.Equals("마법에너지_대"))
@@ -610,7 +672,12 @@ public class BattleManager : MonoBehaviour
                                 int slotIndex = energy3 % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = item.EFFECT;
+                                if (item.EFFECT != null)
+                                {
+                                    itemPrefab = item.EFFECT;
+                                }
+
+                                yield return new WaitForSeconds(0.8f);
                                 break;
                             }
                         }
@@ -633,13 +700,21 @@ public class BattleManager : MonoBehaviour
                                 Energy(0, item.ENHANCE_PLUSMATK * 9);
                                 break;
                         }
+                        yield return new WaitForSeconds(0.5f);
                     }
 
 
                     if (item.NAME.Equals("독약"))
                     {
-                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
+
                         //print("독 데미지 12");
                         switch (item.COUNT)
                         {
@@ -661,12 +736,20 @@ public class BattleManager : MonoBehaviour
                                 player.UpdatePosionUI();
                                 break;
                         }
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("독검"))
                     {
-                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
+
                         //물공 10~25
                         //독 중독5
                         float att = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) + player.att1;
@@ -696,6 +779,7 @@ public class BattleManager : MonoBehaviour
                         AttDamage(att);
 
                         enemy.UpdateHpShildSet();
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("마법검"))
@@ -719,13 +803,19 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                         enemy.hp -= att;
 
                         enemy.UpdateHpShildSet();
-
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("해골도끼"))
@@ -753,8 +843,14 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                         //물리데미지 적용
                         AttDamage(att1);
@@ -762,6 +858,7 @@ public class BattleManager : MonoBehaviour
                         //마법데미지 적용
                         enemy.hp -= att2;
                         enemy.UpdateHpShildSet();
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("마법봉"))
@@ -785,13 +882,19 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                         //마법데미지
                         enemy.hp -= att;
                         enemy.UpdateHpShildSet();
-
+                        yield return new WaitForSeconds(0.5f);
                     }
                     if (item.NAME.Equals("일반검"))
                     {
@@ -813,13 +916,19 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                         AttDamage(att);
 
                         enemy.UpdateHpShildSet();
-
+                        yield return new WaitForSeconds(0.5f);
                     }
                     if (item.NAME.Equals("일반도끼"))
                     {
@@ -842,13 +951,19 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                         AttDamage(att);
 
                         enemy.UpdateHpShildSet();
-
+                        yield return new WaitForSeconds(0.5f);
                     }
                     if (item.NAME.Equals("대검"))
                     {
@@ -884,18 +999,25 @@ public class BattleManager : MonoBehaviour
                             if (r > (1f - item.ENHANCE_STUNED))
                             {
                                 stuned1 = true;
-                                nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";                            }
+                                nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";
+                            }
                         }
 
 
-                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                         //물리데미지
                         AttDamage(att);
 
                         enemy.UpdateHpShildSet();
-
+                        yield return new WaitForSeconds(0.5f);
                     }
                     if (item.NAME.Equals("고급도끼"))
                     {
@@ -934,13 +1056,19 @@ public class BattleManager : MonoBehaviour
                             }
                         }
 
-                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                         AttDamage(att);
 
                         enemy.UpdateHpShildSet();
-
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("천둥망치"))
@@ -964,13 +1092,19 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-                        itemPrefab = item.EFFECT;
                         itemPos = Vector3.up;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                         //마법데미지
                         enemy.hp -= att;
                         enemy.UpdateHpShildSet();
-
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("화염방패"))
@@ -997,9 +1131,14 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-
-                        itemPrefab = item.EFFECT;
                         itemPos = player.shildBar.transform.position;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                     }
 
@@ -1024,9 +1163,14 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-
-                        itemPrefab = item.EFFECT;
                         itemPos = player.shildBar.transform.position;
+
+                        if (item.EFFECT != null)
+                        {
+                            itemPrefab = item.EFFECT;
+                        }
+
+                        yield return new WaitForSeconds(0.8f);
 
                     }
 
@@ -1039,7 +1183,13 @@ public class BattleManager : MonoBehaviour
                                 int slotIndex = goldIndex % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = item.EFFECT;
+
+                                if (item.EFFECT != null)
+                                {
+                                    itemPrefab = item.EFFECT;
+                                }
+
+                                yield return new WaitForSeconds(0.8f);
                                 break;
                             }
                         }
@@ -1076,6 +1226,7 @@ public class BattleManager : MonoBehaviour
 
                         itemManager.PlusGold(gold);
                         player.UpdateGoldUI();
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("원석"))
@@ -1087,7 +1238,13 @@ public class BattleManager : MonoBehaviour
                                 int slotIndex = stone % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = item.EFFECT;
+
+                                if (item.EFFECT != null)
+                                {
+                                    itemPrefab = item.EFFECT;
+                                }
+
+                                yield return new WaitForSeconds(0.8f);
                                 break;
                             }
                         }
@@ -1125,6 +1282,7 @@ public class BattleManager : MonoBehaviour
 
                         itemManager.PlusGold(gold);
                         player.UpdateGoldUI();
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("마법투구"))
@@ -1145,7 +1303,13 @@ public class BattleManager : MonoBehaviour
                                 int slotIndex = helmet % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = item.EFFECT;
+
+                                if (item.EFFECT != null)
+                                {
+                                    itemPrefab = item.EFFECT;
+                                }
+
+                                yield return new WaitForSeconds(0.8f);
                                 break;
                             }
                         }
@@ -1193,7 +1357,7 @@ public class BattleManager : MonoBehaviour
                                 break;
                         }
 
-
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("마법반지"))
@@ -1211,7 +1375,13 @@ public class BattleManager : MonoBehaviour
                                 int slotIndex = ring1 % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = item.EFFECT;
+
+                                if (item.EFFECT != null)
+                                {
+                                    itemPrefab = item.EFFECT;
+                                }
+
+                                yield return new WaitForSeconds(0.8f);
                                 break;
                             }
                         }
@@ -1251,6 +1421,7 @@ public class BattleManager : MonoBehaviour
 
                                 break;
                         }
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("흡혈반지"))
@@ -1269,7 +1440,13 @@ public class BattleManager : MonoBehaviour
                                 int slotIndex = ring2 % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = item.EFFECT;
+
+                                if (item.EFFECT != null)
+                                {
+                                    itemPrefab = item.EFFECT;
+                                }
+
+                                yield return new WaitForSeconds(0.8f);
                                 break;
                             }
                         }
@@ -1306,7 +1483,9 @@ public class BattleManager : MonoBehaviour
                                 Shield(shild, plus_sh);
                                 Blood(blood);
                                 break;
+
                         }
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("독반지"))
@@ -1325,7 +1504,13 @@ public class BattleManager : MonoBehaviour
                                 int slotIndex = ring3 % spawnedSlots.Length;
                                 // 슬롯의 위치에 이펙트 인덱스 설정
                                 itemPos = spawnedSlots[slotIndex].transform.position;
-                                itemPrefab = item.EFFECT;
+
+                                if (item.EFFECT != null)
+                                {
+                                    itemPrefab = item.EFFECT;
+                                }
+
+                                yield return new WaitForSeconds(0.8f);
                                 break;
                             }
                         }
@@ -1368,7 +1553,9 @@ public class BattleManager : MonoBehaviour
                                 player.UpdatePosionUI();
                                 break;
                         }
+                        yield return new WaitForSeconds(0.5f);
                     }
+
 
                     //itemDict[item.NAME] = 1;
                     energy1++;
@@ -1421,16 +1608,32 @@ public class BattleManager : MonoBehaviour
                     //아이템이 한바퀴 돌았을 때
                     if (num == currentEffects.Length)
                     {
-                        //턴 넘기기
+                        yield return new WaitForSeconds(0.5f);
+                        statusTxt.text = ""; // 상태창 비우기
                         playerTurn = false;
+                        enemyTurn = true;
                         isEnemyturnning = false;
+
+                        // 적 턴
+                        // 공격 1회 or 특수능력 1회 or 방어 or 체력회복 
+                        if (enemyTurn && !isEnemyturnning)
+                        {
+                            if (enemy.hp <= 0)
+                            {
+                                // 적 사망(승리)
+                                StartCoroutine(EnemyDeath());
+                            }
+                            else
+                            {
+                                StartEnemyTurn();
+                            }
+                        }
                     }
                 }
-            }
 
+            }
         }
     }
-
 
     //턴 바뀔 때 텍스트 업데이트
     void StatusTurn()
@@ -1487,6 +1690,24 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
+        //isEnemyturnning = true;
+        //EnemyAction currentAction = enemy.GetNextAction();
+
+        //statusTxt.text = $"적의 {currentAction.actionName}!";
+
+        //// 공격 로직
+        //if (currentAction.damageMultiplier > 0)
+        //{
+        //    AttDamage(enemy.att1 * currentAction.damageMultiplier, currentAction.isMagic);
+        //}
+
+        //// 방어 로직
+        //if (currentAction.shieldAmount > 0)
+        //{
+        //    enemy.shild += currentAction.shieldAmount;
+        //    enemy.UpdateHpShildSet();
+        //}
+
         isEnemyturnning = true;
         enemyTurn = false;
         statusTxt.text = "";
@@ -1575,9 +1796,14 @@ public class BattleManager : MonoBehaviour
         //슬롯 재시작
         SpinStart();
 
+        yield return new WaitForSeconds(1.0f);
+
         // 턴 종료 처리
         enemyTurn = false;
         isEnemyturnning = false;
+
+        // 다시 플레이어 턴 시작 (여기서 새로운 행동이 결정됨)
+        StartPlayerTurn();
     }
 
     void EnermyAttack()
@@ -1638,9 +1864,9 @@ public class BattleManager : MonoBehaviour
         enemy.ShildRecover();
         StartCoroutine(ShildEffect());
 
-        string action = $"방어도 {enemy.ShildRecover()}회복";
+        string action = $"방어도 {enemy.recovery}회복";
         Status(action);
-        enemy.shild += enemy.ShildRecover();
+        enemy.shild += enemy.recovery;
         if (enemy.shild >= enemy.maxSh)
         {
             enemy.shild = enemy.maxSh;
@@ -1653,9 +1879,9 @@ public class BattleManager : MonoBehaviour
         enemy.Healing();
         StartCoroutine(HealEffect());
 
-        string action = $"체력 {enemy.Healing()}회복";
+        string action = $"체력 {enemy.heal}회복";
         Status(action);
-        enemy.hp += enemy.Healing();
+        enemy.hp += enemy.heal;
         if (enemy.hp >= enemy.maxHp)
         {
             enemy.hp = enemy.maxHp;
@@ -1714,6 +1940,17 @@ public class BattleManager : MonoBehaviour
         //적 죽음 애니메이션
         enemy.Death();
 
+        //빠른 클리어 보상
+        if(turn < 5)
+        {
+            itemManager.PlusGold(stageManager.Round * stageManager.SelectedStage * 20);
+        }
+        //일반 보상
+        else
+        {
+            itemManager.PlusGold(stageManager.Round * stageManager.SelectedStage * 5);
+        }
+
         yield return new WaitForSeconds(1.5f);
 
         playerTurn = false;
@@ -1725,14 +1962,13 @@ public class BattleManager : MonoBehaviour
         //라운드 확인 작업필요
         stageManager.Round ++;
 
-        if (stageManager.Round > 5)
-        {
-            //아이템 강화, 골드 초기화
-            itemManager.Init();
+        //if (stageManager.Round > 5)
+        //{
+        //    //아이템 강화, 골드 초기화
+        //    //itemManager.Init();
 
-            currentStageIndex++;
-            stageManager.UnlockNextStage(currentStageIndex + 1);
-        }
+            
+        //}
         //enemyManager.SpawnEnemy(currentStageIndex, round);
 
         yield return new WaitForSeconds(1.5f);
@@ -1741,21 +1977,21 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         //안끝났다면 다음 라운드 이동
-        print($"현재 스테이지 {currentStageIndex + 1}, 현재 라운드 {stageManager.Round}");
 
         //스테이지 상승 후 Round 1로 초기화 및 StartScene로
         if (stageManager.Round > 5)
         {
-            stageManager.Round = 1;
+            currentStageIndex++;
+            stageManager.SelectedStage++;
 
-            GameSceneManager.Instance.LoadSceneAsync("StageScene");
-            yield return null;
+            stageManager.Round = 1;
+            stageManager.UnlockNextStage(stageManager.SelectedStage);
+            //GameSceneManager.Instance.LoadSceneAsync("StageScene");
+            //yield return null;
         }
-        else
-        {
-            //끝났다면 업그레이드 상점으로 이동
-            GameSceneManager.Instance.LoadScene("UpgradeStoreScene");
-        }
+        print($"현재 스테이지 {stageManager.SelectedStage}, 현재 라운드 {stageManager.Round}");
+        //끝났다면 업그레이드 상점으로 이동
+        GameSceneManager.Instance.LoadScene("UpgradeStoreScene");
 
         yield return null;
     }
@@ -1766,7 +2002,7 @@ public class BattleManager : MonoBehaviour
         playerTurn = false;
         enemyTurn = false;
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
 
         //SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
         //Destroy(gameObject);
@@ -1903,6 +2139,9 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
+        //턴 초기화
+        turn = 0;
+
         //초기 배열 및 카운트 재설정
         slotCount = 5;
         items = new string[slotCount];
@@ -1925,7 +2164,10 @@ public class BattleManager : MonoBehaviour
             SpinSlotCreate();
         }
 
+        StartPlayerTurn();
+
         SpinStart();
+
 
         if (stopBtn != null)
         {

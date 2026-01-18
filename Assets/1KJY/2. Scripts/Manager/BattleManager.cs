@@ -122,18 +122,6 @@ public class BattleManager : MonoBehaviour
         {
             StatusTurn();
 
-            if(!enemyActionCeheck)
-            {
-                actionEnemy = Random.Range(0, 10); //0~9
-                if (actionEnemy <= 1) nextEnemyActionTxt.text = "특수공격(마법)";
-                else if (actionEnemy == 7) nextEnemyActionTxt.text = $"방어도 {enemy.ShildRecover()} 회복";
-                else if (actionEnemy == 8) nextEnemyActionTxt.text = $"체력 {enemy.Healing()} 회복";
-                else  nextEnemyActionTxt.text = "일반공격(물리)";
-
-                enemyActionCeheck = true;
-                print($"적행동 정상동작? :{actionEnemy}");
-            }
-
             Keyboard key = Keyboard.current;
             if (key == null) return;
 
@@ -142,11 +130,6 @@ public class BattleManager : MonoBehaviour
             {
                 SpinSlotbySlotStop();
             }
-
-            //foreach (SlotSpinner s in spawnedSlots)
-            //{
-            //    if (s.isSpinning) s.StartSpin();
-            //}
 
             // 플레이어 턴
             if (spawnedSlots[spawnedSlots.Length - 1].isSpinning == false && playerSlotCheck)
@@ -270,12 +253,19 @@ public class BattleManager : MonoBehaviour
 
     void SpinStart()
     {
+        StartPlayerTurn();
+
+        // 플레이어 슬롯이 돌아가기 시작하는 시점에 딱 한 번만 결정
+        if (playerSlotCheck && !enemyActionCeheck)
+        {
+            DetermineEnemyNextAction();
+            enemyActionCeheck = true; // 플레이어 턴 동안 다시 실행 안 되게 막음
+        }
+
         // 턴 게임이 시작되면 플레이어 턴으로
         playerTurn = true;
         enemyTurn = !playerTurn;
         enemyActionCeheck = false;
-
-        playerSlotCheck = true;
 
         // 슬롯 회전 시작
         foreach (SlotSpinner s in spawnedSlots)
@@ -287,6 +277,29 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
+    void StartPlayerTurn()
+    {
+        // 1. 플레이어 슬롯 돌리기 준비
+        playerSlotCheck = true;
+        stopBtn.gameObject.SetActive(true);
+
+        // 2. 적의 다음 행동 미리 결정 (플레이어 턴에 보여주기 위해)
+        //DetermineEnemyNextAction();
+    }
+
+    void DetermineEnemyNextAction()
+    {
+        actionEnemy = Random.Range(0, 10);
+
+        if (actionEnemy <= 1) nextEnemyActionTxt.text = "특수공격(마법)";
+        else if (actionEnemy == 7) nextEnemyActionTxt.text = $"방어도 {enemy.ShildRecover()} 회복";
+        else if (actionEnemy == 8) nextEnemyActionTxt.text = $"체력 {enemy.Healing()} 회복";
+        else nextEnemyActionTxt.text = "일반공격(물리)";
+
+        print($"[의도 결정] 적의 다음 행동: {actionEnemy}");
+    }
+
+
 
     void SpinSlotbySlotStop()
     {
@@ -1556,14 +1569,15 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        playerTurn = true;
-        playerSlotCheck = true;
-        stopBtn.gameObject.SetActive(true);
+        //stopBtn.gameObject.SetActive(true);
         Status(" ");
 
         //슬롯 재시작
         SpinStart();
 
+        // 턴 종료 처리
+        enemyTurn = false;
+        isEnemyturnning = false;
     }
 
     void EnermyAttack()
@@ -1621,7 +1635,7 @@ public class BattleManager : MonoBehaviour
     }
     private void EnemyShildRecover()
     {
-        //enemy.ShildRecover();
+        enemy.ShildRecover();
         StartCoroutine(ShildEffect());
 
         string action = $"방어도 {enemy.ShildRecover()}회복";
@@ -1636,7 +1650,7 @@ public class BattleManager : MonoBehaviour
     }
     private void EnemyHealing()
     {
-        //enemy.Healing();
+        enemy.Healing();
         StartCoroutine(HealEffect());
 
         string action = $"체력 {enemy.Healing()}회복";
@@ -1650,7 +1664,6 @@ public class BattleManager : MonoBehaviour
         enemy.UpdateHpShildSet();
     }
 
-    //Enemy ScriptableObject만든 후 재작업
     IEnumerator AttackEffect()
     {
         GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[3]);
@@ -1673,7 +1686,6 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator ShildEffect()
     {
-        enemy.ShildRecover();
         GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[0]);
         enemyEffect.transform.position = enemy.transform.position;
 
@@ -1684,7 +1696,6 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator HealEffect()
     {
-        enemy.Healing();
         GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[1]);
         enemyEffect.transform.position = enemy.transform.position;
 
@@ -1922,9 +1933,9 @@ public class BattleManager : MonoBehaviour
             stopBtn.onClick.AddListener(SpinSlotbySlotStop);
         }
 
-        // 플레이어 턴부터 시작
-        playerTurn = true;
-        playerSlotCheck = true;
+        //// 플레이어 턴부터 시작
+        //playerTurn = true;
+        //playerSlotCheck = true;
 
         //전체 매니저 관리가 없어 임시용
         if (AudioManager.audioManager == null) return;

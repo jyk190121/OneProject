@@ -176,7 +176,7 @@ public abstract class Enemy : MonoBehaviour
     virtual public float Healing()
     {
         //Animator animator = GetComponentInChildren<Animator>();
-        animator.SetTrigger("TalkTrigger");
+        animator.SetTrigger("JumpTrigger");
 
         return 0;
     }

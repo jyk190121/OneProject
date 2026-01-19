@@ -684,7 +684,7 @@ public class BattleManager : MonoBehaviour
                             }
                         }
 
-                        print($"{item.NAME} 의 갯수 ?: {item.COUNT}");
+                        //print($"{item.NAME} 의 갯수 ?: {item.COUNT}");
 
                         switch (item.COUNT)
                         {
@@ -999,7 +999,7 @@ public class BattleManager : MonoBehaviour
                         //이미 스턴 상태이면 해제되지 않도록
                         if (!stuned1)
                         {
-                            print($"스턴 상태 정상동작? {r}");
+                            //print($"스턴 상태 정상동작? {r}");
                             // 1 - 스턴확률(0.2라면 0.8)보다 r이 크면 성공
                             if (r > (1f - item.ENHANCE_STUNED))
                             {
@@ -1608,7 +1608,7 @@ public class BattleManager : MonoBehaviour
                     if (enemy.hp <= 0)
                     {
                         //적사망(승리)
-                        StartCoroutine(EnemyDeath());
+                        EnemyDeathCall();
                         yield break;
                     }
                     //아이템이 한바퀴 돌았을 때
@@ -1627,7 +1627,8 @@ public class BattleManager : MonoBehaviour
                             if (enemy.hp <= 0)
                             {
                                 // 적 사망(승리)
-                                StartCoroutine(EnemyDeath());
+                                EnemyDeathCall();
+                                //StartCoroutine(EnemyDeath());
                             }
                             else
                             {
@@ -1791,7 +1792,7 @@ public class BattleManager : MonoBehaviour
             if (enemy.hp <= 0)
             {
                 //적사망(승리)
-                StartCoroutine(EnemyDeath());
+                EnemyDeathCall();
                 yield break;
             }
         }
@@ -1936,15 +1937,21 @@ public class BattleManager : MonoBehaviour
         Destroy(enemyEffect);
     }
 
+    void EnemyDeathCall()
+    {
+        StartCoroutine(EnemyDeath());
+    }
+
     IEnumerator EnemyDeath()
     {
         //Animator anim = enemy.GetComponent<Animator>();
         //anim.Play("Death");
         if (enemy.death) yield break;
         enemy.death = true;
+        playerTurn = false;
+        enemyTurn = false;
 
-        //적 죽음 애니메이션
-        enemy.Death();
+        yield return new WaitForSeconds(0.5f);
 
         //빠른 클리어 보상
         if(turn < 5)
@@ -1957,25 +1964,17 @@ public class BattleManager : MonoBehaviour
             itemManager.PlusGold(stageManager.Round * stageManager.SelectedStage * 5);
         }
 
-        yield return new WaitForSeconds(1.5f);
+        //적 죽음 애니메이션
+        enemy.Death();
 
-        playerTurn = false;
-        enemyTurn = false;
+        yield return new WaitForSeconds(1f);
+
         GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[5]);
         enemyEffect.transform.position = enemy.transform.position;
         Destroy(enemy.gameObject);
 
         //라운드 확인 작업필요
         stageManager.Round ++;
-
-        //if (stageManager.Round > 5)
-        //{
-        //    //아이템 강화, 골드 초기화
-        //    //itemManager.Init();
-
-            
-        //}
-        //enemyManager.SpawnEnemy(currentStageIndex, round);
 
         yield return new WaitForSeconds(1.5f);
         Destroy(enemyEffect);

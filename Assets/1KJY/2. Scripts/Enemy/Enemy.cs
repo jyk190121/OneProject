@@ -151,7 +151,7 @@ public abstract class Enemy : MonoBehaviour
     // 이제 자식들은 내부 로직만 신경 쓰면 됨
     virtual public void Attack() { animator.SetTrigger("AttackTrigger"); }
     virtual public void SpecialAttack() { animator.SetTrigger("SpecialATrigger"); }
-    virtual public void Death() { animator.SetTrigger("DeathTrigger"); }
+    virtual public void Death() { animator.SetTrigger("DeathTrigger");}
 
 
     virtual public void UpdateHpShildSet()

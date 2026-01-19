@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
-  m_Name: SkeletonMage_2
+  m_Name: CrystalGolem
   m_EditorClassIdentifier: 
-  enemyName: SkeletonMage
-  enemyPrefab: {fileID: 6679783802021260202, guid: cc5dae0148e3de64cad2f618a08f87db, type: 3}
-  maxHp: 150
+  enemyName: CrystalGolem
+  enemyPrefab: {fileID: 7458748613824806050, guid: abb08ce993549f04ea69db5809d42793, type: 3}
+  maxHp: 1000
   maxSh: 10000
-  minAtt1: 10
-  baseAtt1: 12
-  minAtt2: 150
-  baseAtt2: 400
-  recovery: 5000
-  heal: 30
+  minAtt1: 50
+  baseAtt1: 300
+  minAtt2: 20
+  baseAtt2: 40
+  recovery: 400
+  heal: 400

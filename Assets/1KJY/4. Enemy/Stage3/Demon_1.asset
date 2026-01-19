@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
-  m_Name: SkeletonMage_1
+  m_Name: Demon_1
   m_EditorClassIdentifier: 
-  enemyName: SkeletonMage
-  enemyPrefab: {fileID: 6679783802021260202, guid: 0f9692da27a35e64fb6c73920e21165e, type: 3}
-  maxHp: 50
-  maxSh: 9000
+  enemyName: Demon
+  enemyPrefab: {fileID: 3676971076677257608, guid: c7968af9fdcdc03429b2cb2278b77c98, type: 3}
+  maxHp: 2000
+  maxSh: 500
   minAtt1: 10
-  baseAtt1: 20
-  minAtt2: 120
-  baseAtt2: 220
-  recovery: 4000
-  heal: 10
+  baseAtt1: 99
+  minAtt2: 60
+  baseAtt2: 99
+  recovery: 200
+  heal: 300

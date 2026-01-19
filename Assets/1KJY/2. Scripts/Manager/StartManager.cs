@@ -83,6 +83,7 @@ public class StartManager : MonoBehaviour
         {
             Image arenaBtnImg = arenaBtn.GetComponent<Image>();
             arenaBtnImg.color = new Color(1f, 1f, 1f, 1f);
+            arenaBtn.onClick.AddListener(ArenaStart);
         }
     }
 
@@ -365,5 +366,10 @@ public class StartManager : MonoBehaviour
     void CancelSelection()
     {
         if (selectionOutline != null) selectionOutline.gameObject.SetActive(false);
+    }
+
+    void ArenaStart()
+    {
+        GameSceneManager.Instance.LoadSceneAsync("ArenaScene");
     }
 }

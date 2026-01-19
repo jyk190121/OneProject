@@ -1757,7 +1757,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 500}
+  m_SizeDelta: {x: 70, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &878145000
 MonoBehaviour:
@@ -2469,7 +2469,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 500}
+  m_SizeDelta: {x: 70, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1455378924
 MonoBehaviour:
@@ -2681,8 +2681,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 740, y: 177}
-  m_SizeDelta: {x: 20, y: 500}
+  m_AnchoredPosition: {x: 795, y: 175.7}
+  m_SizeDelta: {x: 70, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1514031818
 MonoBehaviour:
@@ -3092,8 +3092,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 704, y: 177}
-  m_SizeDelta: {x: 20, y: 500}
+  m_AnchoredPosition: {x: 700, y: 175.7}
+  m_SizeDelta: {x: 70, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1763011945
 MonoBehaviour:
@@ -4137,7 +4137,7 @@ MonoBehaviour:
   - stageName: "\uC2A4\uD14C\uC774\uC9C04"
     normalEnemies:
     - {fileID: 11400000, guid: 48fc92c488eb0b8419506ebf4a944430, type: 2}
-    - {fileID: 11400000, guid: c0e6a06734c76414094b9e8572d93d00, type: 2}
+    - {fileID: 11400000, guid: ca50aae9fb894814ebdbac3b33d748df, type: 2}
     - {fileID: 11400000, guid: f534bf9199b9b5e43a2a9871c0832427, type: 2}
     - {fileID: 11400000, guid: 5b3651531fd22294faad5b052f9d8823, type: 2}
     bossEnemy: {fileID: 11400000, guid: 8e3113ada7028344c8e95163e9e142d6, type: 2}
@@ -4164,8 +4164,8 @@ MonoBehaviour:
     bossEnemy: {fileID: 11400000, guid: fdb50c8e5776bbb43bbc983665e2bbfe, type: 2}
   - stageName: "\uC2A4\uD14C\uC774\uC9C08"
     normalEnemies:
-    - {fileID: 11400000, guid: 8e3113ada7028344c8e95163e9e142d6, type: 2}
-    - {fileID: 11400000, guid: d33a5352f09399c498b663997e684dc7, type: 2}
+    - {fileID: 11400000, guid: b8bdcfc6ffebf7541850e7e780640a1d, type: 2}
+    - {fileID: 11400000, guid: be066977cd717804685f7d03c728d653, type: 2}
     - {fileID: 11400000, guid: fdb50c8e5776bbb43bbc983665e2bbfe, type: 2}
     - {fileID: 11400000, guid: 228e1fbfbeb99264a8a59cc986c16f10, type: 2}
     bossEnemy: {fileID: 11400000, guid: 6adac41f82dcdb64b8328da8e1c75fbd, type: 2}

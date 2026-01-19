@@ -25,7 +25,7 @@ using UnityEngine.UI;
 ///   7. 아레나 모드
 ///   - 점수 표시
 /// </summary>
-public class BattleManager : MonoBehaviour
+public class ArenaManager : MonoBehaviour
 {
     
     List<Item> allItemDatas;

@@ -244,6 +244,7 @@ public class ItemManager : MonoBehaviour
         if (Input.GetKeyDown(Key.F1))
         {
             SetGold(2000);
+            GameSceneManager.Instance.RestartScene();
         }
 
         if (Input.GetKeyDown(Key.F2))
@@ -252,6 +253,7 @@ public class ItemManager : MonoBehaviour
             foreach (Item item in allItemDatas)
             {
                 AddItem(item);
+                GameSceneManager.Instance.RestartScene();
             }
         }
 

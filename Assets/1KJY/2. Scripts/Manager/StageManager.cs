@@ -79,6 +79,7 @@ public class StageManager : MonoBehaviour
         if(Input.GetKeyDown(Key.F3))
         {
             UnlockNextStage(10);
+            GameSceneManager.Instance.RestartScene();
         }
     }
 

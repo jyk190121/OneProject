@@ -83,9 +83,9 @@ public class BattleManager : MonoBehaviour
         {"사과", 0},
         {"에너지", 0},
         {"물리에너지", 0},
-        {"물리에너지_대", 0},
+        {"물리에너지대", 0},
         {"마법에너지", 0},
-        {"마법에너지_대", 0},
+        {"마법에너지대", 0},
         {"특수에너지", 0},
         {"화염방패", 0},
         {"골드", 0},
@@ -620,10 +620,11 @@ public class BattleManager : MonoBehaviour
                                 Energy(item.ENHANCE_PLUSATK * 9, item.ENHANCE_PLUSMATK * 9);
                                 break;
                         }
+                        player.UpdateEnhanceUI();
                         yield return new WaitForSeconds(0.5f);
                     }
 
-                    if (item.NAME.Equals("물리에너지") || item.NAME.Equals("물리에너지_대"))
+                    if (item.NAME.Equals("물리에너지") || item.NAME.Equals("물리에너지대"))
                     {
                         for (int i = 0; i < matchedItems.Count; i++)
                         {
@@ -660,10 +661,11 @@ public class BattleManager : MonoBehaviour
                                 Energy(item.ENHANCE_PLUSATK * 9, 0);
                                 break;
                         }
+                        player.UpdateEnhanceUI();
                         yield return new WaitForSeconds(0.5f);
                     }
-
-                    if (item.NAME.Equals("마법에너지") || item.NAME.Equals("마법에너지_대"))
+                    
+                    if (item.NAME.Equals("마법에너지") || item.NAME.Equals("마법에너지대"))
                     {
                         for (int i = 0; i < matchedItems.Count; i++)
                         {
@@ -681,6 +683,8 @@ public class BattleManager : MonoBehaviour
                                 break;
                             }
                         }
+
+                        print($"{item.NAME} 의 갯수 ?: {item.COUNT}");
 
                         switch (item.COUNT)
                         {
@@ -700,6 +704,7 @@ public class BattleManager : MonoBehaviour
                                 Energy(0, item.ENHANCE_PLUSMATK * 9);
                                 break;
                         }
+                        player.UpdateEnhanceUI();
                         yield return new WaitForSeconds(0.5f);
                     }
 
@@ -1567,6 +1572,7 @@ public class BattleManager : MonoBehaviour
                     ring3++;
                     goldIndex++;
                     stone++;
+                    print($"{item.NAME} 확인");
 
                     currentEffects[num] = Instantiate(itemPrefab);
                     currentEffects[num].transform.position = itemPos;

@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI goldTxt;         //보유 골드 텍스트
 
     public TextMeshProUGUI poisonTxt;
+    public TextMeshProUGUI atkTxt;
+    public TextMeshProUGUI matkTxt;
 
     public float hp;       //ü��
     public float maxHp;    //�ִ�ü��
@@ -37,6 +39,7 @@ public class Player : MonoBehaviour
         UpdateHpShildSet();
         UpdatePosionUI();
         UpdateGoldUI();
+        UpdateEnhanceUI();
     }
 
     //������Ʈ ����
@@ -53,6 +56,13 @@ public class Player : MonoBehaviour
     {
         poisonTxt.text = poison.ToString();
     }
+
+    public void UpdateEnhanceUI()
+    {
+        atkTxt.text = att1.ToString();
+        matkTxt.text= att2.ToString();
+    }
+
 
     public void UpdateGoldUI()
     {

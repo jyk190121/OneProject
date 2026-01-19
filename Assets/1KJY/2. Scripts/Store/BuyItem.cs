@@ -94,11 +94,14 @@ public class BuyItem : MonoBehaviour
                         // 대신 해당 칸을 무효화 처리
                         storeItems[i] = null;
                         buyItemImgs[i].gameObject.SetActive(false);
-                        buyItemPrices[i].text = "MAX";
+                        enhanceImgs[i].gameObject.SetActive(false);
+                        buyItemPrices[i].text = "";
+                        //buyItemPrices[i].GetComponentInParent<Image>().gameObject.SetActive(false);
                         buyItemBtns[i].interactable = false;
                     }
                     else
                     {
+                        //buyItemPrices[i].GetComponentInParent<Image>().gameObject.SetActive(true);
                         finalPrice *= (int)Mathf.Pow(2, myItem.ENHANCE);
                         buyItemPrices[i].text = $"{finalPrice}";
                     }

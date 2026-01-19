@@ -45,14 +45,30 @@ public abstract class Enemy : MonoBehaviour
     public Animator animator;        // 적 애니메이션
 
     EnemyManager enemyManager;
+    ArenaManager arenaManager;
 
     protected virtual void Awake()
     {
         // 매번 GetComponentInChildren을 호출하는 것은 성능에 좋지 않으므로 미리 캐싱합니다.
-        enemyManager = FindAnyObjectByType<EnemyManager>();
         animator = GetComponentInChildren<Animator>();
-        hpBar = enemyManager.hpBar;
-        shildBar = enemyManager.shildBar;
+
+        if (GameSceneManager.Instance.SceneName() != "ArenaScene")
+        {
+            enemyManager = FindAnyObjectByType<EnemyManager>();
+            arenaManager = null;
+
+            hpBar = enemyManager.hpBar;
+            shildBar = enemyManager.shildBar;
+        }
+        else
+        {
+            arenaManager = FindAnyObjectByType<ArenaManager>();
+            enemyManager = null;
+
+            hpBar = arenaManager.hpBar;
+            shildBar = arenaManager.shildBar;
+        }
+
 
         // 데이터가 할당되어 있다면 초기화
         if (data != null)

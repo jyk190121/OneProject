@@ -11,18 +11,27 @@ public class OverUI : MonoBehaviour
     List<GameObject> newItemPrefabs;            //죽기전까지 새로 산 아이템리스트
    
     public TextMeshProUGUI goldText;            //죽기전까지 모은 골드
+    public TextMeshProUGUI scoreText;           //아레나모드 점수
     ItemManager itemManager;
 
     List<Item> newItemList;
+
+    ScoreManager scoreManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         itemManager = FindAnyObjectByType<ItemManager>();
-
+        scoreManager = FindAnyObjectByType<ScoreManager>();
+        
         if (itemManager != null)
         {
             goldText.text = itemManager.GetGold().ToString();
             newItemList = itemManager.GetNewItems();
+        }
+
+        if(scoreManager != null)
+        {
+            scoreText.text = scoreManager.score.ToString();
         }
 
         // 1. 리스트가 null인 경우를 대비해 여기서 한 번 더 확인하거나 상단에서 초기화 필수

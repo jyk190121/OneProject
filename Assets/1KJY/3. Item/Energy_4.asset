@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Energy_4
   m_EditorClassIdentifier: 
   id: 0
-  NAME: "\uB9C8\uBC95\uC5D0\uB108\uC9C0\uB300"
+  NAME: "\uB9C8\uBC95\uC5D0\uB108\uC9C0(\uB300)"
   IMAGE: {fileID: 21300000, guid: 4e9677621fcb7df4c8fbcac3242e4c2d, type: 3}
-  PRICE: 125
+  PRICE: 250
   ENHANCE: 0
   GOLD: 0
   MINATK: 0

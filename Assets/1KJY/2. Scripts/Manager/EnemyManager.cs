@@ -83,9 +83,12 @@ public class EnemyManager : MonoBehaviour
 
         GameObject obj = Instantiate(enemyPrefab, spawnPoint);
         currentEnemy = obj.GetComponent<Enemy>();
+
         obj.transform.position = Vector3.down;
-        //if (targetData.enemyName == "Butcher" || targetData.enemyName == "CrystalGolem") { obj.transform.position = Vector3.down; }
+        if (targetData.enemyName == "Demon") { obj.transform.position = Vector3.zero; }
+
         obj.transform.localScale = new Vector3(-1, 1, 1);
+        if(targetData.enemyName == "GhostKnight") obj.transform.localScale = new Vector3(-0.7f, 0.7f, 0.7f);
 
         // Enemy.cs에 만든 Setup 함수 호출 (데이터 주입)
         currentEnemy.Setup(targetData);

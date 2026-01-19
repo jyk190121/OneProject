@@ -17,8 +17,8 @@ MonoBehaviour:
   maxHp: 60000
   maxSh: 60000
   minAtt1: 10
-  baseAtt1: 100
+  baseAtt1: 1000
   minAtt2: 10
-  baseAtt2: 100
+  baseAtt2: 1000
   recovery: 1000
   heal: 1000

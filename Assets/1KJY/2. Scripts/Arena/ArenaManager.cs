@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -27,7 +28,9 @@ using UnityEngine.UI;
 /// </summary>
 public class ArenaManager : MonoBehaviour
 {
-    
+    public Image hpBar;
+    public Image shildBar;
+
     List<Item> allItemDatas;
 
     public SlotSpinner[] slotSpinner;
@@ -37,7 +40,6 @@ public class ArenaManager : MonoBehaviour
     public GameObject itemPrefab;
     public GameObject[] currentEffects;
     public Enemy enemy;
-    //public List<Enemy> enemies;
 
     public Button stopBtn;              //�������� ��ư
 
@@ -50,19 +52,16 @@ public class ArenaManager : MonoBehaviour
     bool playerSlotCheck;
     bool isEnemyturnning;
 
-    //bool cri1;              //ġ��Ÿ
-    //bool cri2;              //�ް�ġ��Ÿ
-
-    public bool stuned1;    //��˽���
-    public bool stuned2;    //��޵�������
+    public bool stuned1;    //대검
+    public bool stuned2;    //고급도끼
+    public bool stuned3;    //해골도끼
+    public bool stuned4;    //천둥망치
 
     public TextMeshProUGUI turnTxt;
     public TextMeshProUGUI statusTxt;
 
-    StageManager stageManager;              //현재 진입한 스테이지
-    int currentStageIndex;
-
-    EnemyManager enemyManager;
+    ScoreManager scoreManager;
+    EnemyArenaManager enemyManager;
     ItemManager itemManager;
 
     public GameObject goldParent;               //골드 프리팹 생성할 위치
@@ -72,9 +71,8 @@ public class ArenaManager : MonoBehaviour
     bool enemyActionCeheck = false;             // 1턴에 1번
     int actionEnemy;
 
-    public TextMeshProUGUI stageTxt;
     public TextMeshProUGUI roundTxt;
-    //public TextMeshProUGUI enemyName;
+    public TextMeshProUGUI scoreTxt;
     int turn;
 
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
@@ -112,13 +110,13 @@ public class ArenaManager : MonoBehaviour
     void Awake()
     {
         InitializeSceneObjects();
-        stageTxt.text = $"스테이지 {stageManager.SelectedStage}";
-        if (stageManager.Round != 5) roundTxt.text = $"{stageManager.Round} 라운드";
-        else roundTxt.text = "보스";
+        roundTxt.text = $"{scoreManager.round} 라운드";
+        scoreTxt.text = scoreManager.score.ToString();
     }
 
     void Update()
     {
+
         if (player != null && enemy != null && stopBtn != null)
         {
             StatusTurn();
@@ -135,10 +133,6 @@ public class ArenaManager : MonoBehaviour
             // 플레이어 턴
             if (spawnedSlots[spawnedSlots.Length - 1].isSpinning == false && playerSlotCheck)
             {
-                //SpinStart();
-
-                // ComboCount 계산
-                //ComboCri(ComboCount(items));
 
                 // 플레이어 아이템 효과 발동 및 생성
                 StartCoroutine(ItemEffect(items));
@@ -152,69 +146,6 @@ public class ArenaManager : MonoBehaviour
             }
         }
     }
-
-    //// 콤보 확인
-    //string ComboCount(string[] itmes)
-    //{
-    //    string lastItem = null;
-
-    //    foreach (string item in itmes)
-    //    {
-    //        if (itemDict.TryGetValue(item, out int equalsCount))
-    //        {
-    //            if (item == lastItem && lastItem != null)
-    //            {
-    //                itemDict[item]++;
-    //            }
-    //            else
-    //            {
-    //                itemDict[item] = 1;
-    //            }
-    //        }
-    //        lastItem = item;
-    //    }
-
-    //    // 치명타, 메가치명타 여부 확인
-    //    for (int i = 0; i < items.Length; i++)
-    //    {
-    //        if (itemDict.TryGetValue(items[i], out int equalsCount))
-    //        {
-    //            if (equalsCount >= 3 && equalsCount != 5)
-    //            {
-    //                print($"{items[i]} 치명타 ");
-    //                cri1 = true;
-    //                return items[i];
-    //            }
-
-    //            if (equalsCount == 5)
-    //            {
-    //                print($"{items[i]} 메가치명타");
-    //                cri2 = true;
-    //                return items[i];
-    //            }
-    //        }
-    //    }
-
-    //    // 콤보 횟수 초기화
-    //    for (int i = 0; i < items.Length; i++)
-    //    {
-    //        itemDict[items[i]] = 1;
-    //    }
-
-    //    return null;
-    //}
-
-    //void ComboCri(string item)
-    //{
-    //    if (cri1 == true)
-    //    {
-    //        itemDict[item] = 3;
-    //    }
-    //    else if (cri2 == true)
-    //    {
-    //        itemDict[item] = 5;
-    //    }
-    //}
 
     // 플레이어 슬롯 스피너 생성
     void SpinSlotCreate()
@@ -248,12 +179,6 @@ public class ArenaManager : MonoBehaviour
             enemyActionCeheck = true;
         }
 
-        //// 플레이어 슬롯이 돌아가기 시작하는 시점에 딱 한 번만 결정
-        //if (playerSlotCheck && !enemyActionCeheck)
-        //{
-        //    //DetermineEnemyNextAction();
-        //    enemyActionCeheck = true; // 플레이어 턴 동안 다시 실행 안 되게 막음
-        //}
 
         // 턴 게임이 시작되면 플레이어 턴으로
         playerTurn = true;
@@ -289,7 +214,6 @@ public class ArenaManager : MonoBehaviour
         else if (actionEnemy == 8) nextEnemyActionTxt.text = $"체력 {enemy.heal} 회복";
         else nextEnemyActionTxt.text = "일반공격(물리)";
 
-        //print($"[의도 결정] 적의 다음 행동: {actionEnemy}");
     }
 
 
@@ -330,41 +254,6 @@ public class ArenaManager : MonoBehaviour
     // 애니메이션 효과 or 파티클 생성 + 데미지 계산
     IEnumerator ItemEffect(string[] items)
     {
-        ////이전 아이템명과 동일한지 체크
-        //string lastItem = null;
-
-        //// [단계 1] 중복 갯수 초기화 및 계산
-        //// 딕셔너리의 모든 값을 0으로 리셋
-        //List<string> keys = new List<string>(itemDict.Keys);
-        //foreach (string key in keys) itemDict[key] = 0;
-
-        //List<Item> matchedItems = new List<Item>();
-
-        //foreach (string name in items)
-        //{
-        //    if (string.IsNullOrEmpty(name)) continue;
-
-        //    //if (name == lastItem)
-        //    //{
-        //    //    // 갯수 누적
-        //    //    if (itemDict.ContainsKey(name)) itemDict[name]++;
-        //    //}
-        //    //else
-        //    //{
-        //    //    if (itemDict.ContainsKey(name)) itemDict[name] = 1;
-        //    //}
-
-        //    // [단계 2] 이름에 맞는 실제 Item 데이터 찾기 (allItemDatas에서)
-        //    Item data = allItemDatas.Find(x => x.NAME == name);
-        //    if (data != null)
-        //    {
-        //        matchedItems.Add(data);
-        //    }
-
-        //    //print($"{itemDict[name]} 콤보확인");
-        //    //lastItem = name;
-        //}
-
         // 1. 초기화 로직 (딕셔너리 리셋 등 기존 코드 유지)
         List<string> keys = new List<string>(itemDict.Keys);
         foreach (string key in keys) itemDict[key] = 0;
@@ -396,18 +285,6 @@ public class ArenaManager : MonoBehaviour
         {
             foreach (Item item in matchedItems)
             {
-                //if (item.NAME == lastItem)
-                //{
-                //    // 갯수 누적
-                //    if (itemDict.ContainsKey(item.NAME)) itemDict[item.NAME]++;
-                //}
-                //else
-                //{
-                //    if (itemDict.ContainsKey(item.NAME)) itemDict[item.NAME] = 1;
-                //}
-
-                //lastItem = item.NAME;
-
                 // 콤보 계산 로직
                 if (item.NAME == lastItem) itemDict[item.NAME]++;
                 else itemDict[item.NAME] = 1;
@@ -418,7 +295,6 @@ public class ArenaManager : MonoBehaviour
                 else if (itemDict[item.NAME] < 5) item.COUNT = 2;
                 else item.COUNT = 3;
 
-                //print($"개수 카운트{itemDict[item.NAME]}");
 
                 if (itemDict[item.NAME] >= 0 &&
                   itemDict[item.NAME] < 3)
@@ -432,7 +308,6 @@ public class ArenaManager : MonoBehaviour
                 }
                 else if (itemDict[item.NAME] == 5)
                 {
-                    //item.COUNT = 3;
                     item.COUNT = 3;
                 }
                 else
@@ -828,6 +703,7 @@ public class ArenaManager : MonoBehaviour
                         //print("공격 20 공격 20");
                         float att1 = 0;
                         float att2 = 0;
+                        float r = (Random.Range(0f, 1f));
 
                         switch (item.COUNT)
                         {
@@ -840,12 +716,26 @@ public class ArenaManager : MonoBehaviour
                                 att1 = (Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) * 3) + player.att1;
                                 att2 = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 3) + player.att2;
                                 action = $"치명타!\n물공 {att1} , 마공 {att2}";
+                                r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att1 = (Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) * 9) + player.att1;
                                 att2 = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 9) + player.att2;
                                 action = $"메가치명타!\n물공 {att1} , 마공 {att2}";
+                                r = 1;
                                 break;
+                        }
+
+                        //이미 스턴 상태이면 해제되지 않도록
+                        if (!stuned3)
+                        {
+                            //print($"스턴 상태 정상동작? {r}");
+                            // 1 - 스턴확률(0.2라면 0.8)보다 r이 크면 성공
+                            if (r > (1f - item.ENHANCE_STUNED))
+                            {
+                                stuned1 = true;
+                                nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";
+                            }
                         }
 
                         itemPos = Vector3.up;
@@ -862,6 +752,8 @@ public class ArenaManager : MonoBehaviour
 
                         //마법데미지 적용
                         enemy.hp -= att2;
+                        scoreManager.AddScore((int)att2);
+
                         enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
@@ -898,6 +790,8 @@ public class ArenaManager : MonoBehaviour
 
                         //마법데미지
                         enemy.hp -= att;
+                        scoreManager.AddScore((int)att);
+
                         enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
@@ -1079,6 +973,7 @@ public class ArenaManager : MonoBehaviour
                     if (item.NAME.Equals("천둥망치"))
                     {
                         //마공 30~100
+                        float r = (Random.Range(0f, 1f));
                         float att = 0;
 
                         switch (item.COUNT)
@@ -1090,14 +985,27 @@ public class ArenaManager : MonoBehaviour
                             case 2:
                                 att = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 3) + player.att2;
                                 action = $"치명타!\n마공 {att}";
+                                r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 9) + player.att2;
                                 action = $"메가치명타!\n마공 {att}";
+                                r = 1;
                                 break;
                         }
 
                         itemPos = Vector3.up;
+
+                        if (!stuned4)
+                        {
+                            print($"스턴 상태 정상동작? {r}");
+                            if (r > (1f - item.ENHANCE_STUNED))
+                            {
+                                stuned2 = true;
+                                nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";
+                            }
+                        }
+
 
                         if (item.EFFECT != null)
                         {
@@ -1108,6 +1016,8 @@ public class ArenaManager : MonoBehaviour
 
                         //마법데미지
                         enemy.hp -= att;
+                        scoreManager.AddScore((int)att);
+
                         enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
@@ -1150,21 +1060,24 @@ public class ArenaManager : MonoBehaviour
                     if (item.NAME.Equals("해골방패"))
                     {
                         float shild = item.ENHANCE_SHILD;
+                        float shildMax = item.ENHANCE_PLUS_SHILD;
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"방어도 {shild} 회복";
-                                Shield(shild, 0);
+                                action = $"방어도 {shild} 회복\n방어도 {shildMax} 증가";
+                                Shield(shild, shildMax);
                                 break;
                             case 2:
                                 shild *= 3;
-                                action = $"치명타!\n방어도 {shild} 회복";
-                                Shield(shild, 0);
+                                shildMax *= 3;
+                                action = $"치명타!\n방어도 {shild} 회복\n방어도 {shildMax} 증가";
+                                Shield(shild, shildMax);
                                 break;
                             case 3:
                                 shild *= 9;
-                                action = $"메가치명타!\n방어도 {shild} 회복";
-                                Shield(shild, 0);
+                                shildMax *= 9;
+                                action = $"메가치명타!\n방어도 {shild} 회복\n방어도 {shildMax} 증가";
+                                Shield(shild, shildMax);
                                 break;
                         }
 
@@ -1578,6 +1491,9 @@ public class ArenaManager : MonoBehaviour
                     currentEffects[num].transform.position = itemPos;
                     //itemArray[num].GetComponent<SpriteRenderer>().sortingOrder = 11;
 
+                    //ScoreUI업데이트
+                    scoreTxt.text = scoreManager.score.ToString();
+
                     //적 앞에 소환
                     ParticleSystemRenderer effectRender = currentEffects[num].GetComponent<ParticleSystemRenderer>();
                     SpriteRenderer goldEffectRederer = currentEffects[num].GetComponent<SpriteRenderer>();
@@ -1720,7 +1636,7 @@ public class ArenaManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        if (stuned1 || stuned2)
+        if (stuned1 || stuned2 || stuned3 || stuned4)
         {
             Status("기절!");
             enemy.Stuned();
@@ -1728,6 +1644,8 @@ public class ArenaManager : MonoBehaviour
 
             stuned1 = false;
             stuned2 = false;
+            stuned3 = false;
+            stuned4 = false;
         }
         else
         {
@@ -1774,6 +1692,9 @@ public class ArenaManager : MonoBehaviour
             GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[2]);
             enemyEffect.transform.position = enemy.transform.position;
             enemy.hp -= player.poison;
+            scoreManager.AddScore((int)player.poison);
+            scoreTxt.text = scoreManager.score.ToString();
+
             Status($"<color=yellow> 독 피해 : {player.poison}");
             player.poison -= 2f;
             if (player.poison <= 0)
@@ -1949,12 +1870,12 @@ public class ArenaManager : MonoBehaviour
         //빠른 클리어 보상
         if(turn < 5)
         {
-            itemManager.PlusGold(stageManager.Round * stageManager.SelectedStage * 20);
+            itemManager.PlusGold(scoreManager.round * 20);
         }
         //일반 보상
         else
         {
-            itemManager.PlusGold(stageManager.Round * stageManager.SelectedStage * 5);
+            itemManager.PlusGold(scoreManager.round * 5);
         }
 
         yield return new WaitForSeconds(1.5f);
@@ -1966,38 +1887,15 @@ public class ArenaManager : MonoBehaviour
         Destroy(enemy.gameObject);
 
         //라운드 확인 작업필요
-        stageManager.Round ++;
-
-        //if (stageManager.Round > 5)
-        //{
-        //    //아이템 강화, 골드 초기화
-        //    //itemManager.Init();
-
-            
-        //}
-        //enemyManager.SpawnEnemy(currentStageIndex, round);
+        scoreManager.round ++;
 
         yield return new WaitForSeconds(1.5f);
         Destroy(enemyEffect);
 
         yield return new WaitForSeconds(1.5f);
 
-        //안끝났다면 다음 라운드 이동
-
-        //스테이지 상승 후 Round 1로 초기화 및 StartScene로
-        if (stageManager.Round > 5)
-        {
-            currentStageIndex++;
-            stageManager.SelectedStage++;
-
-            stageManager.Round = 1;
-            stageManager.UnlockNextStage(stageManager.SelectedStage);
-            //GameSceneManager.Instance.LoadSceneAsync("StageScene");
-            //yield return null;
-        }
-        print($"현재 스테이지 {stageManager.SelectedStage}, 현재 라운드 {stageManager.Round}");
         //끝났다면 업그레이드 상점으로 이동
-        GameSceneManager.Instance.LoadScene("UpgradeStoreScene");
+        GameSceneManager.Instance.LoadScene("ArenaUpgradeStoreScene");
 
         yield return null;
     }
@@ -2009,17 +1907,7 @@ public class ArenaManager : MonoBehaviour
         enemyTurn = false;
 
         yield return new WaitForSeconds(1.5f);
-
-        //SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
-        //Destroy(gameObject);
-
-        //AudioManager.audioManager.StopBGM();
-        //AudioManager.audioManager.PlayBGM("Intro");
-
-        stageManager.Round = 1;
-
         GameSceneManager.Instance.LoadScene("GameOverScene");
-        //SceneManager.LoadScene("StartScene");
     }
 
     void Apple(float playerHp)
@@ -2097,45 +1985,32 @@ public class ArenaManager : MonoBehaviour
         {
             enemy.hp -= att1;
         }
+
+        scoreManager.AddScore((int)att1);
     }
 
     
     void InitializeSceneObjects()
     {
-        //if (AudioManager.audioManager.IsPlaying("Intro"))
-        //{
-        //    AudioManager.audioManager.StopBGM();
-        //}
-        //AudioManager.audioManager.SetBGMOnlyVol(AudioManager.audioManager.bgmSource.volume);
 
         // UI 다시 찾기
         stopBtn = GameObject.FindWithTag("StopBtn")?.GetComponent<Button>();
         statusTxt = GameObject.FindWithTag("StatusTxt")?.GetComponent<TextMeshProUGUI>();
         turnTxt = GameObject.FindWithTag("TurnTxt")?.GetComponent<TextMeshProUGUI>();
         slotParent = GameObject.FindWithTag("Slot");
-        stageManager = FindAnyObjectByType<StageManager>();
-        //enemyManager = FindAnyObjectByType<EnemyManager>();
-        
-        enemyManager = EnemyManager.Instance;
+
+        // 매니저 참조 및 리스트 초기화
+
         itemManager = ItemManager.Instance;
+        enemyManager = FindAnyObjectByType<EnemyArenaManager>();
+        scoreManager = FindAnyObjectByType<ScoreManager>();
+
         player = FindFirstObjectByType<Player>();
-        //int r = Random.Range(0, enemyObjects.Length);
 
         allItemDatas = itemManager.allItemDatas;
 
-        if (stageManager != null)
-        {
-            currentStageIndex = stageManager.SelectedStage  - 1 ;
-        }
-
-        //스테이지 값 받아서 해당 스테이지 몬스터만 출현
-        //int r = currentStageIndex;
-        //Enemy[] enemies = new Enemy[enemyObjects.Length];
-        //enemies[r] = FindAnyObjectByType<Enemy>();
-        //enemy = enemies[r];
-        //EnemyCreate(currentStageIndex);
-
-        enemyManager.SpawnEnemy(currentStageIndex, stageManager.Round);
+        enemyManager.SpawnEnemy(scoreManager.round);
+        print($"현재라운드 : {scoreManager.round}");
 
         enemy = enemyManager.currentEnemy;
 

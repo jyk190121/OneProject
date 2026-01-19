@@ -38,6 +38,9 @@ public class StartManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //아레나모드 진행 중 스타트씬으로 돌아와졌을 때 아레나 점수 및 라운드 초기화(게임튕김 등)
+        ScoreManager.Instance.Init();
+
         //게임 시작 시 포커스될 버튼
         newStartBtn.Select();
 
@@ -85,6 +88,7 @@ public class StartManager : MonoBehaviour
             arenaBtnImg.color = new Color(1f, 1f, 1f, 1f);
             arenaBtn.onClick.AddListener(ArenaStart);
         }
+
     }
 
     private void Update()
@@ -370,6 +374,6 @@ public class StartManager : MonoBehaviour
 
     void ArenaStart()
     {
-        GameSceneManager.Instance.LoadSceneAsync("ArenaScene");
+        GameSceneManager.Instance.LoadSceneAsync("ArenaItemSelectScene");
     }
 }

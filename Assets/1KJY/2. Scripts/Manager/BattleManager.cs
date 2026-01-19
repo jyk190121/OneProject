@@ -53,8 +53,10 @@ public class BattleManager : MonoBehaviour
     //bool cri1;              //ġ��Ÿ
     //bool cri2;              //�ް�ġ��Ÿ
 
-    public bool stuned1;    //��˽���
-    public bool stuned2;    //��޵�������
+    public bool stuned1;    //대검
+    public bool stuned2;    //고급도끼
+    public bool stuned3;    //해골도끼
+    public bool stuned4;    //천둥망치
 
     public TextMeshProUGUI turnTxt;
     public TextMeshProUGUI statusTxt;
@@ -83,9 +85,9 @@ public class BattleManager : MonoBehaviour
         {"사과", 0},
         {"에너지", 0},
         {"물리에너지", 0},
-        {"물리에너지대", 0},
+        {"물리에너지(대)", 0},
         {"마법에너지", 0},
-        {"마법에너지대", 0},
+        {"마법에너지(대)", 0},
         {"특수에너지", 0},
         {"화염방패", 0},
         {"골드", 0},
@@ -624,7 +626,7 @@ public class BattleManager : MonoBehaviour
                         yield return new WaitForSeconds(0.5f);
                     }
 
-                    if (item.NAME.Equals("물리에너지") || item.NAME.Equals("물리에너지대"))
+                    if (item.NAME.Equals("물리에너지") || item.NAME.Equals("물리에너지(대)"))
                     {
                         for (int i = 0; i < matchedItems.Count; i++)
                         {
@@ -665,7 +667,7 @@ public class BattleManager : MonoBehaviour
                         yield return new WaitForSeconds(0.5f);
                     }
                     
-                    if (item.NAME.Equals("마법에너지") || item.NAME.Equals("마법에너지대"))
+                    if (item.NAME.Equals("마법에너지") || item.NAME.Equals("마법에너지(대)"))
                     {
                         for (int i = 0; i < matchedItems.Count; i++)
                         {
@@ -828,6 +830,7 @@ public class BattleManager : MonoBehaviour
                         //print("공격 20 공격 20");
                         float att1 = 0;
                         float att2 = 0;
+                        float r = (Random.Range(0f, 1f));
 
                         switch (item.COUNT)
                         {
@@ -840,12 +843,26 @@ public class BattleManager : MonoBehaviour
                                 att1 = (Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) * 3) + player.att1;
                                 att2 = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 3) + player.att2;
                                 action = $"치명타!\n물공 {att1} , 마공 {att2}";
+                                r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att1 = (Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) * 9) + player.att1;
                                 att2 = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 9) + player.att2;
                                 action = $"메가치명타!\n물공 {att1} , 마공 {att2}";
+                                r = 1;
                                 break;
+                        }
+
+                        //이미 스턴 상태이면 해제되지 않도록
+                        if (!stuned3)
+                        {
+                            //print($"스턴 상태 정상동작? {r}");
+                            // 1 - 스턴확률(0.2라면 0.8)보다 r이 크면 성공
+                            if (r > (1f - item.ENHANCE_STUNED))
+                            {
+                                stuned1 = true;
+                                nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";
+                            }
                         }
 
                         itemPos = Vector3.up;
@@ -985,7 +1002,7 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 att = (item.ENHANCE_ATK * 3) + player.att1;
                                 action = $"치명타!\n물공 {att}";
-                                r = 1;
+                                r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att = (item.ENHANCE_ATK * 9) + player.att1;
@@ -1079,6 +1096,7 @@ public class BattleManager : MonoBehaviour
                     if (item.NAME.Equals("천둥망치"))
                     {
                         //마공 30~100
+                        float r = (Random.Range(0f, 1f));
                         float att = 0;
 
                         switch (item.COUNT)
@@ -1090,14 +1108,27 @@ public class BattleManager : MonoBehaviour
                             case 2:
                                 att = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 3) + player.att2;
                                 action = $"치명타!\n마공 {att}";
+                                r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 9) + player.att2;
                                 action = $"메가치명타!\n마공 {att}";
+                                r = 1;
                                 break;
                         }
 
                         itemPos = Vector3.up;
+
+                        if (!stuned4)
+                        {
+                            print($"스턴 상태 정상동작? {r}");
+                            if (r > (1f - item.ENHANCE_STUNED))
+                            {
+                                stuned2 = true;
+                                nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";
+                            }
+                        }
+
 
                         if (item.EFFECT != null)
                         {
@@ -1150,21 +1181,24 @@ public class BattleManager : MonoBehaviour
                     if (item.NAME.Equals("해골방패"))
                     {
                         float shild = item.ENHANCE_SHILD;
+                        float shildMax = item.ENHANCE_PLUS_SHILD;
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"방어도 {shild} 회복";
-                                Shield(shild, 0);
+                                action = $"방어도 {shild} 회복\n방어도 {shildMax} 증가";
+                                Shield(shild, shildMax);
                                 break;
                             case 2:
                                 shild *= 3;
-                                action = $"치명타!\n방어도 {shild} 회복";
-                                Shield(shild, 0);
+                                shildMax *= 3;
+                                action = $"치명타!\n방어도 {shild} 회복\n방어도 {shildMax} 증가";
+                                Shield(shild, shildMax);
                                 break;
                             case 3:
                                 shild *= 9;
-                                action = $"메가치명타!\n방어도 {shild} 회복";
-                                Shield(shild, 0);
+                                shildMax *= 9;
+                                action = $"메가치명타!\n방어도 {shild} 회복\n방어도 {shildMax} 증가";
+                                Shield(shild, shildMax);
                                 break;
                         }
 
@@ -1605,11 +1639,12 @@ public class BattleManager : MonoBehaviour
                             Destroy(currentEffects[i]);
                         }
                     }
-                    if (enemy.hp <= 0)
+                    if (enemy.hp <= 0 && !enemy.death)
                     {
-                        //적사망(승리)
-                        EnemyDeathCall();
-                        yield break;
+                        enemy.death = true; // 플래그를 즉시 세워 중복 진입 방지
+                        StopAllCoroutines(); // 플레이어의 남은 아이템 효과 중단 (선택 사항)
+                        StartCoroutine(EnemyDeath()); // 적 죽음 처리 코루틴 실행
+                        yield break; // 아이템 효과 루프 탈출
                     }
                     //아이템이 한바퀴 돌았을 때
                     if (num == currentEffects.Length)
@@ -1624,11 +1659,18 @@ public class BattleManager : MonoBehaviour
                         // 공격 1회 or 특수능력 1회 or 방어 or 체력회복 
                         if (enemyTurn && !isEnemyturnning)
                         {
-                            if (enemy.hp <= 0)
+                            //if (enemy.hp <= 0)
+                            //{
+                            //    // 적 사망(승리)
+                            //    EnemyDeathCall();
+                            //    //StartCoroutine(EnemyDeath());
+                            //}
+                            if (enemy.hp <= 0 && !enemy.death)
                             {
-                                // 적 사망(승리)
-                                EnemyDeathCall();
-                                //StartCoroutine(EnemyDeath());
+                                enemy.death = true; // 플래그를 즉시 세워 중복 진입 방지
+                                StopAllCoroutines(); // 플레이어의 남은 아이템 효과 중단 (선택 사항)
+                                StartCoroutine(EnemyDeath()); // 적 죽음 처리 코루틴 실행
+                                yield break; // 아이템 효과 루프 탈출
                             }
                             else
                             {
@@ -1721,7 +1763,7 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        if (stuned1 || stuned2)
+        if (stuned1 || stuned2 || stuned3 || stuned4)
         {
             Status("기절!");
             enemy.Stuned();
@@ -1729,6 +1771,8 @@ public class BattleManager : MonoBehaviour
 
             stuned1 = false;
             stuned2 = false;
+            stuned3 = false;
+            stuned4 = false;
         }
         else
         {
@@ -1740,12 +1784,12 @@ public class BattleManager : MonoBehaviour
                 //특수공격
                 EnemySpecialAttack();
             }
-            //방어도 회복(6~7)
+            //방어도 회복(7)
             else if (actionEnemy == 7)
             {
                 EnemyShildRecover();
             }
-            //체력 회복(8~9)
+            //체력 회복(8)
             else if (actionEnemy == 8)
             {
                 EnemyHealing();
@@ -1789,11 +1833,12 @@ public class BattleManager : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
             Destroy(enemyEffect);
 
-            if (enemy.hp <= 0)
+            if (enemy.hp <= 0 && !enemy.death)
             {
-                //적사망(승리)
-                EnemyDeathCall();
-                yield break;
+                enemy.death = true; // 플래그를 즉시 세워 중복 진입 방지
+                StopAllCoroutines(); // 플레이어의 남은 아이템 효과 중단 (선택 사항)
+                StartCoroutine(EnemyDeath()); // 적 죽음 처리 코루틴 실행
+                yield break; // 아이템 효과 루프 탈출
             }
         }
 
@@ -1937,17 +1982,12 @@ public class BattleManager : MonoBehaviour
         Destroy(enemyEffect);
     }
 
-    void EnemyDeathCall()
-    {
-        StartCoroutine(EnemyDeath());
-    }
-
     IEnumerator EnemyDeath()
     {
         //Animator anim = enemy.GetComponent<Animator>();
         //anim.Play("Death");
-        if (enemy.death) yield break;
-        enemy.death = true;
+        //if (enemy.death) yield break;
+        //enemy.death = true;
         playerTurn = false;
         enemyTurn = false;
 

@@ -28,9 +28,9 @@ public class Player : MonoBehaviour
     //새로하기
     public void HpShildSet()
     {
-        maxHp = 100;
-        maxSh = 100;
-        hp = 100;
+        maxHp = 300;
+        maxSh = 0;
+        hp = 300;
         shild = 0;
         att1 = 0;
         att2 = 0;

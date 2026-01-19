@@ -58,9 +58,14 @@ public class StoreManager : MonoBehaviour
         }
 
 
-        if (stageManager != null)
+        if (stageManager != null && GameSceneManager.Instance.SceneName() != "ArenaUpgradeStoreScene")
         {
             nextBtn.onClick.AddListener(() => NextStage(stageManager.SelectedStage));
+            CurrentItemUpdate();
+        }
+        else
+        {
+            nextBtn.onClick.AddListener(() => NextArena());
             CurrentItemUpdate();
         }
 
@@ -69,8 +74,11 @@ public class StoreManager : MonoBehaviour
             sellFailCheckBtn.onClick.AddListener(() => CloseFailUI());
         }
 
-        // 스테이지 선택창으로 돌아가기
-        prevBtn.onClick.AddListener(() => BackStageScene());
+        if(GameSceneManager.Instance.SceneName() != "ArenaUpgradeStoreScene")
+        {
+            // 스테이지 선택창으로 돌아가기
+            prevBtn.onClick.AddListener(() => BackStageScene());
+        }
     }
     public void UpdateSlot(int index, Item item)
     {
@@ -102,6 +110,11 @@ public class StoreManager : MonoBehaviour
     {
         GameSceneManager.Instance.LoadSceneAsync("BattleScene");
     }
+    void NextArena()
+    {
+        GameSceneManager.Instance.LoadSceneAsync("ArenaScene");
+    }
+
 
     //public void UpdateUI()
     //{
@@ -178,4 +191,6 @@ public class StoreManager : MonoBehaviour
         itemManager.Init();
         GameSceneManager.Instance.LoadSceneAsync("StageScene");
     }
+
+
 }

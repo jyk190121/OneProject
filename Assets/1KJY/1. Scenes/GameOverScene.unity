@@ -382,6 +382,7 @@ MonoBehaviour:
   itemPrefabParent: {fileID: 1500318776}
   itemPrefab: {fileID: 7469829335876404183, guid: ed79357bbab276542a87cac9a6d74f2f, type: 3}
   goldText: {fileID: 1219842239}
+  scoreText: {fileID: 1516519078}
 --- !u!114 &395683122
 MonoBehaviour:
   m_ObjectHideFlags: 0

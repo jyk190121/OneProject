@@ -78,6 +78,7 @@ public class ItemManager : MonoBehaviour
         {
             PlusGold(price);
             selectItems.Remove(item);
+            item.ENHANCE = 0;
         }
     }
 

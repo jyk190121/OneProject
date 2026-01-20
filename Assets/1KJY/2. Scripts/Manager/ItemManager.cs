@@ -195,6 +195,7 @@ public class ItemManager : MonoBehaviour
     {
         initialItems.Clear();
         Init();
+
         //초기 아이템 설정
         foreach (Item item in resetItem)
         {

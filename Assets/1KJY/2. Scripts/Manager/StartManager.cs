@@ -41,6 +41,9 @@ public class StartManager : MonoBehaviour
         //아레나모드 진행 중 스타트씬으로 돌아와졌을 때 아레나 점수 및 라운드 초기화(게임튕김 등)
         ScoreManager.Instance.Init();
 
+        //아이템 강화 및 골드 초기화
+        ItemManager.Instance.Init();
+
         //게임 시작 시 포커스될 버튼
         newStartBtn.Select();
 

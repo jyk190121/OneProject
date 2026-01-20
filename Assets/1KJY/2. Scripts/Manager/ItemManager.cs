@@ -183,7 +183,7 @@ public class ItemManager : MonoBehaviour
     public void Init()
     {
         //플레이어 사망 등 아이템 초기화
-        foreach (Item item in initialItems)
+        foreach (Item item in allItemDatas)
         {
             item.ENHANCE = 0;
             gold = 0;
@@ -194,7 +194,7 @@ public class ItemManager : MonoBehaviour
     public void ResetItem()
     {
         initialItems.Clear();
-
+        Init();
         //초기 아이템 설정
         foreach (Item item in resetItem)
         {

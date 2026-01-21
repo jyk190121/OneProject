@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
+  m_Name: Rat_1
+  m_EditorClassIdentifier: 
+  enemyName: Rat
+  enemyPrefab: {fileID: 2695397109250390434, guid: e7e24b7af024ea74193b276bb7b800aa, type: 3}
+  maxHp: 30
+  maxSh: 10
+  minAtt1: 5
+  baseAtt1: 20
+  minAtt2: 10
+  baseAtt2: 28
+  recovery: 5
+  heal: 5

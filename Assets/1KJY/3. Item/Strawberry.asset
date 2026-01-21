@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6d532ca2d8cc404aa62d69c70f64573, type: 3}
+  m_Name: Strawberry
+  m_EditorClassIdentifier: 
+  id: 0
+  NAME: "\uB538\uAE30"
+  IMAGE: {fileID: 21300000, guid: dfda889fa0cbf5a48abcc8195fe0ceff, type: 3}
+  PRICE: 20
+  ENHANCE: 0
+  GOLD: 0
+  MINATK: 0
+  MINMATK: 0
+  ATK: 0
+  MATK: 0
+  PLUSATK: 0
+  PLUSMATK: 0
+  PLUS_HP: 10
+  PLUS_SHILD: 0
+  HP: 20
+  SHILD: 0
+  POISON: 0
+  BLOOD: 0
+  COUNT: 1
+  STUNED: 0
+  EFFECT: {fileID: 805986336052749726, guid: 28d0f30ba85f6704bb9e425eb418eabc, type: 3}
+  EXPLAIN: "\uCCB4\uB825 20 \uD68C\uBCF5\n\uCD5C\uB300 \uCCB4\uB825 10 \uC99D\uAC00"

@@ -14,7 +14,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: DefaultCompany
   productName: SlotGame2_260120
-  defaultCursor: {fileID: 2800000, guid: 8d5ffdc0a89ce7e45b3198359fd914fe, type: 3}
+  defaultCursor: {fileID: 2800000, guid: 0f45821c9378469498c0044ff9068ea2, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_ShowUnitySplashScreen: 1

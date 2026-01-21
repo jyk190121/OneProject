@@ -1914,27 +1914,33 @@ public class BattleManager : MonoBehaviour
                 enemy.Stuned();
                 yield return new WaitForSeconds(1.5f);
 
+                stuned1 = false;
+                stuned2 = false;
+                stuned3 = false;
+                stuned4 = false;
+
                 yield return null;
             }
 
             if (actionEnemy <= 1)
             {
                 //마법공격
-                if (!stuned1 || !stuned2 || !stuned3 || !stuned4)
-                {
-                    EnemySpecialAttack();
-                }
-                else
+                if (stuned1 || stuned2 || stuned3 || stuned4)
                 {
                     stuned1 = false;
                     stuned2 = false;
                     stuned3 = false;
                     stuned4 = false;
                 }
+                else
+                {
+                    EnemySpecialAttack();
+                }
 
                 yield return new WaitForSeconds(1f);
 
                 EnemySpecialAttack();
+
             }
             //방어도 회복(7)
             else if (actionEnemy == 7)
@@ -1973,27 +1979,33 @@ public class BattleManager : MonoBehaviour
                 enemy.Stuned();
                 yield return new WaitForSeconds(1.5f);
 
+                stuned1 = false;
+                stuned2 = false;
+                stuned3 = false;
+                stuned4 = false;
+
                 yield return null;
             }
 
             if (actionEnemy <= 1)
             {
                 //마법공격
-                if (!stuned1 || !stuned2 || !stuned3 || !stuned4)
-                {
-                    EnemySpecialAttack();
-                }
-                else
+                if (stuned1 || stuned2 || stuned3 || stuned4)
                 {
                     stuned1 = false;
                     stuned2 = false;
                     stuned3 = false;
                     stuned4 = false;
                 }
+                else
+                {
+                    EnemySpecialAttack();
+                }
 
                 yield return new WaitForSeconds(1f);
 
                 EnemySpecialAttack();
+
             }
             ////방어도 회복(7)
             //else if (actionEnemy == 7)
@@ -2024,13 +2036,18 @@ public class BattleManager : MonoBehaviour
         else if (enemy.type.Equals("B"))
         {
             if (stuned1 && actionEnemy > 1 ||
-                stuned2 && actionEnemy > 1 ||
-                stuned3 && actionEnemy > 1 ||
-                stuned4 && actionEnemy > 1)
+              stuned2 && actionEnemy > 1 ||
+              stuned3 && actionEnemy > 1 ||
+              stuned4 && actionEnemy > 1)
             {
                 Status("기절!");
                 enemy.Stuned();
                 yield return new WaitForSeconds(1.5f);
+
+                stuned1 = false;
+                stuned2 = false;
+                stuned3 = false;
+                stuned4 = false;
 
                 yield return null;
             }
@@ -2038,21 +2055,22 @@ public class BattleManager : MonoBehaviour
             if (actionEnemy <= 1)
             {
                 //물리공격
-                if (!stuned1 || !stuned2 || !stuned3 || !stuned4)
-                {
-                    EnemyAttack();
-                }
-                else
+                if (stuned1 || stuned2 || stuned3 || stuned4)
                 {
                     stuned1 = false;
                     stuned2 = false;
                     stuned3 = false;
                     stuned4 = false;
                 }
+                else
+                {
+                    EnemyAttack();
+                }
 
                 yield return new WaitForSeconds(1f);
 
                 EnemyAttack();
+
             }
             ////방어도 회복(7)
             //else if (actionEnemy == 7)
@@ -2083,35 +2101,41 @@ public class BattleManager : MonoBehaviour
         else if (enemy.type.Equals("A"))
         {
             if (stuned1 && actionEnemy > 1 ||
-                stuned2 && actionEnemy > 1 ||
-                stuned3 && actionEnemy > 1 ||
-                stuned4 && actionEnemy > 1)
+              stuned2 && actionEnemy > 1 ||
+              stuned3 && actionEnemy > 1 ||
+              stuned4 && actionEnemy > 1)
             {
                 Status("기절!");
                 enemy.Stuned();
                 yield return new WaitForSeconds(1.5f);
+
+                stuned1 = false;
+                stuned2 = false;
+                stuned3 = false;
+                stuned4 = false;
 
                 yield return null;
             }
 
             if (actionEnemy <= 1)
             {
-                //마법공격
-                if (!stuned1 || !stuned2 || !stuned3 || !stuned4)
-                {
-                    EnemyAttack();
-                }
-                else
+                //물리공격
+                if (stuned1 || stuned2 || stuned3 || stuned4)
                 {
                     stuned1 = false;
                     stuned2 = false;
                     stuned3 = false;
                     stuned4 = false;
                 }
+                else
+                {
+                    EnemyAttack();
+                }
 
                 yield return new WaitForSeconds(1f);
 
                 EnemyAttack();
+
             }
             ////방어도 회복(7)
             //else if (actionEnemy == 7)

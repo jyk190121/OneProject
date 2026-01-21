@@ -22,3 +22,4 @@ MonoBehaviour:
   baseAtt2: 28
   recovery: 5
   heal: 5
+  type: E

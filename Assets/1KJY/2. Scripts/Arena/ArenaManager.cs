@@ -259,6 +259,8 @@ public class ArenaManager : MonoBehaviour
 
     void SpinSlotbySlotStop()
     {
+        AudioManager.audioManager.PlaySFX("Button");
+
         // null 체크
         if (spawnedSlots == null || spawnedSlots.Length == 0) return;
 
@@ -2048,7 +2050,7 @@ public class ArenaManager : MonoBehaviour
 
         int enemyDam = (int)Random.Range(enemy.minAtt1, enemy.att1); 
 
-        string action = $"공격 {enemyDam}";
+        string action = $"물리공격 {enemyDam}";
         Status(action);
 
         if (player.shild >= enemyDam)
@@ -2081,7 +2083,7 @@ public class ArenaManager : MonoBehaviour
 
         float enemyDam = Random.Range(enemy.minAtt2, enemy.att2);
 
-        string action = $"특수공격 {(int)enemyDam}";
+        string action = $"마법공격 {(int)enemyDam}";
         Status(action);
 
         player.hp -= enemyDam;

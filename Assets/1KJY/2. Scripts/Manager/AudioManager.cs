@@ -34,6 +34,10 @@ public class AudioManager : MonoBehaviour
     public AudioSource bgmSource;
     string currentBGM = "";
 
+    [Header("SFX 설정")]
+    [Range(0f, 1f)]
+    public AudioSource sfxSource;
+
     [Header("볼륨 설정")]
     [Range(0f, 1f)]
     public float masterVolume = 1f;
@@ -83,6 +87,11 @@ public class AudioManager : MonoBehaviour
 
         print($"총 {audios.Length}개 로드됨");
 
+        // SFX 전용 오디오소스 생성
+        GameObject sfxObject = new GameObject("SFX");
+        sfxObject.transform.SetParent(transform);
+        sfxSource = sfxObject.AddComponent<AudioSource>();
+        sfxSource.loop = false;
     }
 
     /// <summary>
@@ -117,6 +126,28 @@ public class AudioManager : MonoBehaviour
         print($"BGM 재생: {name}");
     }
 
+    public void PlaySFX(string name, float volumeScale = 1f)
+    {
+        // 딕셔너리에서 사운드 찾기
+        if (!audioDic.ContainsKey(name))
+        {
+            // BGM1, bmg1, Bgm1 정확한 키값이 필요하다
+            print($"사운드 '{name}'를 찾을 수 없음");
+            return;
+        }
+
+        // 딕셔너리에서 키값으로 찾아서 실제 클래스를 넘겨받음
+        Audio sfx = audioDic[name];
+
+        sfxSource.clip = sfx.clip;
+        sfxSource.volume = masterVolume * sfxVolume * sfx.volume * volumeScale;
+        sfxSource.Play();
+
+        currentBGM = name;
+        print($"SFX 재생: {name}");
+    }
+
+
     /// <summary>
     /// BGM 정지
     /// </summary>
@@ -145,6 +176,11 @@ public class AudioManager : MonoBehaviour
     public void SetBGMOnlyVol(float volume)
     {
         bgmSource.volume = volume;
+    }
+
+    public void SetSFXOnlyVol(float volume)
+    {
+        sfxSource.volume = volume;
     }
 
     ///// <summary>

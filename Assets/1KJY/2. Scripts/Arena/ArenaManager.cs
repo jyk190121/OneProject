@@ -1947,26 +1947,26 @@ public class ArenaManager : MonoBehaviour
                 EnemyAttack();
 
             }
-            ////방어도 회복(7)
-            //else if (actionEnemy == 7)
-            //{
-            //    EnemyShildRecover();
-            //}
-            //체력 회복(8)
-            else if (actionEnemy == 8)
+            //방어도 회복(7)
+            else if (actionEnemy == 7)
             {
-                EnemyHealing();
-
-                //독 회복
-                if (player.poison > 4)
-                {
-                    player.poison -= 4f;
-                    if (player.poison <= 0)
-                    {
-                        player.poison = 0;
-                    }
-                }
+                EnemyShildRecover();
             }
+            ////체력 회복(8)
+            //else if (actionEnemy == 8)
+            //{
+            //    EnemyHealing();
+
+            //    //독 회복
+            //    if (player.poison > 4)
+            //    {
+            //        player.poison -= 4f;
+            //        if (player.poison <= 0)
+            //        {
+            //            player.poison = 0;
+            //        }
+            //    }
+            //}
             else
             {
                 //물리공격

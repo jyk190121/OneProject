@@ -1747,37 +1747,41 @@ public class ArenaManager : MonoBehaviour
 
                 yield return null;
             }
-
-            if (actionEnemy <= 1)
-            {
-                //특수공격
-                EnemySpecialAttack();
-            }
-            //방어도 회복(7)
-            else if (actionEnemy == 7)
-            {
-                EnemyShildRecover();
-            }
-            //체력 회복(8)
-            else if (actionEnemy == 8)
-            {
-                EnemyHealing();
-
-                //독 회복
-                if (player.poison > 4)
-                {
-                    player.poison -= 4f;
-                    if (player.poison <= 0)
-                    {
-                        player.poison = 0;
-                    }
-                }
-            }
             else
             {
-                //일반공격
-                EnemyAttack();
+                if (actionEnemy <= 1)
+                {
+                    //특수공격
+                    EnemySpecialAttack();
+                }
+                //방어도 회복(7)
+                else if (actionEnemy == 7)
+                {
+                    EnemyShildRecover();
+                }
+                //체력 회복(8)
+                else if (actionEnemy == 8)
+                {
+                    EnemyHealing();
+
+                    //독 회복
+                    if (player.poison > 4)
+                    {
+                        player.poison -= 4f;
+                        if (player.poison <= 0)
+                        {
+                            player.poison = 0;
+                        }
+                    }
+                }
+                else
+                {
+                    //일반공격
+                    EnemyAttack();
+                }
             }
+
+
         }
 
         else if (enemy.type.Equals("D"))
@@ -1798,51 +1802,53 @@ public class ArenaManager : MonoBehaviour
 
                 yield return null;
             }
-
-            if (actionEnemy <= 1)
-            {
-                //마법공격
-                if (stuned1 || stuned2 || stuned3 || stuned4)
-                {
-                    stuned1 = false;
-                    stuned2 = false;
-                    stuned3 = false;
-                    stuned4 = false;
-                }
-                else
-                {
-                    EnemySpecialAttack();
-                }
-
-                yield return new WaitForSeconds(1f);
-
-                EnemySpecialAttack();
-
-            }
-            //방어도 회복(7)
-            else if (actionEnemy == 7)
-            {
-                EnemyShildRecover();
-            }
-            ////체력 회복(8)
-            //else if (actionEnemy == 8)
-            //{
-            //    EnemyHealing();
-
-            //    //독 회복
-            //    if (player.poison > 4)
-            //    {
-            //        player.poison -= 4f;
-            //        if (player.poison <= 0)
-            //        {
-            //            player.poison = 0;
-            //        }
-            //    }
-            //}
             else
             {
-                //마법공격
-                EnemySpecialAttack();
+                if (actionEnemy <= 1)
+                {
+                    //마법공격
+                    if (stuned1 || stuned2 || stuned3 || stuned4)
+                    {
+                        stuned1 = false;
+                        stuned2 = false;
+                        stuned3 = false;
+                        stuned4 = false;
+                    }
+                    else
+                    {
+                        EnemySpecialAttack();
+                    }
+
+                    yield return new WaitForSeconds(1f);
+
+                    EnemySpecialAttack();
+
+                }
+                //방어도 회복(7)
+                else if (actionEnemy == 7)
+                {
+                    EnemyShildRecover();
+                }
+                ////체력 회복(8)
+                //else if (actionEnemy == 8)
+                //{
+                //    EnemyHealing();
+
+                //    //독 회복
+                //    if (player.poison > 4)
+                //    {
+                //        player.poison -= 4f;
+                //        if (player.poison <= 0)
+                //        {
+                //            player.poison = 0;
+                //        }
+                //    }
+                //}
+                else
+                {
+                    //마법공격
+                    EnemySpecialAttack();
+                }
             }
         }
         else if (enemy.type.Equals("C"))
@@ -1863,52 +1869,55 @@ public class ArenaManager : MonoBehaviour
 
                 yield return null;
             }
-
-            if (actionEnemy <= 1)
+            else
             {
-                //마법공격
-                if (stuned1 || stuned2 || stuned3 || stuned4)
+                if (actionEnemy <= 1)
                 {
-                    stuned1 = false;
-                    stuned2 = false;
-                    stuned3 = false;
-                    stuned4 = false;
+                    //마법공격
+                    if (stuned1 || stuned2 || stuned3 || stuned4)
+                    {
+                        stuned1 = false;
+                        stuned2 = false;
+                        stuned3 = false;
+                        stuned4 = false;
+                    }
+                    else
+                    {
+                        EnemySpecialAttack();
+                    }
+
+                    yield return new WaitForSeconds(1f);
+
+                    EnemySpecialAttack();
+
+                }
+                ////방어도 회복(7)
+                //else if (actionEnemy == 7)
+                //{
+                //    EnemyShildRecover();
+                //}
+                //체력 회복(8)
+                else if (actionEnemy == 8)
+                {
+                    EnemyHealing();
+
+                    //독 회복
+                    if (player.poison > 4)
+                    {
+                        player.poison -= 4f;
+                        if (player.poison <= 0)
+                        {
+                            player.poison = 0;
+                        }
+                    }
                 }
                 else
                 {
+                    //마법공격
                     EnemySpecialAttack();
                 }
-
-                yield return new WaitForSeconds(1f);
-
-                EnemySpecialAttack();
-
             }
-            ////방어도 회복(7)
-            //else if (actionEnemy == 7)
-            //{
-            //    EnemyShildRecover();
-            //}
-            //체력 회복(8)
-            else if (actionEnemy == 8)
-            {
-                EnemyHealing();
 
-                //독 회복
-                if (player.poison > 4)
-                {
-                    player.poison -= 4f;
-                    if (player.poison <= 0)
-                    {
-                        player.poison = 0;
-                    }
-                }
-            }
-            else
-            {
-                //마법공격
-                EnemySpecialAttack();
-            }
         }
         else if (enemy.type.Equals("B"))
         {
@@ -1928,51 +1937,53 @@ public class ArenaManager : MonoBehaviour
 
                 yield return null;
             }
-
-            if (actionEnemy <= 1)
-            {
-                //물리공격
-                if (stuned1 || stuned2 || stuned3 || stuned4)
-                {
-                    stuned1 = false;
-                    stuned2 = false;
-                    stuned3 = false;
-                    stuned4 = false;
-                }
-                else
-                {
-                    EnemyAttack();
-                }
-
-                yield return new WaitForSeconds(1f);
-
-                EnemyAttack();
-
-            }
-            //방어도 회복(7)
-            else if (actionEnemy == 7)
-            {
-                EnemyShildRecover();
-            }
-            ////체력 회복(8)
-            //else if (actionEnemy == 8)
-            //{
-            //    EnemyHealing();
-
-            //    //독 회복
-            //    if (player.poison > 4)
-            //    {
-            //        player.poison -= 4f;
-            //        if (player.poison <= 0)
-            //        {
-            //            player.poison = 0;
-            //        }
-            //    }
-            //}
             else
             {
-                //물리공격
-                EnemyAttack();
+                if (actionEnemy <= 1)
+                {
+                    //물리공격
+                    if (stuned1 || stuned2 || stuned3 || stuned4)
+                    {
+                        stuned1 = false;
+                        stuned2 = false;
+                        stuned3 = false;
+                        stuned4 = false;
+                    }
+                    else
+                    {
+                        EnemyAttack();
+                    }
+
+                    yield return new WaitForSeconds(1f);
+
+                    EnemyAttack();
+
+                }
+                //방어도 회복(7)
+                else if (actionEnemy == 7)
+                {
+                    EnemyShildRecover();
+                }
+                ////체력 회복(8)
+                //else if (actionEnemy == 8)
+                //{
+                //    EnemyHealing();
+
+                //    //독 회복
+                //    if (player.poison > 4)
+                //    {
+                //        player.poison -= 4f;
+                //        if (player.poison <= 0)
+                //        {
+                //            player.poison = 0;
+                //        }
+                //    }
+                //}
+                else
+                {
+                    //물리공격
+                    EnemyAttack();
+                }
             }
         }
         else if (enemy.type.Equals("A"))
@@ -1993,51 +2004,53 @@ public class ArenaManager : MonoBehaviour
 
                 yield return null;
             }
-
-            if (actionEnemy <= 1)
+            else
             {
-                //물리공격
-                if (stuned1 || stuned2 || stuned3 || stuned4)
+                if (actionEnemy <= 1)
                 {
-                    stuned1 = false;
-                    stuned2 = false;
-                    stuned3 = false;
-                    stuned4 = false;
+                    //물리공격
+                    if (stuned1 || stuned2 || stuned3 || stuned4)
+                    {
+                        stuned1 = false;
+                        stuned2 = false;
+                        stuned3 = false;
+                        stuned4 = false;
+                    }
+                    else
+                    {
+                        EnemyAttack();
+                    }
+
+                    yield return new WaitForSeconds(1f);
+
+                    EnemyAttack();
+
+                }
+                ////방어도 회복(7)
+                //else if (actionEnemy == 7)
+                //{
+                //    EnemyShildRecover();
+                //}
+                //체력 회복(8)
+                else if (actionEnemy == 8)
+                {
+                    EnemyHealing();
+
+                    //독 회복
+                    if (player.poison > 4)
+                    {
+                        player.poison -= 4f;
+                        if (player.poison <= 0)
+                        {
+                            player.poison = 0;
+                        }
+                    }
                 }
                 else
                 {
+                    //마법공격
                     EnemyAttack();
                 }
-
-                yield return new WaitForSeconds(1f);
-
-                EnemyAttack();
-
-            }
-            ////방어도 회복(7)
-            //else if (actionEnemy == 7)
-            //{
-            //    EnemyShildRecover();
-            //}
-            //체력 회복(8)
-            else if (actionEnemy == 8)
-            {
-                EnemyHealing();
-
-                //독 회복
-                if (player.poison > 4)
-                {
-                    player.poison -= 4f;
-                    if (player.poison <= 0)
-                    {
-                        player.poison = 0;
-                    }
-                }
-            }
-            else
-            {
-                //마법공격
-                EnemyAttack();
             }
         }
     }

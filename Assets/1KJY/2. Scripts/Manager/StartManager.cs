@@ -15,7 +15,10 @@ public class StartManager : MonoBehaviour
     public Image endImg;                                // 종료 확인 창 이미지
     public Image volSetImg;                             // 볼륨 설정 창 이미지
     public Button setCloseBtn;                          // 설정 창 닫기 버튼
-    public Slider volumeSlider;
+
+    public Slider volumeSliderBGM;
+    public Slider volumeSliderSFX;
+
     public Button infoBtn;
     public Image infoImg;
     public Button infoCloseBtn;
@@ -160,12 +163,18 @@ public class StartManager : MonoBehaviour
 
     void GameStart()
     {
+        float value = AudioManager.audioManager.sfxVolume;
+        AudioManager.audioManager.PlaySFX("Button", value);
+
         GameSceneManager.Instance.LoadSceneAsync("StageScene");
     }
 
     //새로하기
     void NewGameStart()
     {
+        float value = AudioManager.audioManager.sfxVolume;
+        AudioManager.audioManager.PlaySFX("Button", value);
+
         newStartpopup.yesBtn.Select();
         //새로 시작하시겠습니까?? (이전 진행정보가 모두 사라집니다) Yes/No
         // 팝업 매니저에게 메시지와 '실행할 함수'를 전달
@@ -188,6 +197,7 @@ public class StartManager : MonoBehaviour
 
     void GameEndYorN()
     {
+
         volSetImg.gameObject.SetActive(false);
         infoImg.gameObject.SetActive(false);
 
@@ -224,15 +234,22 @@ public class StartManager : MonoBehaviour
 
     void EnterItemList()
     {
+        float value = AudioManager.audioManager.sfxVolume;
+        AudioManager.audioManager.PlaySFX("Button", value);
+
         GameSceneManager.Instance.LoadSceneAsync("ItemListScene");
     }
 
     public void AudioSet()
     {
+        volumeSliderBGM.value = AudioManager.audioManager.bgmVolume;
+        volumeSliderSFX.value = AudioManager.audioManager.sfxVolume;
+
         if (endImg.gameObject.activeSelf || infoImg.gameObject.activeSelf) return;
 
         if (!volSetImg.gameObject.activeSelf)
         {
+
             volSetImg.gameObject.SetActive(true);
             setCloseBtn.Select();
             return;
@@ -265,10 +282,16 @@ public class StartManager : MonoBehaviour
     //    AudioManager.audioManager.SetBGMOnlyVol(volumeSlider.value);
     //}
 
-    public void OnSliderChanged()
+    public void OnSliderChangedBGM()
     {
-        AudioManager.audioManager.SetBGMOnlyVol(volumeSlider.value);
-        AudioManager.audioManager.bgmVolume = volumeSlider.value;
+        AudioManager.audioManager.SetBGMOnlyVol(volumeSliderBGM.value);
+        AudioManager.audioManager.bgmVolume = volumeSliderBGM.value;
+    }
+
+    public void OnSliderChangedSFX()
+    {
+        AudioManager.audioManager.SetSFXOnlyVol(volumeSliderSFX.value);
+        AudioManager.audioManager.sfxVolume = volumeSliderSFX.value;
     }
 
     //void SelectBtn(Keyboard key)
@@ -377,6 +400,9 @@ public class StartManager : MonoBehaviour
 
     void ArenaStart()
     {
+        float value = AudioManager.audioManager.sfxVolume;
+        AudioManager.audioManager.PlaySFX("Button", value);
+
         GameSceneManager.Instance.LoadSceneAsync("ArenaItemSelectScene");
     }
 }

@@ -9,6 +9,23 @@ using UnityEngine.UI;
 //    public bool isMagic;
 //    public float shieldAmount;
 //}
+public struct EnemyType
+{
+    //물공 2회 (마공x, 방어도 회복x)
+    public string A;
+
+    //물공 2회 (마공x, 체력 회복x)
+    public string B;
+
+    //마공 2회 (물공x, 방어도 회복x)
+    public string C;
+
+    //마공 2회 (물공x, 체력 회복x)
+    public string D;
+
+    //노말타입
+    public string E;
+}
 
 public abstract class Enemy : MonoBehaviour
 {
@@ -40,6 +57,8 @@ public abstract class Enemy : MonoBehaviour
     public float att2;               // 적 마법공격력
     public float recovery;           // 적 방어도 회복력
     public float heal;               // 적 체력 회복력
+
+    public string type;           // 적 타입
 
     public bool death;               // 적 죽음 확인
     public Animator animator;        // 적 애니메이션
@@ -129,6 +148,7 @@ public abstract class Enemy : MonoBehaviour
         att2 = data.baseAtt2;
         recovery = data.recovery;
         heal = data.heal;
+        type = data.type;
     }
 
     virtual public void HpShildSet()

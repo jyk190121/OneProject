@@ -20,6 +20,9 @@ public class EnemyObject : ScriptableObject
     public float recovery;
     public float heal;
 
+    [Header("Enemy타입(A~E)")]
+    public string type;
+
     // 필요하다면 특정 적 전용 사운드나 이펙트도 여기에 추가
     // public AudioClip crySound;
     //public GameObject[] enemyEffets; // 사용할 이팩트

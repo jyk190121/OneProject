@@ -34,6 +34,10 @@ public class AudioManager : MonoBehaviour
     public AudioSource bgmSource;
     string currentBGM = "";
 
+    [Header("SFX 설정")]
+    [Range(0f, 1f)]
+    public AudioSource sfxSource;
+
     [Header("볼륨 설정")]
     [Range(0f, 1f)]
     public float masterVolume = 1f;
@@ -83,51 +87,12 @@ public class AudioManager : MonoBehaviour
 
         print($"총 {audios.Length}개 로드됨");
 
+        // SFX 전용 오디오소스 생성
+        GameObject sfxObject = new GameObject("SFX");
+        sfxObject.transform.SetParent(transform);
+        sfxSource = sfxObject.AddComponent<AudioSource>();
+        sfxSource.loop = false;
     }
-
-    ///// <summary>
-    ///// 효과음 재생 (루프는 기본으로 안된다)
-    ///// </summary>
-    ///// <param name="name"></param>
-    //public void Play(string name, float volumeScale = 1f)
-    //{
-    //    // 딕셔너리에서 사운드 찾기
-    //    if (!soundDictionary.ContainsKey(name))
-    //    {
-    //        // BGM1, bmg1, Bgm1 정확한 키값이 필요하다
-    //        print($"사운드 '{name}'를 찾을 수 없음");
-    //        return;
-    //    }
-
-    //    // 딕셔너리에서 키값으로 찾아서 실제 클래스를 넘겨받음
-    //    Sound sound = soundDictionary[name];
-
-    //    // 볼륨 설정
-    //    sound.source.volume = masterVolume * sfxVolume * sound.volume * volumeScale;
-
-    //    // 플레이
-    //    sound.source.Play();
-
-    //    print($"효과음 재생: {name}");
-    //}
-
-    /// <summary>
-    /// 효과음 정지 (안쓸수 있음)
-    /// </summary>
-    /// <param name="name"></param>
-    //public void Stop(string name)
-    //{
-    //    // 딕셔너리에서 사운드 찾기
-    //    if (!soundDictionary.ContainsKey(name))
-    //    {
-    //        // BGM1, bmg1, Bgm1 정확한 키값이 필요하다
-    //        print($"사운드 '{name}'를 찾을 수 없음");
-    //        return;
-    //    }
-
-    //    // 딕셔너리에서 오디오소스를 정지시키면 끝!!
-    //    soundDictionary[name].source.Stop();
-    //}
 
     /// <summary>
     /// BGM 재생
@@ -161,6 +126,28 @@ public class AudioManager : MonoBehaviour
         print($"BGM 재생: {name}");
     }
 
+    public void PlaySFX(string name, float volumeScale = 1f)
+    {
+        // 딕셔너리에서 사운드 찾기
+        if (!audioDic.ContainsKey(name))
+        {
+            // BGM1, bmg1, Bgm1 정확한 키값이 필요하다
+            print($"사운드 '{name}'를 찾을 수 없음");
+            return;
+        }
+
+        // 딕셔너리에서 키값으로 찾아서 실제 클래스를 넘겨받음
+        Audio sfx = audioDic[name];
+
+        sfxSource.clip = sfx.clip;
+        sfxSource.volume = masterVolume * sfxVolume * sfx.volume * volumeScale;
+        sfxSource.Play();
+
+        currentBGM = name;
+        print($"SFX 재생: {name}");
+    }
+
+
     /// <summary>
     /// BGM 정지
     /// </summary>
@@ -169,132 +156,6 @@ public class AudioManager : MonoBehaviour
         bgmSource.Stop();
         currentBGM = "";
         print("BGM 정지");
-    }
-
-    /// <summary>
-    /// BGM 페이드 아웃 후 정지
-    /// </summary>
-    /// <param name="duration"></param>
-    public void StopFadeOutBGM(float duration = 1f)
-    {
-        StartCoroutine(FadeOut(duration));
-    }
-
-    IEnumerator FadeOut(float duration)
-    {
-        float startVolume = bgmSource.volume;
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            bgmSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / duration);
-            yield return null;
-        }
-        // BGM 정지 후 볼륨 원상복귀
-        bgmSource.Stop();
-        bgmSource.volume = startVolume;
-        currentBGM = "";
-
-        print("BGM 페이드 아웃 완료");
-    }
-
-    /// <summary>
-    /// BGM 페이드 인 후 플레이
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="duration"></param>
-    public void PlayFadeInBGM(string name, float duration = 1f)
-    {
-        StartCoroutine(FadeInBGM(name, duration));
-    }
-
-    IEnumerator FadeInBGM(string name, float duration)
-    {
-        // 키값으로 BGM을 못찾으면 그대로 기능 안함
-        if (!audioDic.ContainsKey(name))
-        {
-            print($"BGM {name}을 찾을 수 없음");
-            yield break;
-        }
-
-        Audio bgm = audioDic[name];
-        bgmSource.clip = bgm.clip;
-        bgmSource.volume = 0f;
-        bgmSource.Play();
-
-        float targetVolume = masterVolume * bgmVolume * bgm.volume;
-        float elapsed = 0f;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            bgmSource.volume = Mathf.Lerp(0f, targetVolume, elapsed / duration);
-            yield return null;
-        }
-
-        currentBGM = name;
-        print($"BGM 페이드 인 완료: {name}");
-    }
-
-    /// <summary>
-    /// BGM 크로스 페이드 (A -> B로 부드럽게 전환)
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="duration"></param>
-    public void CrossFadeBGM(string name, float duration = 2f)
-    {
-        StartCoroutine(CrossFade(name, duration));
-    }
-
-    IEnumerator CrossFade(string name, float duration)
-    {
-        // 키값으로 BGM을 못찾으면 그대로 기능 안함
-        if (!audioDic.ContainsKey(name))
-        {
-            print($"BGM {name}을 찾을 수 없음");
-            yield break;
-        }
-
-        // 페이드 아웃 시작
-        float elapsed = 0f;
-        float startVolume = bgmSource.volume;
-
-        // 임시로 생성할 BGM용 오디오소스
-        AudioSource tempSource = gameObject.AddComponent<AudioSource>();
-        Audio newAudio = audioDic[name];
-        tempSource.clip = newAudio.clip;
-        tempSource.volume = 0f;
-        tempSource.loop = true;
-        tempSource.Play();
-
-        float targetVolume = masterVolume * bgmVolume * newAudio.volume;
-
-        // 크로스 페이드
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-
-            // 이전 BGM 페이드 아웃
-            bgmSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / duration);
-            // 새 BGM 페이드 인
-            tempSource.volume = Mathf.Lerp(0f, targetVolume, elapsed / duration);
-
-            yield return null;
-        }
-
-        // 이전 BGM 정지
-        bgmSource.Stop();
-
-        // 새 BGM을 메인 BGM으로 교체
-        bgmSource.clip = tempSource.clip;
-        bgmSource.volume = tempSource.volume;
-        bgmSource.Play();
-
-        // 임시 오디오소스 삭제
-        Destroy(tempSource);
-
-        currentBGM = name;
-        print($"BGM 크로스페이드 완료: {name}");
     }
 
     /// <summary>
@@ -312,24 +173,14 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// BGM 볼륨 설정
-    /// </summary>
-    /// <param name="volume"></param>
-    public void SetBGMVolume(float volume)
-    {
-        bgmVolume = Mathf.Clamp01(volume);
-
-        if (bgmSource.isPlaying && !string.IsNullOrEmpty(currentBGM))
-        {
-            Audio bgm = audioDic[currentBGM];
-            bgmSource.volume = masterVolume * bgmVolume * bgm.volume;
-        }
-    }
-
     public void SetBGMOnlyVol(float volume)
     {
         bgmSource.volume = volume;
+    }
+
+    public void SetSFXOnlyVol(float volume)
+    {
+        sfxSource.volume = volume;
     }
 
     ///// <summary>

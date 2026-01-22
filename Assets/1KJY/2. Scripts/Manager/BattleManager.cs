@@ -337,6 +337,8 @@ public class BattleManager : MonoBehaviour
 
     void SpinSlotbySlotStop()
     {
+        AudioManager.audioManager.PlaySFX("Button");
+
         // null 체크
         if (spawnedSlots == null || spawnedSlots.Length == 0) return;
 
@@ -2173,7 +2175,7 @@ public class BattleManager : MonoBehaviour
 
         int enemyDam = (int)Random.Range(enemy.minAtt1, enemy.att1); 
 
-        string action = $"공격 {enemyDam}";
+        string action = $"물리공격 {enemyDam}";
         Status(action);
 
         if (player.shild >= enemyDam)

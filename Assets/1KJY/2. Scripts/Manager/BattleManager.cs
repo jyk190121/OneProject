@@ -1934,17 +1934,19 @@ public class BattleManager : MonoBehaviour
                     //마법공격
                     if (stuned1 || stuned2 || stuned3 || stuned4)
                     {
+                        enemy.Stuned();
+                        
                         stuned1 = false;
                         stuned2 = false;
                         stuned3 = false;
                         stuned4 = false;
+
                     }
                     else
                     {
                         EnemySpecialAttack();
                     }
-
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(1.5f);
 
                     EnemySpecialAttack();
 
@@ -2001,17 +2003,19 @@ public class BattleManager : MonoBehaviour
                     //마법공격
                     if (stuned1 || stuned2 || stuned3 || stuned4)
                     {
+                        enemy.Stuned();
+
                         stuned1 = false;
                         stuned2 = false;
                         stuned3 = false;
                         stuned4 = false;
+
                     }
                     else
                     {
                         EnemySpecialAttack();
                     }
-
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(1.5f);
 
                     EnemySpecialAttack();
 
@@ -2069,17 +2073,19 @@ public class BattleManager : MonoBehaviour
                     //물리공격
                     if (stuned1 || stuned2 || stuned3 || stuned4)
                     {
+                        enemy.Stuned();
+
                         stuned1 = false;
                         stuned2 = false;
                         stuned3 = false;
                         stuned4 = false;
+
                     }
                     else
                     {
                         EnemyAttack();
                     }
-
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(1.5f);
 
                     EnemyAttack();
 
@@ -2136,17 +2142,19 @@ public class BattleManager : MonoBehaviour
                     //물리공격
                     if (stuned1 || stuned2 || stuned3 || stuned4)
                     {
+                        enemy.Stuned();
+
                         stuned1 = false;
                         stuned2 = false;
                         stuned3 = false;
                         stuned4 = false;
+
                     }
                     else
                     {
                         EnemyAttack();
                     }
-
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(1.5f);
 
                     EnemyAttack();
 

@@ -205,7 +205,6 @@ public abstract class Enemy : MonoBehaviour
         if (hp < 0)
         {
             hp = 0;
-            Death();
         }
     }
 

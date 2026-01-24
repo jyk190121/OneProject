@@ -89,6 +89,7 @@ public class EnemyManager : MonoBehaviour
 
         obj.transform.localScale = new Vector3(-1, 1, 1);
         if(targetData.enemyName == "GhostKnight") obj.transform.localScale = new Vector3(-0.7f, 0.7f, 0.7f);
+        if(targetData.enemyName == "Vampire") obj.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
 
         // Enemy.cs에 만든 Setup 함수 호출 (데이터 주입)
         currentEnemy.Setup(targetData);

@@ -14,7 +14,7 @@ public class BuyItem : MonoBehaviour
 
     ItemManager itemManager;
     List<Item> allItems;
-    List<Item> items;             //보유 아이템
+    List<Item> items;                           //보유 아이템
     List<Item> storeItems = new List<Item>();   //상점에 팔 아이템
     //List<int> usedIndices = new List<int>(); // 이번 상점에서 이미 뽑힌 아이템 인덱스 추적
     //Player player;

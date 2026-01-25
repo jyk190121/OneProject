@@ -75,7 +75,7 @@ public class StartManager : MonoBehaviour
         volSetImg.gameObject.SetActive(false);
         infoImg.gameObject.SetActive(false);
 
-        AudioManager.audioManager.PlayBGM("Intro");
+        //AudioManager.audioManager.PlayBGM("Intro");
         //SetBGMVol(volumeSlider.value);
         // 배경 버튼 클릭 시 취소 함수 실행
         if (backgroundCancelBtn != null)
@@ -95,6 +95,11 @@ public class StartManager : MonoBehaviour
             arenaBtn.onClick.AddListener(ArenaStart);
         }
 
+        if(AudioManager.audioManager.IsPlaying("Intro") == false)
+        {
+            AudioManager.audioManager.StopBGM();
+            AudioManager.audioManager.PlayBGM("Intro");
+        }
     }
 
     private void Update()
@@ -117,11 +122,6 @@ public class StartManager : MonoBehaviour
         //    Debug.Log("스페이스바를 뗐습니다!");
         //}
 
-        if (AudioManager.audioManager.IsPlaying("Battle"))
-        {
-            AudioManager.audioManager.StopBGM();
-            AudioManager.audioManager.PlayBGM("Intro");
-        }
         if (Keyboard.current.escapeKey.wasPressedThisFrame == true)
         {
             GameEndYorN();

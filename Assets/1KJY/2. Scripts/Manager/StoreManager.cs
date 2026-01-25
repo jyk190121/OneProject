@@ -35,7 +35,7 @@ public class StoreManager : MonoBehaviour
     {
         itemManager = FindAnyObjectByType<ItemManager>();
         stageManager = FindAnyObjectByType<StageManager>();
-        popup = FindAnyObjectByType<Popup>();
+        popup = GetComponent<Popup>();
 
         if (itemManager != null)
         {
@@ -189,6 +189,7 @@ public class StoreManager : MonoBehaviour
     void ExecuteNewGame()
     {
         itemManager.Init();
+        stageManager.ReloadChance = 1;
         GameSceneManager.Instance.LoadSceneAsync("StageScene");
     }
 

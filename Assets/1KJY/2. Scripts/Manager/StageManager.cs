@@ -19,6 +19,8 @@ public class StageManager : MonoBehaviour
     public int SelectedStage { get; set; }          // 실제 플레이 중인 스테이지
     public int Round { get; set; }                  // 라운드정보
 
+    public int ReloadChance {  get; set; }          //리로드 기회
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -40,6 +42,7 @@ public class StageManager : MonoBehaviour
         UnlockedStage = PlayerPrefs.GetInt("UnlockedStageIndex", 1);
         //스테이지 선택 시 항상 1라운드부터 시작
         Round = 1;
+        ReloadChance = 1;
     }
 
     // 스테이지 클리어 시 호출
@@ -94,6 +97,8 @@ public class StageManager : MonoBehaviour
     public void ResetStage()
     {
         UnlockedStage = 1;
+        Round = 1;
+        ReloadChance = 1;
         PlayerPrefs.SetInt("UnlockedStageIndex", UnlockedStage);
         PlayerPrefs.Save();
     }

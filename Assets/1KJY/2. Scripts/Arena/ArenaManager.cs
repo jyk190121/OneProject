@@ -1281,7 +1281,7 @@ public class ArenaManager : MonoBehaviour
                         yield return new WaitForSeconds(0.5f);
                     }
 
-                    if (item.NAME.Equals("마법투구"))
+                    if (item.NAME.Equals("마법투구") || item.NAME.Equals("마법반지"))
                     {
                         //증가치
                         float att1 = item.ENHANCE_PLUSATK;
@@ -1316,9 +1316,6 @@ public class ArenaManager : MonoBehaviour
                                 action = $"물공 {att1},마공 {att2} 증가\n" +
                                          $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(att1, att2, hp, plus_hp, shild, plus_sh);
-
                                 break;
                             case 2:
                                 att1 *= 3;
@@ -1332,9 +1329,6 @@ public class ArenaManager : MonoBehaviour
                                          $"물공 {att1},마공 {att2} 증가\n" +
                                          $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(att1, att2, hp, plus_hp, shild, plus_sh);
-
                                 break;
                             case 3:
                                 att1 *= 9;
@@ -1347,76 +1341,13 @@ public class ArenaManager : MonoBehaviour
                                          $"물공 {att1},마공 {att2} 증가\n" +
                                          $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(att1, att2, hp, plus_hp, shild, plus_sh);
-
                                 break;
                         }
 
-                        yield return new WaitForSeconds(0.5f);
-                    }
+                        Magic(att1, att2, hp, plus_hp, shild, plus_sh);
 
-                    if (item.NAME.Equals("마법반지"))
-                    {
-                        //증가치
-                        float hp = item.ENHANCE_HP;
-                        float plus_hp = item.ENHANCE_PLUS_HP;
-                        float shild = item.ENHANCE_SHILD;
-                        float plus_sh = item.ENHANCE_PLUS_SHILD;
+                        player.UpdateEnhanceUI();
 
-                        for (int i = 0; i < matchedItems.Count; i++)
-                        {
-                            if (item == matchedItems[i])
-                            {
-                                int slotIndex = ring1 % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
-
-                                if (item.EFFECT != null)
-                                {
-                                    itemPrefab = item.EFFECT;
-                                }
-
-                                yield return new WaitForSeconds(0.8f);
-                                break;
-                            }
-                        }
-
-                        switch (item.COUNT)
-                        {
-                            case 1:
-                                action = $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
-                                         $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(0, 0, hp, plus_hp, shild, plus_sh);
-
-                                break;
-                            case 2:
-                                hp *= 3;
-                                plus_hp *= 3;
-                                shild *= 3;
-                                plus_sh *= 3;
-
-                                action = $"치명타!\n" +
-                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
-                                         $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(0, 0, hp, plus_hp, shild, plus_sh);
-
-                                break;
-                            case 3:
-                                hp *= 9;
-                                plus_hp *= 9;
-                                shild *= 9;
-                                plus_sh *= 9;
-                                action = $"메가치명타!\n" +
-                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
-                                         $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(0, 0, hp, plus_hp, shild, plus_sh);
-
-                                break;
-                        }
                         yield return new WaitForSeconds(0.5f);
                     }
 
@@ -1717,6 +1648,8 @@ public class ArenaManager : MonoBehaviour
         //플레이어의 독데미지 적용 시점
         if (player.poison > 0)
         {
+            yield return new WaitForSeconds(1.8f);
+
             GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[2]);
             enemyEffect.transform.position = enemy.transform.position;
             enemy.hp -= player.poison;
@@ -2427,8 +2360,13 @@ public class ArenaManager : MonoBehaviour
         if (AudioManager.audioManager == null) return;
         float value = AudioManager.audioManager.bgmVolume;
 
-        print("볼륨값" + value);
-        AudioManager.audioManager.PlayBGM("Battle", value);
+        //print("볼륨값" + value); 
+        if (AudioManager.audioManager.GetCurrentBGM() != "Battle")
+        {
+            AudioManager.audioManager.StopBGM();
+            AudioManager.audioManager.PlayBGM("Battle", value);
+        }
+        //AudioManager.audioManager.PlayBGM("Battle", value);
 
         Debug.Log("씬 오브젝트들 초기화 완료");
     }

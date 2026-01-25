@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -79,6 +80,9 @@ public class BattleManager : MonoBehaviour
     //public TextMeshProUGUI enemyName;
     int turn;
 
+    public GameObject victoryCanvas;
+    public Button victoryBtn;
+
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
         {"고급도끼", 0},
@@ -114,6 +118,7 @@ public class BattleManager : MonoBehaviour
     void Awake()
     {
         InitializeSceneObjects();
+        victoryBtn.onClick.AddListener(CheckBtn);
         stageTxt.text = $"스테이지 {stageManager.SelectedStage}";
         if (stageManager.Round != 5) roundTxt.text = $"{stageManager.Round} 라운드";
         else roundTxt.text = "보스";
@@ -217,6 +222,9 @@ public class BattleManager : MonoBehaviour
     //        itemDict[item] = 5;
     //    }
     //}
+
+  
+
 
     // 플레이어 슬롯 스피너 생성
     void SpinSlotCreate()
@@ -1367,7 +1375,7 @@ public class BattleManager : MonoBehaviour
                         yield return new WaitForSeconds(0.5f);
                     }
 
-                    if (item.NAME.Equals("마법투구"))
+                    if (item.NAME.Equals("마법투구") || item.NAME.Equals("마법반지"))
                     {
                         //증가치
                         float att1 = item.ENHANCE_PLUSATK;
@@ -1432,63 +1440,7 @@ public class BattleManager : MonoBehaviour
                         
                         Magic(att1, att2, hp, plus_hp, shild, plus_sh);
 
-                        yield return new WaitForSeconds(0.5f);
-                    }
-
-                    if (item.NAME.Equals("마법반지"))
-                    {
-                        //증가치
-                        float hp = item.ENHANCE_HP;
-                        float plus_hp = item.ENHANCE_PLUS_HP;
-                        float shild = item.ENHANCE_SHILD;
-                        float plus_sh = item.ENHANCE_PLUS_SHILD;
-
-                        for (int i = 0; i < matchedItems.Count; i++)
-                        {
-                            if (item == matchedItems[i])
-                            {
-                                int slotIndex = ring1 % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
-
-                                if (item.EFFECT != null)
-                                {
-                                    itemPrefab = item.EFFECT;
-                                }
-
-                                yield return new WaitForSeconds(0.8f);
-                                break;
-                            }
-                        }
-
-                        switch (item.COUNT)
-                        {
-                            case 1:
-                                action = $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
-                                         $"체력{hp}, 방어도{shild} 회복";
-                                break;
-                            case 2:
-                                hp *= 3;
-                                plus_hp *= 3;
-                                shild *= 3;
-                                plus_sh *= 3;
-
-                                action = $"치명타!\n" +
-                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
-                                         $"체력{hp}, 방어도{shild} 회복";
-                                break;
-                            case 3:
-                                hp *= 9;
-                                plus_hp *= 9;
-                                shild *= 9;
-                                plus_sh *= 9;
-                                action = $"메가치명타!\n" +
-                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
-                                         $"체력{hp}, 방어도{shild} 회복";
-                                break;
-                        }
-
-                        Magic(0, 0, hp, plus_hp, shild, plus_sh);
+                        player.UpdateEnhanceUI();
 
                         yield return new WaitForSeconds(0.5f);
                     }
@@ -1793,6 +1745,8 @@ public class BattleManager : MonoBehaviour
         //플레이어의 독데미지 적용 시점
         if (player.poison > 0)
         {
+            yield return new WaitForSeconds(1.8f);
+
             GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[2]);
             enemyEffect.transform.position = enemy.transform.position;
             enemy.hp -= player.poison;
@@ -1802,9 +1756,6 @@ public class BattleManager : MonoBehaviour
             {
                 player.poison = 0;
             }
-
-            yield return new WaitForSeconds(1.8f);
-
             enemy.AnimDamage();
 
             enemy.UpdateHpShildSet();
@@ -2342,6 +2293,12 @@ public class BattleManager : MonoBehaviour
             currentStageIndex++;
             stageManager.SelectedStage++;
 
+            if(stageManager.SelectedStage > 10)
+            {
+                //아레나모드 오픈 이미지 노출
+                victoryCanvas.gameObject.SetActive(true);
+                yield break;
+            }
             stageManager.Round = 1;
             stageManager.UnlockNextStage(stageManager.SelectedStage);
             //GameSceneManager.Instance.LoadSceneAsync("StageScene");
@@ -2365,7 +2322,7 @@ public class BattleManager : MonoBehaviour
         //SceneManager.LoadScene("GameOverScene", LoadSceneMode.Additive);
         //Destroy(gameObject);
 
-        //AudioManager.audioManager.StopBGM();
+        AudioManager.audioManager.StopBGM();
         //AudioManager.audioManager.PlayBGM("Intro");
 
         stageManager.Round = 1;
@@ -2543,9 +2500,30 @@ public class BattleManager : MonoBehaviour
         if (AudioManager.audioManager == null) return;
         float value = AudioManager.audioManager.bgmVolume;
 
-        print("볼륨값" + value);
-        AudioManager.audioManager.PlayBGM("Battle", value);
+        //print("볼륨값" + value); 
+        //if (AudioManager.audioManager.GetCurrentBGM() != "Battle")
+        //{
+        //    AudioManager.audioManager.StopBGM();
+        //    AudioManager.audioManager.PlayBGM("Battle", value);
+        //}
+        //AudioManager.audioManager.PlayBGM("Battle", value);
+
+        // 스테이지 인덱스는 0부터 시작하므로 +1을 해줍니다.
+        string targetBGM = "Stage" + (currentStageIndex + 1);
+
+        if (AudioManager.audioManager.GetCurrentBGM() != targetBGM)
+        {
+            AudioManager.audioManager.StopBGM();
+            AudioManager.audioManager.PlayBGM(targetBGM, value);
+        }
 
         Debug.Log("씬 오브젝트들 초기화 완료");
+    }
+    void CheckBtn()
+    {
+        itemManager.Init();
+        stageManager.ReloadChance = 1;
+        victoryCanvas.gameObject.SetActive(false);
+        GameSceneManager.Instance.LoadSceneAsync("StartScene");
     }
 }

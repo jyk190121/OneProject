@@ -24,7 +24,24 @@ public class ItemSellEnhance : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         if (itemData != null && itemInfo != null)
         {
-            description = $"강화수치 : +{itemData.ENHANCE}\n{itemData.EXPLAIN}";
+            string itemExp = "";
+            switch (itemData.ENHANCE)
+            {
+                case 0:
+                    itemExp = itemData.EXPLAIN;
+                    break;
+                case 1:
+                    itemExp = itemData.ENHANCE1_EXPLAIN;
+                    break;
+                case 2:
+                    itemExp = itemData.ENHANCE2_EXPLAIN;
+                    break;
+                case 3:
+                    itemExp = itemData.ENHANCE3_EXPLAIN;
+                    break;
+            }
+
+            description = $"강화수치 : +{itemData.ENHANCE}\n{itemExp}";
                     
             itemInfo.ShowItemInfo(itemData.NAME, description);
         }

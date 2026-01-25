@@ -168,7 +168,14 @@ public class StageUI : MonoBehaviour
         bool isLocked = stageNum > unlockedStageIndex;
 
         //받아온 스테이지 선택된 상태
-        stageText.text = $"스테이지 {stageNum}";
+        if(stageNum != 10)
+        {
+            stageText.text = $"스테이지 {stageNum}";
+        }
+        else
+        {
+            stageText.text = $"스테이지 Final";
+        }
         // --- 유저용 UI 테두리 처리 ---
         if (selectionOutline != null)
         {

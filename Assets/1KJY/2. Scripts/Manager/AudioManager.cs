@@ -85,8 +85,6 @@ public class AudioManager : MonoBehaviour
         bgmSource = bgmObject.AddComponent<AudioSource>();
         bgmSource.loop = true;
 
-        print($"총 {audios.Length}개 로드됨");
-
         // SFX 전용 오디오소스 생성
         GameObject sfxObject = new GameObject("SFX");
         sfxObject.transform.SetParent(transform);

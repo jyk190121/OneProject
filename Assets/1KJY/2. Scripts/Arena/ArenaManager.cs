@@ -792,7 +792,7 @@ public class ArenaManager : MonoBehaviour
                         //print("공격 20 공격 20");
                         float att1 = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) + player.att1;
                         float att2 = Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) + player.att2;
-                        float blood = item.BLOOD;
+                        float blood = item.ENHANCE_BLOOD;
                         float r = (Random.Range(0f, 1f));
 
                         switch (item.COUNT)
@@ -803,12 +803,14 @@ public class ArenaManager : MonoBehaviour
                             case 2:
                                 att1 *= 3;
                                 att2 *= 3;
+                                blood *= 3;
                                 action = $"치명타!\n물공 {att1} , 마공 {att2}\n흡혈 {blood}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att1 *= 9;
                                 att2 *= 9;
+                                blood *= 9;
                                 action = $"메가치명타!\n물공 {att1} , 마공 {att2}\n흡혈 {blood}";
                                 r = 1;
                                 break;

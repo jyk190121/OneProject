@@ -36,6 +36,11 @@ public class StageUI : MonoBehaviour
         //stageManager = FindAnyObjectByType<StageManager>();
         unlockedStageIndex = StageManager.Instance.UnlockedStage;
         print($"해금된 스테이지는 {unlockedStageIndex}");
+        if (AudioManager.audioManager.GetCurrentBGM() == "")
+        {
+            AudioManager.audioManager.StopBGM();
+            AudioManager.audioManager.PlayBGM("Intro");
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

@@ -95,7 +95,7 @@ public class StartManager : MonoBehaviour
             arenaBtn.onClick.AddListener(ArenaStart);
         }
 
-        if(AudioManager.audioManager.GetCurrentBGM() != "Intro")
+        if(AudioManager.audioManager.GetCurrentBGM() == "")
         {
             AudioManager.audioManager.StopBGM();
             AudioManager.audioManager.PlayBGM("Intro");

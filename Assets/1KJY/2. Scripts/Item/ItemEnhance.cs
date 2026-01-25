@@ -50,7 +50,7 @@ public class ItemEnhance : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             //보유하지 않은 아이템일 때 (0)
             else
             {
-                description = $"구매: +{itemData.ENHANCE}\n{itemExp}";
+                description = $"구매\n{itemExp}";
             }
 
             itemInfo.ShowItemInfo(itemData.NAME, description);

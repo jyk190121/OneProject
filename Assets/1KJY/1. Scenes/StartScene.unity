@@ -292,6 +292,12 @@ MonoBehaviour:
     pitch: 0
     loop: 1
     source: {fileID: 0}
+  - name: Stage6
+    clip: {fileID: 8300000, guid: 89f935015cc98724a862a586326fdf21, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 1
+    source: {fileID: 0}
   - name: Stage7
     clip: {fileID: 8300000, guid: 0ad591428b0c18c4da51fe3bf98dbc63, type: 3}
     volume: 1

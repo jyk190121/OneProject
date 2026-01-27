@@ -47,6 +47,9 @@ public class StartManager : MonoBehaviour
         //아이템 강화 및 골드 초기화
         ItemManager.Instance.Init();
 
+        //리로드 초기화
+        StageManager.Instance.ReloadChance = 3;
+
         //게임 시작 시 포커스될 버튼
         newStartBtn.Select();
 

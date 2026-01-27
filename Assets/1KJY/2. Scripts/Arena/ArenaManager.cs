@@ -2302,7 +2302,6 @@ public class ArenaManager : MonoBehaviour
         itemManager = ItemManager.Instance;
         enemyManager = FindAnyObjectByType<EnemyArenaManager>();
         scoreManager = FindAnyObjectByType<ScoreManager>();
-
         player = FindFirstObjectByType<Player>();
 
         allItemDatas = itemManager.allItemDatas;

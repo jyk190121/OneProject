@@ -2262,6 +2262,12 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        //보스 클리어 추가보상
+        if(stageManager.Round == 5)
+        {
+            itemManager.PlusGold(stageManager.SelectedStage * 500);
+        }
+
         //빠른 클리어 보상
         if(turn < 5)
         {
@@ -2328,6 +2334,7 @@ public class BattleManager : MonoBehaviour
         //AudioManager.audioManager.PlayBGM("Intro");
 
         stageManager.Round = 1;
+        stageManager.ReloadChance = 3;
 
         GameSceneManager.Instance.LoadScene("GameOverScene");
         //SceneManager.LoadScene("StartScene");

@@ -8,16 +8,22 @@ public class ReloadItem : MonoBehaviour
     public Image failImg;
     public Button failCheckBtn;
     Button reloadBtn;
-    Popup popup;        //리로드 할건지 (1회)
+    Popup popup;        //리로드 할건지 (3회)
     int chance;
+    StageManager stageManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (stageManager == null)
+        {
+            stageManager = FindAnyObjectByType<StageManager>();
+        }
         popup = GetComponent<Popup>();
         reloadBtn = GetComponent<Button>();
         reloadBtn.onClick.AddListener(ReloadItemChcek);
         failCheckBtn.onClick.AddListener(() => failImg.gameObject.SetActive(false));
-        chance = StageManager.Instance.ReloadChance;
+        chance = stageManager.ReloadChance;
     }
 
     void ReloadItemChcek()
@@ -26,7 +32,7 @@ public class ReloadItem : MonoBehaviour
         {
             //아이템 리로드할건지 팝업노출
             popup.ShowConfirm(
-                $"아이템 다시 불러오시겠습니까?\n<color=red>(기회 1번)</color>",
+                $"아이템 다시 불러오시겠습니까?\n<color=red>(남은기회 {chance}번)</color>",
                   () => ExecuteNewGame() // 'Yes'를 누르면 실행될 람다식(Action)
                   );
 

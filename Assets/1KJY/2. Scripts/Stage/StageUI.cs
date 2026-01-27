@@ -223,7 +223,7 @@ public class StageUI : MonoBehaviour
         if (!isLocked)
         {
             StageManager.Instance.SelectedStage = stageNum;
-            if(stageNum != 1) ItemManager.Instance.SetGold(stageNum * 20);
+            if(stageNum != 1) ItemManager.Instance.SetGold(stageNum * 500);
             //Debug.Log($"{stageManager.SelectedStage}번 스테이지로 진입합니다.");
             GameSceneManager.Instance.LoadSceneAsync("ItemSelectScene");
         }

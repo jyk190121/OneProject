@@ -42,7 +42,7 @@ public class StageManager : MonoBehaviour
         UnlockedStage = PlayerPrefs.GetInt("UnlockedStageIndex", 1);
         //스테이지 선택 시 항상 1라운드부터 시작
         Round = 1;
-        ReloadChance = 1;
+        ReloadChance = 3;
     }
 
     // 스테이지 클리어 시 호출
@@ -98,7 +98,7 @@ public class StageManager : MonoBehaviour
     {
         UnlockedStage = 1;
         Round = 1;
-        ReloadChance = 1;
+        ReloadChance = 3;
         PlayerPrefs.SetInt("UnlockedStageIndex", UnlockedStage);
         PlayerPrefs.Save();
     }

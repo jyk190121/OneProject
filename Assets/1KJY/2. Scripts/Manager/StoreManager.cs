@@ -189,7 +189,7 @@ public class StoreManager : MonoBehaviour
     void ExecuteNewGame()
     {
         itemManager.Init();
-        stageManager.ReloadChance = 1;
+        stageManager.ReloadChance = 3;
         GameSceneManager.Instance.LoadSceneAsync("StageScene");
         AudioManager.audioManager.StopBGM();
     }

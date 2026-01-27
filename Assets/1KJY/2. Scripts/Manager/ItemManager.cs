@@ -255,6 +255,7 @@ public class ItemManager : MonoBehaviour
             foreach (Item item in allItemDatas)
             {
                 AddItem(item);
+                item.ENHANCE = 3;
                 GameSceneManager.Instance.RestartScene();
             }
         }

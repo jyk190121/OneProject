@@ -41,6 +41,9 @@ public class ItemEnhance : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 case 2:
                     itemExp = itemData.ENHANCE3_EXPLAIN;
                     break;
+                case 3:
+                    Destroy(gameObject);
+                    break;
             }
 
             if (selectItem)

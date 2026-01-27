@@ -145,9 +145,12 @@ public class BuyItem : MonoBehaviour
 
             storeItems[index] = null;                                     // 리스트 데이터 Null 처리
             buyItemBtns[index].interactable = false;                      // 버튼 클릭 방지
+
             buyItemImgs[index].color = new Color(0.5f, 0.5f, 0.5f, 0.5f); // (선택) 반투명하게 '품절' 느낌 주기
 
             storeManager.UpdateUI();
+
+            buyItemPrices[index].text = "";
 
             //미보유 아이템의 경우
             if (!selectItem)
@@ -158,6 +161,11 @@ public class BuyItem : MonoBehaviour
             {
                 BuyItem_Enhance(item, storePrice);
                 enhanceImgs[index].gameObject.SetActive(false);
+
+                if (item.ENHANCE > 2)
+                {
+                    buyItemImgs[index].color = new Color(0f, 0f, 0f, 0f);
+                }
             }
         }
 
@@ -193,6 +201,7 @@ public class BuyItem : MonoBehaviour
             //구매된 아이템은 Null로 변경
             //print("구매성공 : 강화");
             //item = null;
+
             successTxt.text = $"<color=green>{item.NAME}</color> 아이템 강화에 성공하였다";
             successImg.gameObject.SetActive(true);
         }

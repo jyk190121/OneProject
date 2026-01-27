@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 //업그레이드 상점용
@@ -23,6 +24,7 @@ public class ItemEnhance : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             List<Item> items = ItemManager.Instance.GetSelectItems();
             bool selectItem = items.Find(x => x.NAME == itemData.NAME);
             string itemExp = "";
+
             switch (itemData.ENHANCE)
             {
                 case 0:
@@ -40,9 +42,6 @@ public class ItemEnhance : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                     break;
                 case 2:
                     itemExp = itemData.ENHANCE3_EXPLAIN;
-                    break;
-                case 3:
-                    Destroy(gameObject);
                     break;
             }
 

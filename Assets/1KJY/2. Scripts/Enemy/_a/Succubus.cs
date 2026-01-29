@@ -1,5 +1,4 @@
 using UnityEngine;
-//흡혈 기능 추가하고싶다
 public class Succubus : Enemy
 {
     protected override void InitStats() { }

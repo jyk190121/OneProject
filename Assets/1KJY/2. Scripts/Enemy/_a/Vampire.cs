@@ -29,21 +29,4 @@ public class Vampire : Enemy
 
     }
 
-    //override public void Attack()
-    //{
-    //    Animator animator = GetComponentInChildren<Animator>();
-    //    animator.SetTrigger("AttackTrigger");
-
-    //    int r = Random.Range(10, 20);
-    //    att1 = r;
-    //}
-    //override public void SpecialAttack()
-    //{
-    //    Animator animator = GetComponentInChildren<Animator>();
-    //    animator.SetTrigger("SpecialATrigger");
-
-    //    int r = Random.Range(10, 41);
-    //    att2 = r;
-    //}
-
 }

@@ -4,25 +4,25 @@ public class Bat : Enemy
 {
     protected override void InitStats() { }
 
-    public override void Attack()
-    {
-        base.Attack();                 
-    }
+    //public override void Attack()
+    //{
+    //    base.Attack();                 
+    //}
 
-    override public void SpecialAttack()
-    {
-        base.SpecialAttack();
-    }
+    //override public void SpecialAttack()
+    //{
+    //    base.SpecialAttack();
+    //}
 
-    override public void ShildRecover()
-    {
-        base.ShildRecover();
-    }
+    //override public void ShildRecover()
+    //{
+    //    base.ShildRecover();
+    //}
 
-    override public void Healing()
-    {
-        base.Healing();
-    }
+    //override public void Healing()
+    //{
+    //    base.Healing();
+    //}
 
     //override public void Attack()
     //{

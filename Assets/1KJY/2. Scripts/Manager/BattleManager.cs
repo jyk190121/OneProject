@@ -2167,12 +2167,24 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(SpecialEffect());
 
         float enemyDam = Random.Range(enemy.minAtt2, enemy.att2);
+        string action;
+        
+        if (enemy.NAME == "Vampire")
+        {
+            action = $"흡혈공격 {(int)enemyDam}\n(공격력 절반만큼 흡수)";
+            enemy.hp += enemyDam / 2;
+            enemy.UpdateUI();
+        }
+        else
+        {
+            action = $"마법공격 {(int)enemyDam}";
+        }
 
-        string action = $"마법공격 {(int)enemyDam}";
         Status(action);
 
         player.hp -= enemyDam;
         player.UpdateHpShildSet();
+     
         if (player.hp <= 0)
         {
             //플레이어 사망 (패배)

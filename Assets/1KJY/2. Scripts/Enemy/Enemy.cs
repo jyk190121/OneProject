@@ -57,6 +57,7 @@ public abstract class Enemy : MonoBehaviour
     public float att2;               // 적 마법공격력
     public float recovery;           // 적 방어도 회복력
     public float heal;               // 적 체력 회복력
+    public string NAME;              // 적 이름
 
     public string type;           // 적 타입
 
@@ -114,6 +115,7 @@ public abstract class Enemy : MonoBehaviour
             return;
         }
 
+        NAME = data.name;
         // 데이터가 확실히 있을 때 변수 할당
         maxHp = data.maxHp;
         maxSh = data.maxSh;

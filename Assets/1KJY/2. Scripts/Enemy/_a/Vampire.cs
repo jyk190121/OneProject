@@ -11,7 +11,8 @@ public class Vampire : Enemy
 
     override public void SpecialAttack()
     {
-        base.SpecialAttack();
+        //base.SpecialAttack();
+        blooding();
     }
 
     override public void ShildRecover()
@@ -26,7 +27,7 @@ public class Vampire : Enemy
 
     public void blooding()
     {
-
+        animator.SetTrigger("ClimbTrigger");
     }
 
 }

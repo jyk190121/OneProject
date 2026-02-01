@@ -561,7 +561,7 @@ MonoBehaviour:
     m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 1532094580}
-    m_SelectOnDown: {fileID: 1540552823}
+    m_SelectOnDown: {fileID: 698877014}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -1114,6 +1114,7 @@ MonoBehaviour:
   backgroundCancelBtn: {fileID: 389033118}
   newStartBtn: {fileID: 1532094580}
   arenaBtn: {fileID: 105061255}
+  modeBtn: {fileID: 698877014}
 --- !u!114 &418214105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1514,7 +1515,7 @@ GameObject:
   - component: {fileID: 698877015}
   - component: {fileID: 698877014}
   m_Layer: 5
-  m_Name: ModeStore
+  m_Name: ModeStoreBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1555,8 +1556,8 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 1532094580}
+    m_SelectOnUp: {fileID: 105061255}
+    m_SelectOnDown: {fileID: 1540552823}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -3980,7 +3981,7 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 105061255}
+    m_SelectOnUp: {fileID: 698877014}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}

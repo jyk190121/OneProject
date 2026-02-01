@@ -38,9 +38,21 @@ public class StartManager : MonoBehaviour
 
     public Button arenaBtn;                             // 아레나모드 버튼 (10스테이지 클리어 후 활성화)
 
+    public Button modeBtn;                              // 불법모드 구매상점
+
+    AudioManager audioManager;                          // 오디오매니저
+    float sfxValue = 0f;                                // 버튼음
+
+    GameSceneManager gameSceneManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        audioManager = AudioManager.audioManager;
+        sfxValue = audioManager.sfxVolume;
+
+        gameSceneManager = GameSceneManager.Instance;
+
         //아레나모드 진행 중 스타트씬으로 돌아와졌을 때 아레나 점수 및 라운드 초기화(게임튕김 등)
         ScoreManager.Instance.Init();
 
@@ -63,7 +75,8 @@ public class StartManager : MonoBehaviour
         Cursor.SetCursor(cursorTexture, hotSpot, CursorMode.ForceSoftware);
 
         gameStartBtn.onClick.AddListener(GameStart);
-        newStartBtn.onClick.AddListener(NewGameStart);      // 추가
+        newStartBtn.onClick.AddListener(NewGameStart);      // 새로하기
+        modeBtn.onClick.AddListener(ModeStore);             // 모드상점 진입
         endBtn.onClick.AddListener(GameEndYorN);
         endY.onClick.AddListener(EndGame);
         endN.onClick.AddListener(EnterGame);
@@ -98,10 +111,10 @@ public class StartManager : MonoBehaviour
             arenaBtn.onClick.AddListener(ArenaStart);
         }
 
-        if(AudioManager.audioManager.GetCurrentBGM() == "")
+        if(audioManager.GetCurrentBGM() == "")
         {
-            AudioManager.audioManager.StopBGM();
-            AudioManager.audioManager.PlayBGM("Intro");
+            audioManager.StopBGM();
+            audioManager.PlayBGM("Intro");
         }
     }
 
@@ -166,17 +179,14 @@ public class StartManager : MonoBehaviour
 
     void GameStart()
     {
-        float value = AudioManager.audioManager.sfxVolume;
-        AudioManager.audioManager.PlaySFX("Button", value);
-
-        GameSceneManager.Instance.LoadSceneAsync("StageScene");
+        audioManager.PlaySFX("Button", sfxValue);
+        gameSceneManager.LoadSceneAsync("StageScene");
     }
 
     //새로하기
     void NewGameStart()
     {
-        float value = AudioManager.audioManager.sfxVolume;
-        AudioManager.audioManager.PlaySFX("Button", value);
+        audioManager.PlaySFX("Button", sfxValue);
 
         newStartpopup.yesBtn.Select();
         //새로 시작하시겠습니까?? (이전 진행정보가 모두 사라집니다) Yes/No
@@ -194,7 +204,7 @@ public class StartManager : MonoBehaviour
         ItemManager.Instance.ResetItem();
         StageManager.Instance.ResetStage();
 
-        GameSceneManager.Instance.LoadSceneAsync("StageScene");
+        gameSceneManager.LoadSceneAsync("StageScene");
     }
 
 
@@ -232,21 +242,20 @@ public class StartManager : MonoBehaviour
         volSetImg.gameObject.SetActive(false);
         infoImg.gameObject.SetActive(false);
         //gameStartBtn.Select();
-        GameSceneManager.Instance.RestartScene();
+        gameSceneManager.RestartScene();
     }
 
     void EnterItemList()
     {
-        float value = AudioManager.audioManager.sfxVolume;
-        AudioManager.audioManager.PlaySFX("Button", value);
+        audioManager.PlaySFX("Button", sfxValue);
 
-        GameSceneManager.Instance.LoadSceneAsync("ItemListScene");
+        gameSceneManager.LoadSceneAsync("ItemListScene");
     }
 
     public void AudioSet()
     {
-        volumeSliderBGM.value = AudioManager.audioManager.bgmVolume;
-        volumeSliderSFX.value = AudioManager.audioManager.sfxVolume;
+        volumeSliderBGM.value = audioManager.bgmVolume;
+        volumeSliderSFX.value = sfxValue;
 
         if (endImg.gameObject.activeSelf || infoImg.gameObject.activeSelf) return;
 
@@ -287,14 +296,14 @@ public class StartManager : MonoBehaviour
 
     public void OnSliderChangedBGM()
     {
-        AudioManager.audioManager.SetBGMOnlyVol(volumeSliderBGM.value);
-        AudioManager.audioManager.bgmVolume = volumeSliderBGM.value;
+        audioManager.SetBGMOnlyVol(volumeSliderBGM.value);
+        audioManager.bgmVolume = volumeSliderBGM.value;
     }
 
     public void OnSliderChangedSFX()
     {
-        AudioManager.audioManager.SetSFXOnlyVol(volumeSliderSFX.value);
-        AudioManager.audioManager.sfxVolume = volumeSliderSFX.value;
+        audioManager.SetSFXOnlyVol(volumeSliderSFX.value);
+        audioManager.sfxVolume = volumeSliderSFX.value;
     }
 
     //void SelectBtn(Keyboard key)
@@ -403,9 +412,14 @@ public class StartManager : MonoBehaviour
 
     void ArenaStart()
     {
-        float value = AudioManager.audioManager.sfxVolume;
-        AudioManager.audioManager.PlaySFX("Button", value);
+        audioManager.PlaySFX("Button", sfxValue);
 
-        GameSceneManager.Instance.LoadSceneAsync("ArenaItemSelectScene");
+        gameSceneManager.LoadSceneAsync("ArenaItemSelectScene");
+    }
+
+    void ModeStore()
+    {
+        audioManager.PlaySFX("Button", sfxValue);
+        gameSceneManager.LoadSceneAsync("ModeStoreScene");
     }
 }

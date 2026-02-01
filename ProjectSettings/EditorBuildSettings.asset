@@ -38,6 +38,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1KJY/1. Scenes/ArenaUpgradeStoreScene.unity
     guid: 8288b221a3e6fdb43a3fa74bb2689702
+  - enabled: 1
+    path: Assets/1KJY/1. Scenes/ModeStoreScene.unity
+    guid: 1a2d46815286dbb47893a93b365e57d4
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

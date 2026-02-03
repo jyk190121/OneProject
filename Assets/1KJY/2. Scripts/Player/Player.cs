@@ -25,16 +25,34 @@ public class Player : MonoBehaviour
     public float att2;     //마법공격력
     public float poison;   //�� ����������
 
+    [Header("Base Stats from Store")]
+    public float storeAtkMultiplier = 1.0f;     // 상점 물공 강화 (예: 1.2 = 20% 증폭)
+    public float storeMatkMultiplier = 1.0f;
+    public float storeAtkResist = 0f;           // 물리 저항
+    public float storeMatkResist = 0f;          // 마법 저항
+
     //새로하기
     public void HpShildSet()
     {
-        maxHp = 300;
+        PlayerManager pm = PlayerManager.Instance;
+
+        // 상점 매니저(Singleton)에서 영구 강화 값을 가져옴
+        storeAtkMultiplier = 1.0f + pm.physicalAtkBonus;
+        storeMatkMultiplier = 1.0f + pm.magicAtkBonus;
+
+        // 기본값 + 강화값
+        if(pm.maxHP == 0) maxHp = 50f;
+        else maxHp = pm.maxHP;
+
+        hp = maxHp;
+        //maxHp = 300;
+        //hp = 300;
         maxSh = 0;
-        hp = 300;
         shild = 0;
         att1 = 0;
         att2 = 0;
         poison = 0;
+
 
         UpdateHpShildSet();
         UpdatePosionUI();

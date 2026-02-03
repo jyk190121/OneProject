@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 /// <summary>
 /// 모드 업그레이드 칩 여부 확인
 /// - 버튼별 업그레이드 내용 소개
@@ -17,6 +18,23 @@ public class ModeManager : MonoBehaviour
 
     int modeEnhance;
 
+    // 현재 강화 단계를 저장 (실제 서비스 시에는 PlayerManager나 데이터 매니저에서 가져와야 함)
+    // 인덱스: 0 물리저항, 1 마법저항, 2 물공, 3 마공, 4 골드, 5 체력
+    private int[] upgradeLevels = new int[6];
+    private int[] maxLevels = { 4, 4, 4, 4, 4, 4 };
+
+    // 가격표 데이터
+    private int[][] priceTables = new int[][]
+    {
+        new int[] { 25, 35, 45, 70 }, // 물리저항
+        new int[] { 25, 35, 45, 70 }, // 마법저항
+        new int[] { 25, 35, 45, 70 }, // 물공
+        new int[] { 25, 35, 45, 70 }, // 마공
+        new int[] { 5, 15, 25, 50 },  // 보너스골드
+        new int[] { 35, 45, 55, 80 }  // 추가HP
+    };
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,56 +46,169 @@ public class ModeManager : MonoBehaviour
 
         //8개의 모드 버튼
         //1회만 강화가능한 버튼 2개 / 나머지는 4단계까지
-        modeBtns[0].onClick.AddListener(PhysicalResistance);
-        modeBtns[1].onClick.AddListener(MagicResistance);
-        modeBtns[2].onClick.AddListener(PhysicalEnhancement);
-        modeBtns[3].onClick.AddListener(MagicEnhancement);
-        modeBtns[4].onClick.AddListener(BonusGold);
-        modeBtns[5].onClick.AddListener(StrongHP);
+        modeBtns[0].onClick.AddListener(() => TryUpgrade(0, PhysicalResistance));
+        modeBtns[1].onClick.AddListener(() => TryUpgrade(1, MagicResistance));
+        modeBtns[2].onClick.AddListener(() => TryUpgrade(2, PhysicalEnhancement));
+        modeBtns[3].onClick.AddListener(() => TryUpgrade(3, MagicEnhancement));
+        modeBtns[4].onClick.AddListener(() => TryUpgrade(4, BonusGold));
+        modeBtns[5].onClick.AddListener(() => TryUpgrade(5, StrongHP));
         modeBtns[6].onClick.AddListener(Revive);
         modeBtns[7].onClick.AddListener(Rings);
     }
 
-    //물리저항 단계별 5%씩 (최대 20%)
+    ////물리저항 단계별 5%씩 (최대 20%)
+    ////가격표 25 -> 35 -> 45 -> 70
+    //void PhysicalResistance()
+    //{
+    //    print("물리저항 강화");
+    //}
+
+    ////마법저항 단계별 5%씩 (최대 20%)
+    ////가격표 25 -> 35 -> 45 -> 70
+    //void MagicResistance()
+    //{
+
+    //}
+    ////물리공격력 단계별 25% (최대 100% - 2배)
+    ////가격표 25 -> 35 -> 45 -> 70
+    //void PhysicalEnhancement()
+    //{
+
+    //}
+    ////마법공격력 단계별 25% (최대 100% - 2배)
+    ////가격표 25 -> 35 -> 45 -> 70
+    //void MagicEnhancement()
+    //{
+
+    //}
+    ////동전추가(Round별 동전 20%추가) (최대 80%)
+    ////가격표 5 -> 15 -> 25 -> 50
+    //void BonusGold()
+    //{
+
+    //}
+    ////시작체력 100 / 200 / 300 / 400
+    ////가격표 35 -> 45 -> 55 -> 80
+    //void StrongHP()
+    //{
+
+
+    //}
+    ////플레이어 부활 1회 (게임마다 자동사용)
+    ////가격표 400
+    //void Revive()
+    //{
+
+    //}
+    ////반지셋 (흡혈,독,마법) 3가지 모아서 구매가능 (스테이지 모든적 체력/방어도 50% 감소)
+    ////가격표 250
+    //void Rings()
+    //{ 
+    //}
+
+
+    // 공통 강화 시도 로직
+    void TryUpgrade(int index, System.Action upgradeAction)
+    {
+        if (upgradeLevels[index] >= maxLevels[index])
+        {
+            Debug.Log("최대 강화 단계입니다.");
+            return;
+        }
+
+        int currentPrice = priceTables[index][upgradeLevels[index]];
+
+        // PlayerManager.Instance.Gold (가정) 가 가격보다 많을 때
+        if (PlayerManager.Instance.chip >= currentPrice)
+        {
+            PlayerManager.Instance.chip -= currentPrice;
+            upgradeLevels[index]++;
+            upgradeAction.Invoke();
+            StartCoroutine(ShowFeedback(succesImg));
+        }
+        else
+        {
+            StartCoroutine(ShowFeedback(failImg));
+        }
+    }
+
+    IEnumerator ShowFeedback(Image img)
+    {
+        img.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        img.gameObject.SetActive(false);
+    }
+
+    // --- 강화 로직 상세 ---
+
     void PhysicalResistance()
     {
-
+        // 단계별 5%씩 적용
+        PlayerManager.Instance.physicalResist = upgradeLevels[0] * 0.05f;
+        Debug.Log($"물리저항 강화: {PlayerManager.Instance.physicalResist * 100}%");
     }
 
-    //마법저항 단계별 5%씩 (최대 20%)
     void MagicResistance()
     {
-
+        PlayerManager.Instance.magicResist = upgradeLevels[1] * 0.05f;
     }
-    //물리공격력 단계별 25% (최대 100% - 2배)
+
     void PhysicalEnhancement()
     {
-
+        // 단계별 25% 증폭
+        PlayerManager.Instance.physicalAtkBonus = upgradeLevels[2] * 0.25f;
     }
-    //마법공격력 단계별 25% (최대 100% - 2배)
+
     void MagicEnhancement()
     {
-
+        PlayerManager.Instance.magicAtkBonus = upgradeLevels[3] * 0.25f;
     }
-    //동전추가(Round별 동전 20%추가) (최대 80%)
+
     void BonusGold()
     {
-
+        PlayerManager.Instance.goldBonus = upgradeLevels[4] * 0.20f;
     }
-    //시작체력 100 / 200 / 300 / 400
+
     void StrongHP()
     {
-
-
+        PlayerManager.Instance.maxHP = upgradeLevels[5] * 100f;
     }
-    //플레이어 부활 1회 (게임마다 자동사용)
+
     void Revive()
     {
+        if (PlayerManager.Instance.hasRevive) return;
 
+        int price = 400;
+        if (PlayerManager.Instance.chip >= price)
+        {
+            PlayerManager.Instance.chip -= price;
+            PlayerManager.Instance.hasRevive = true;
+            StartCoroutine(ShowFeedback(succesImg));
+            modeBtns[6].interactable = false; // 1회성 구매 제한
+        }
+        else StartCoroutine(ShowFeedback(failImg));
     }
-    //반지셋 (흡혈,독,마법) 3가지 모아서 구매가능 (스테이지 모든적 체력/방어도 50% 감소)
+
     void Rings()
     {
+        if(!PlayerManager.Instance.hasRings)
+        {
+            StartCoroutine(ShowFeedback(failImg));
+            return;
+        }
 
+        if (PlayerManager.Instance.enemyHalf) return;
+
+        int price = 250;
+        if (PlayerManager.Instance.chip >= price)
+        {
+            PlayerManager.Instance.chip -= price;
+            PlayerManager.Instance.enemyHalf = true;
+            StartCoroutine(ShowFeedback(succesImg));
+            modeBtns[7].interactable = false;
+        }
+        else StartCoroutine(ShowFeedback(failImg));
     }
+
+
 }

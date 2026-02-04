@@ -1,6 +1,8 @@
+using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 /// <summary>
 /// 모드 업그레이드 칩 여부 확인
 /// - 버튼별 업그레이드 내용 소개
@@ -9,10 +11,12 @@ using System.Collections;
 public class ModeManager : MonoBehaviour
 {
     public Button[] modeBtns;
+    public TextMeshProUGUI[] modePrices;
     //강화 성공 이미지
     public Image succesImg;
     //강화 실패 이미지 (돈 부족 or 조건 미달)
     public Image failImg;
+    public TextMeshProUGUI failTxt;
     //강화 여부 팝업
     Popup popup;
 
@@ -20,18 +24,20 @@ public class ModeManager : MonoBehaviour
 
     // 현재 강화 단계를 저장 (실제 서비스 시에는 PlayerManager나 데이터 매니저에서 가져와야 함)
     // 인덱스: 0 물리저항, 1 마법저항, 2 물공, 3 마공, 4 골드, 5 체력
-    private int[] upgradeLevels = new int[6];
-    private int[] maxLevels = { 4, 4, 4, 4, 4, 4 };
+    private int[] upgradeLevels = new int[8];
+    private int[] maxLevels = { 4, 4, 4, 4, 4, 4, 1, 1 };
 
     // 가격표 데이터
     private int[][] priceTables = new int[][]
     {
-        new int[] { 25, 35, 45, 70 }, // 물리저항
-        new int[] { 25, 35, 45, 70 }, // 마법저항
-        new int[] { 25, 35, 45, 70 }, // 물공
-        new int[] { 25, 35, 45, 70 }, // 마공
-        new int[] { 5, 15, 25, 50 },  // 보너스골드
-        new int[] { 35, 45, 55, 80 }  // 추가HP
+        new int[] { 25, 35, 45, 70 },   // 물리저항
+        new int[] { 25, 35, 45, 70 },   // 마법저항
+        new int[] { 25, 35, 45, 70 },   // 물공
+        new int[] { 25, 35, 45, 70 },   // 마공
+        new int[] { 5, 15, 25, 50 },    // 보너스골드
+        new int[] { 35, 45, 55, 80 },   // 추가HP
+        new int[] { 400 },              // 부활권
+        new int[] { 250 }               // 반지셋
     };
 
 
@@ -44,6 +50,11 @@ public class ModeManager : MonoBehaviour
         succesImg.gameObject.SetActive(false);
         failImg.gameObject.SetActive(false);
 
+        for(int i=0; i < modePrices.Length; i++)
+        {
+            modePrices[i].text = priceTables[i][0].ToString();
+        }
+
         //8개의 모드 버튼
         //1회만 강화가능한 버튼 2개 / 나머지는 4단계까지
         modeBtns[0].onClick.AddListener(() => TryUpgrade(0, PhysicalResistance));
@@ -52,8 +63,8 @@ public class ModeManager : MonoBehaviour
         modeBtns[3].onClick.AddListener(() => TryUpgrade(3, MagicEnhancement));
         modeBtns[4].onClick.AddListener(() => TryUpgrade(4, BonusGold));
         modeBtns[5].onClick.AddListener(() => TryUpgrade(5, StrongHP));
-        modeBtns[6].onClick.AddListener(Revive);
-        modeBtns[7].onClick.AddListener(Rings);
+        modeBtns[6].onClick.AddListener(() => TryUpgrade(6, Revive));
+        modeBtns[7].onClick.AddListener(() => TryUpgrade(7, Rings));
     }
 
     ////물리저항 단계별 5%씩 (최대 20%)
@@ -110,13 +121,24 @@ public class ModeManager : MonoBehaviour
     // 공통 강화 시도 로직
     void TryUpgrade(int index, System.Action upgradeAction)
     {
+        popup.ShowConfirm(
+                 $"해당 모드를 업그레이드 하시겠습니까",
+                 () => Excute(index, upgradeAction) // 'Yes'를 누르면 실행될 람다식(Action)
+                 );
+    }
+
+    void Excute(int index, System.Action upgradeAction)
+    {
         if (upgradeLevels[index] >= maxLevels[index])
         {
-            Debug.Log("최대 강화 단계입니다.");
+            //Debug.Log("최대 강화 단계입니다.");
+            failTxt.text = "최대 강화 단계입니다 (강화불가)";
+            StartCoroutine(ShowFeedback(failImg));
             return;
         }
 
         int currentPrice = priceTables[index][upgradeLevels[index]];
+
 
         // PlayerManager.Instance.Gold (가정) 가 가격보다 많을 때
         if (PlayerManager.Instance.chip >= currentPrice)
@@ -125,12 +147,15 @@ public class ModeManager : MonoBehaviour
             upgradeLevels[index]++;
             upgradeAction.Invoke();
             StartCoroutine(ShowFeedback(succesImg));
+            modePrices[index].text = currentPrice.ToString();
         }
         else
         {
+            failTxt.text = "칩이 모자랍니다 (강화실패)";
             StartCoroutine(ShowFeedback(failImg));
         }
     }
+
 
     IEnumerator ShowFeedback(Image img)
     {
@@ -178,37 +203,24 @@ public class ModeManager : MonoBehaviour
     {
         if (PlayerManager.Instance.hasRevive) return;
 
-        int price = 400;
-        if (PlayerManager.Instance.chip >= price)
-        {
-            PlayerManager.Instance.chip -= price;
-            PlayerManager.Instance.hasRevive = true;
-            StartCoroutine(ShowFeedback(succesImg));
-            modeBtns[6].interactable = false; // 1회성 구매 제한
-        }
-        else StartCoroutine(ShowFeedback(failImg));
+        PlayerManager.Instance.hasRevive = true;
+        StartCoroutine(ShowFeedback(succesImg));
+        modeBtns[6].interactable = false; // 1회성 구매 제한
     }
 
     void Rings()
     {
         if(!PlayerManager.Instance.hasRings)
         {
+            failTxt.text = "모든 반지를 모으지 못했습니다 (강화실패)\n흡혈반지, 독반지, 마법반지 필요";
             StartCoroutine(ShowFeedback(failImg));
             return;
         }
 
         if (PlayerManager.Instance.enemyHalf) return;
 
-        int price = 250;
-        if (PlayerManager.Instance.chip >= price)
-        {
-            PlayerManager.Instance.chip -= price;
-            PlayerManager.Instance.enemyHalf = true;
-            StartCoroutine(ShowFeedback(succesImg));
-            modeBtns[7].interactable = false;
-        }
-        else StartCoroutine(ShowFeedback(failImg));
+        PlayerManager.Instance.enemyHalf = true;
+        StartCoroutine(ShowFeedback(succesImg));
+        modeBtns[7].interactable = false;
     }
-
-
 }

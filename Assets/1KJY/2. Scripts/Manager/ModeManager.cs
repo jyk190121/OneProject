@@ -131,7 +131,6 @@ public class ModeManager : MonoBehaviour
     {
         if (upgradeLevels[index] >= maxLevels[index])
         {
-            //Debug.Log("최대 강화 단계입니다.");
             failTxt.text = "최대 강화 단계입니다 (강화불가)";
             StartCoroutine(ShowFeedback(failImg));
             return;
@@ -139,8 +138,6 @@ public class ModeManager : MonoBehaviour
 
         int currentPrice = priceTables[index][upgradeLevels[index]];
 
-
-        // PlayerManager.Instance.Gold (가정) 가 가격보다 많을 때
         if (PlayerManager.Instance.chip >= currentPrice)
         {
             PlayerManager.Instance.chip -= currentPrice;

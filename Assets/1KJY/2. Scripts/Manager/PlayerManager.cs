@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -28,6 +30,15 @@ public class PlayerManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    //테스트용 치트
+    void Update()
+    {
+        if(Keyboard.current.f7Key.wasPressedThisFrame == true)
+        {
+            GetChip(50000);
         }
     }
 
@@ -76,5 +87,12 @@ public class PlayerManager : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         LoadPlayerData();
+    }
+
+    public void GetChip(int count)
+    {
+        chip += count;
+        print($"칩 획득 : {count}");
+        GameSceneManager.Instance.RestartScene();
     }
 }

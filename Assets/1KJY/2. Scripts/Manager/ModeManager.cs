@@ -20,7 +20,9 @@ public class ModeManager : MonoBehaviour
     //강화 여부 팝업
     Popup popup;
 
-    int modeEnhance;
+    //int modeEnhance;
+    public TextMeshProUGUI chipCountTxt;
+
 
     // 현재 강화 단계를 저장 (실제 서비스 시에는 PlayerManager나 데이터 매니저에서 가져와야 함)
     // 인덱스: 0 물리저항, 1 마법저항, 2 물공, 3 마공, 4 골드, 5 체력
@@ -45,15 +47,17 @@ public class ModeManager : MonoBehaviour
     void Start()
     {
         popup = GetComponent<Popup>();
+        chipCountTxt.text = PlayerManager.Instance.chip.ToString();
 
         //성공실패이미지는 끄자
         succesImg.gameObject.SetActive(false);
         failImg.gameObject.SetActive(false);
 
-        for(int i=0; i < modePrices.Length; i++)
-        {
-            modePrices[i].text = priceTables[i][0].ToString();
-        }
+        //for(int i=0; i < modePrices.Length; i++)
+        //{
+        //    modePrices[i].text = priceTables[i][0].ToString();
+        //}
+        ModePriceUpdateUI();
 
         //8개의 모드 버튼
         //1회만 강화가능한 버튼 2개 / 나머지는 4단계까지
@@ -64,7 +68,7 @@ public class ModeManager : MonoBehaviour
         modeBtns[4].onClick.AddListener(() => TryUpgrade(4, BonusGold));
         modeBtns[5].onClick.AddListener(() => TryUpgrade(5, StrongHP));
         modeBtns[6].onClick.AddListener(() => TryUpgrade(6, Revive));
-        modeBtns[7].onClick.AddListener(() => TryUpgrade(7, Rings));
+        modeBtns[7].onClick.AddListener(Rings);
     }
 
     ////물리저항 단계별 5%씩 (최대 20%)
@@ -133,18 +137,26 @@ public class ModeManager : MonoBehaviour
         {
             failTxt.text = "최대 강화 단계입니다 (강화불가)";
             StartCoroutine(ShowFeedback(failImg));
+            //modeBtns[index].interactable = false;
+            //modePrices[index].text = "";
             return;
         }
-
+       
         int currentPrice = priceTables[index][upgradeLevels[index]];
 
         if (PlayerManager.Instance.chip >= currentPrice)
         {
             PlayerManager.Instance.chip -= currentPrice;
             upgradeLevels[index]++;
+            //modePrices[index].text = currentPrice.ToString();
+            chipCountTxt.text = PlayerManager.Instance.chip.ToString();
             upgradeAction.Invoke();
             StartCoroutine(ShowFeedback(succesImg));
-            modePrices[index].text = currentPrice.ToString();
+
+            ModePriceUpdateUI(); // 여기서 전체 UI를 현재 단계에 맞게 새로고침
+
+            //PlayerManager.Instance.SavePlayerData(); // 저장 잊지 마세요!
+            //ModePriceUpdateUI();
         }
         else
         {
@@ -207,17 +219,63 @@ public class ModeManager : MonoBehaviour
 
     void Rings()
     {
-        if(!PlayerManager.Instance.hasRings)
+        popup.ShowConfirm(
+                $"해당 모드를 업그레이드 하시겠습니까",
+                () => ExcuteRing() // 'Yes'를 누르면 실행될 람다식(Action)
+                );
+    }
+
+    void ExcuteRing()
+    {
+        if (PlayerManager.Instance.chip >= 250 && PlayerManager.Instance.hasRings)
+        {
+            PlayerManager.Instance.chip -= 250;
+            PlayerManager.Instance.enemyHalf = true;
+            StartCoroutine(ShowFeedback(succesImg));
+            modePrices[7].text = "";
+            modeBtns[7].interactable = false;
+        }
+        else if (PlayerManager.Instance.chip >= 250 && !PlayerManager.Instance.hasRings)
         {
             failTxt.text = "모든 반지를 모으지 못했습니다 (강화실패)\n흡혈반지, 독반지, 마법반지 필요";
             StartCoroutine(ShowFeedback(failImg));
             return;
+        }else if (PlayerManager.Instance.chip >= 250 && PlayerManager.Instance.enemyHalf)
+        {
+            failTxt.text = "최대 강화 단계입니다 (강화불가)";
+            StartCoroutine(ShowFeedback(failImg));
+            return;
         }
+        else
+        {
+            failTxt.text = "칩이 모자랍니다 (강화실패)";
+            StartCoroutine(ShowFeedback(failImg));
+        }
+    }
 
-        if (PlayerManager.Instance.enemyHalf) return;
+    public void ModePriceUpdateUI()
+    {
+        //for (int i = 0; i < modePrices.Length; i++)
+        //{
+        //    modePrices[i].text = priceTables[i][0].ToString();
+        //}
 
-        PlayerManager.Instance.enemyHalf = true;
-        StartCoroutine(ShowFeedback(succesImg));
-        modeBtns[7].interactable = false;
+        for (int i = 0; i < modePrices.Length; i++)
+        {
+            int currentLvl = upgradeLevels[i];
+            int maxLvl = maxLevels[i];
+
+            if (currentLvl >= maxLvl)
+            {
+                modePrices[i].text = "";
+                modeBtns[i].interactable = false;
+            }
+            else
+            {
+                // i번째 항목의 현재 레벨(upgradeLevels[i])에 해당하는 가격 표시
+                modePrices[i].text = priceTables[i][currentLvl].ToString();
+                modeBtns[i].interactable = true;
+            }
+        }
     }
 }

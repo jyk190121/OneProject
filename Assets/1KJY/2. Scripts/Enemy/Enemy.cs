@@ -165,9 +165,16 @@ public abstract class Enemy : MonoBehaviour
         //att1 = 0;
         //att2 = 0;
 
+        if(PlayerManager.Instance.enemyHalf)
+        {
+            maxHp /= 2;
+            maxSh /= 2;
+        }
+
         // 공통 로직 실행 (UI 업데이트 등)
         hp = maxHp;
         shild = maxSh;
+
 
         //hpBar.fillAmount = hp / maxHp;
         //shildBar.fillAmount = shild / maxSh;

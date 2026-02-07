@@ -68,6 +68,9 @@ public class ItemManager : MonoBehaviour
             initialItems.Add(item);
             SaveItems(); // 아이템 리스트 전체 저장
             OnItemAdd?.Invoke(item);
+
+            // 아이템이 추가될 때마다 세트 완성 여부 확인
+            CheckRingSet();
         }
     }
 
@@ -116,6 +119,8 @@ public class ItemManager : MonoBehaviour
                 initialItems.Add(foundItem);
             }
         }
+
+        CheckRingSet();
     }
     //public void LoadItems()
     //{
@@ -272,5 +277,25 @@ public class ItemManager : MonoBehaviour
 
     public void PlusGold(int gold) { this.gold += gold; }
     public void MinusGold(int gold) { this.gold -= gold; }
+    private void CheckRingSet()
+    {
+        string[] ringNames = { "독반지", "흡혈반지", "마법반지" };
+        int collectedCount = 0;
+
+        foreach (string name in ringNames)
+        {
+            if (initialItems.Exists(x => x.NAME == name))
+            {
+                collectedCount++;
+            }
+        }
+
+        // 3개를 모두 모았다면 PlayerManager의 변수 업데이트
+        if (collectedCount >= 3)
+        {
+            PlayerManager.Instance.hasRings = true;
+            Debug.Log("반지 세트 완성!");
+        }
+    }
 
 }

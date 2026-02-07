@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
@@ -189,7 +190,9 @@ public class StoreManager : MonoBehaviour
     void ExecuteNewGame()
     {
         itemManager.Init();
-        stageManager.ReloadChance = 3;
+        //stageManager.ReloadChance = 3;
+        stageManager.ResetStage();
+
         GameSceneManager.Instance.LoadSceneAsync("StageScene");
         AudioManager.audioManager.StopBGM();
     }

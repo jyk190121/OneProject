@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class OverUI : MonoBehaviour
 {
+    public GameObject overEffect;               //칩도 주면서~ 이팩트
+    public Image chipBg;
+    public TextMeshProUGUI chipCount;
+
     public GameObject itemPrefabParent;         //프리팹 만들 위치
     public GameObject itemPrefab;               //아이템 프리팹
     List<GameObject> newItemPrefabs;            //죽기전까지 새로 산 아이템리스트
@@ -53,6 +57,10 @@ public class OverUI : MonoBehaviour
         {
             UpdateSlot(newItemList[i], i);
         }
+
+        chipBg.gameObject.SetActive(false);
+
+        StartCoroutine(GetChipAnimation());
     }
 
     void UpdateSlot(Item item, int index)
@@ -61,5 +69,20 @@ public class OverUI : MonoBehaviour
         if (slot == null) slot = newItemPrefabs[index].gameObject.AddComponent<ItemSlot>();
 
         slot.Setup(item);
+    }
+
+    IEnumerator GetChipAnimation()
+    {
+        GameObject effect = Instantiate(overEffect, chipBg.transform.position , Quaternion.identity);
+
+        int chip = ((StageManager.Instance.SelectedStage - 1) * 5) + StageManager.Instance.Round;
+
+        PlayerManager.Instance.GetChip(chip);
+        chipCount.text = chip.ToString();
+
+        yield return new WaitForSeconds(2f);
+
+        Destroy(effect, 1f);
+        chipBg.gameObject.SetActive(true);
     }
 }

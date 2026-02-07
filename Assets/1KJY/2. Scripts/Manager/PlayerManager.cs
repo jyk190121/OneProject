@@ -42,7 +42,7 @@ public class PlayerManager : MonoBehaviour
     {
         if(Keyboard.current.f7Key.wasPressedThisFrame == true)
         {
-            GetChip(50000);
+            GetChip(500);
             GameSceneManager.Instance.RestartScene();
         }
     }

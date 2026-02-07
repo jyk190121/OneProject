@@ -1469,7 +1469,7 @@ public class BattleManager : MonoBehaviour
                                 Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
 
                                 // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
-                                itemPos = new Vector3(slotPos.x, slotPos.y - 3.3f, 0f);
+                                itemPos = new Vector3(slotPos.x, slotPos.y, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1541,7 +1541,7 @@ public class BattleManager : MonoBehaviour
                                 Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
 
                                 // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
-                                itemPos = new Vector3(slotPos.x, slotPos.y - 3.3f, 0f);
+                                itemPos = new Vector3(slotPos.x, slotPos.y, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1606,7 +1606,7 @@ public class BattleManager : MonoBehaviour
                                 Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
 
                                 // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
-                                itemPos = new Vector3(slotPos.x, slotPos.y - 3.3f, 0f);
+                                itemPos = new Vector3(slotPos.x, slotPos.y, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1886,6 +1886,7 @@ public class BattleManager : MonoBehaviour
             stuned1 = false;
             stuned2 = false;
             stuned3 = false;
+            Status("천둥망치가 아니라서 기절이 풀렸다!");
         }
 
         if (enemy.type.Equals("E"))

@@ -75,7 +75,9 @@ public class OverUI : MonoBehaviour
     {
         GameObject effect = Instantiate(overEffect, chipBg.transform.position , Quaternion.identity);
 
-        int chip = ((StageManager.Instance.SelectedStage - 1) * 5) + StageManager.Instance.Round;
+        int r = Random.Range(1, 6);
+
+        int chip = StageManager.Instance.ClearRound * r;
 
         PlayerManager.Instance.GetChip(chip);
         chipCount.text = chip.ToString();

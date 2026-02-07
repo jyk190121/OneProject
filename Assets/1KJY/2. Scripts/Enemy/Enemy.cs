@@ -90,11 +90,11 @@ public abstract class Enemy : MonoBehaviour
         }
 
 
-        // 데이터가 할당되어 있다면 초기화
-        if (data != null)
-        {
-            InitFromData();
-        }
+        //// 데이터가 할당되어 있다면 초기화
+        //if (data != null)
+        //{
+        //    InitFromData();
+        //}
     }
 
     //protected virtual void Start()
@@ -129,7 +129,20 @@ public abstract class Enemy : MonoBehaviour
         att2 = data.baseAtt2;
         recovery = data.recovery;
         heal = data.heal;
+        type = data.type;
 
+        if (PlayerManager.Instance.enemyHalf)
+        {
+            maxHp /= 2;
+            maxSh /= 2;
+        }
+
+        // 공통 로직 실행 (UI 업데이트 등)
+        hp = maxHp;
+        shild = maxSh;
+
+        //hpBar.fillAmount = hp / maxHp;
+        //shildBar.fillAmount = shild / maxSh;
         UpdateUI();
     }
 
@@ -138,20 +151,20 @@ public abstract class Enemy : MonoBehaviour
     // 일일이 수치를 적지 않아도 InitFromData가 처리합니다.
     protected abstract void InitStats();
 
-    private void InitFromData()
-    {
-        maxHp = data.maxHp;
-        maxSh = data.maxSh;
-        hp = maxHp;
-        shild = maxSh;
-        minAtt1 = data.minAtt1;
-        att1 = data.baseAtt1;
-        minAtt2 = data.minAtt2;
-        att2 = data.baseAtt2;
-        recovery = data.recovery;
-        heal = data.heal;
-        type = data.type;
-    }
+    //private void InitFromData()
+    //{
+    //    maxHp = data.maxHp;
+    //    maxSh = data.maxSh;
+    //    hp = maxHp;
+    //    shild = maxSh;
+    //    minAtt1 = data.minAtt1;
+    //    att1 = data.baseAtt1;
+    //    minAtt2 = data.minAtt2;
+    //    att2 = data.baseAtt2;
+    //    recovery = data.recovery;
+    //    heal = data.heal;
+    //    type = data.type;
+    //}
 
     virtual public void HpShildSet()
     {
@@ -165,20 +178,6 @@ public abstract class Enemy : MonoBehaviour
         //att1 = 0;
         //att2 = 0;
 
-        if(PlayerManager.Instance.enemyHalf)
-        {
-            maxHp /= 2;
-            maxSh /= 2;
-        }
-
-        // 공통 로직 실행 (UI 업데이트 등)
-        hp = maxHp;
-        shild = maxSh;
-
-
-        //hpBar.fillAmount = hp / maxHp;
-        //shildBar.fillAmount = shild / maxSh;
-        UpdateUI();
         death = false;
     }
 

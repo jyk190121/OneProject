@@ -19,6 +19,8 @@ public class StageManager : MonoBehaviour
     public int SelectedStage { get; set; }          // 실제 플레이 중인 스테이지
     public int Round { get; set; }                  // 라운드정보
 
+    public int ClearRound { get; set; }                  // 깬 스테이지 갯수
+
     public int ReloadChance {  get; set; }          //리로드 기회
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -46,6 +48,7 @@ public class StageManager : MonoBehaviour
     }
     public void Init()
     {
+        ClearRound = 0;
         Round = 1;
         ReloadChance = 3;
     }
@@ -53,7 +56,6 @@ public class StageManager : MonoBehaviour
     // 스테이지 클리어 시 호출
     public void UnlockNextStage(int stageNum)
     {
-        //print("호출되나");
         if (stageNum > UnlockedStage)
         {
             UnlockedStage = stageNum;

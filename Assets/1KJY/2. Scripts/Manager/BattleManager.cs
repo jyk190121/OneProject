@@ -1469,7 +1469,7 @@ public class BattleManager : MonoBehaviour
                                 Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
 
                                 // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
-                                itemPos = new Vector3(slotPos.x, slotPos.y, 0f);
+                                itemPos = new Vector3(slotPos.x, -3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1541,7 +1541,7 @@ public class BattleManager : MonoBehaviour
                                 Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
 
                                 // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
-                                itemPos = new Vector3(slotPos.x, slotPos.y, 0f);
+                                itemPos = new Vector3(slotPos.x, -3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1606,7 +1606,7 @@ public class BattleManager : MonoBehaviour
                                 Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
 
                                 // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
-                                itemPos = new Vector3(slotPos.x, slotPos.y, 0f);
+                                itemPos = new Vector3(slotPos.x, -3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -2398,6 +2398,9 @@ public class BattleManager : MonoBehaviour
 
         //라운드 확인 작업필요
         stageManager.Round ++;
+
+        //칩갯수파악용 
+        stageManager.ClearRound++;
 
         yield return new WaitForSeconds(1.5f);
         Destroy(enemyEffect);

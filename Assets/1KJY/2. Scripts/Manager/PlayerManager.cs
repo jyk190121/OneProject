@@ -113,3 +113,12 @@ public class PlayerManager : MonoBehaviour
         SavePlayerData();
     }
 }
+
+public static class MathExtensions
+{
+    // float을 소수점 없이 문자열로 변환하는 확장 메서드
+    public static string ToIntString(this float value)
+    {
+        return value.ToString("F0");
+    }
+}

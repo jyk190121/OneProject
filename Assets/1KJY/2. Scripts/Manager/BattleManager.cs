@@ -850,17 +850,17 @@ public class BattleManager : MonoBehaviour
                         {
                             //일반
                             case 1:
-                                action = $"물공 {att}\n독 중독 {poison}";
+                                action = $"물공 {att.ToIntString()}\n독 중독 {poison}";
                                 break;
                             case 2:
                                 att *= 3;
                                 poison *= 3;
-                                action = $"치명타!\n물공 {att}\n독 중독 {poison}";
+                                action = $"치명타!\n물공 {att.ToIntString()}\n독 중독 {poison}";
                                 break;
                             case 3:
                                 att *= 9;
                                 poison *= 9;
-                                action = $"메가치명타!\n물공 {att}\n독 중독 {poison}";
+                                action = $"메가치명타!\n물공 {att.ToIntString()}\n독 중독 {poison}";
                                 break;
                         }
                         //물리데미지 적용
@@ -886,15 +886,15 @@ public class BattleManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"마공 {att}";
+                                action = $"마공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n마공 {att}";
+                                action = $"치명타!\n마공 {att.ToIntString()}";
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n마공 {att}";
+                                action = $"메가치명타!\n마공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -936,20 +936,20 @@ public class BattleManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"물공 {att1} , 마공 {att2}\n흡혈 {blood}";
+                                action = $"물공 {att1.ToIntString()} , 마공 {att2.ToIntString()}\n흡혈 {blood}";
                                 break;
                             case 2:
                                 att1 *= 3; 
                                 att2 *= 3;
                                 blood *= 3;
-                                action = $"치명타!\n물공 {att1} , 마공 {att2}\n흡혈 {blood}";
+                                action = $"치명타!\n물공 {att1.ToIntString()} , 마공 {att2.ToIntString()}\n흡혈 {blood}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att1 *= 9;
                                 att2 *= 9;
                                 blood *= 9;
-                                action = $"메가치명타!\n물공 {att1} , 마공 {att2}\n흡혈 {blood}";
+                                action = $"메가치명타!\n물공 {att1.ToIntString()} , 마공 {att2.ToIntString()}\n흡혈 {blood}";
                                 r = 1;
                                 break;
                         }
@@ -1000,15 +1000,15 @@ public class BattleManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"마공 {att}";
+                                action = $"마공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n마공 {att}";
+                                action = $"치명타!\n마공 {att.ToIntString()}";
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"{item.NAME} 메가치명타\n마공 {att}";
+                                action = $"{item.NAME} 메가치명타\n마공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -1039,15 +1039,15 @@ public class BattleManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -1078,15 +1078,15 @@ public class BattleManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -1118,16 +1118,16 @@ public class BattleManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 r = 1;
                                 break;
                         }
@@ -1176,16 +1176,16 @@ public class BattleManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 r = 1;
                                 break;
                         }
@@ -1232,16 +1232,16 @@ public class BattleManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"마공 {att}";
+                                action = $"마공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n마공 {att}";
+                                action = $"치명타!\n마공 {att.ToIntString()}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n마공 {att}";
+                                action = $"메가치명타!\n마공 {att.ToIntString()}";
                                 r = 1;
                                 break;
                         }
@@ -1465,8 +1465,12 @@ public class BattleManager : MonoBehaviour
                             if (item == matchedItems[i])
                             {
                                 int slotIndex = helmet % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                //itemPos = spawnedSlots[slotIndex].transform.position;
+                                // 1. 기본 슬롯 위치 가져오기
+                                Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
+
+                                // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
+                                itemPos = new Vector3(slotPos.x, slotPos.y - 3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1533,8 +1537,12 @@ public class BattleManager : MonoBehaviour
                             if (item == matchedItems[i])
                             {
                                 int slotIndex = ring2 % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                //itemPos = spawnedSlots[slotIndex].transform.position;
+                                // 1. 기본 슬롯 위치 가져오기
+                                Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
+
+                                // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
+                                itemPos = new Vector3(slotPos.x, slotPos.y - 3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1594,8 +1602,12 @@ public class BattleManager : MonoBehaviour
                             if (item == matchedItems[i])
                             {
                                 int slotIndex = ring3 % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                //itemPos = spawnedSlots[slotIndex].transform.position;
+                                // 1. 기본 슬롯 위치 가져오기
+                                Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
+
+                                // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
+                                itemPos = new Vector3(slotPos.x, slotPos.y - 3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -2671,7 +2683,7 @@ public class BattleManager : MonoBehaviour
             enemy.shild = 0;
         }
 
-        print($"증가값 :{player.storeAtkMultiplier} , 실제데미지(물리) :{att}");
+        print($"증가값 :{player.storeAtkMultiplier} , 실제데미지(물리) :{att.ToIntString()}");
 
         enemy.UpdateHpShildSet();
     }
@@ -2688,7 +2700,7 @@ public class BattleManager : MonoBehaviour
 
         enemy.hp -= att;
 
-        print($"증가값 :{player.storeMatkMultiplier} , 실제데미지(마법) :{att}");
+        print($"증가값 :{player.storeMatkMultiplier} , 실제데미지(마법) :{att.ToIntString()}");
 
         enemy.UpdateHpShildSet();
     }

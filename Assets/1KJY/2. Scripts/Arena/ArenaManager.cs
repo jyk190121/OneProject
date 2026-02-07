@@ -713,17 +713,17 @@ public class ArenaManager : MonoBehaviour
                         {
                             //일반
                             case 1:
-                                action = $"물공 {att}\n독 중독 {poison}";
+                                action = $"물공 {att.ToIntString()}\n독 중독 {poison}";
                                 break;
                             case 2:
                                 att *= 3;
                                 poison *= 3;
-                                action = $"치명타!\n물공 {att}\n독 중독 {poison}";
+                                action = $"치명타!\n물공 {att.ToIntString()}\n독 중독 {poison}";
                                 break;
                             case 3:
                                 att *= 9;
                                 poison *= 9;
-                                action = $"메가치명타!\n물공 {att}\n독 중독 {poison}";
+                                action = $"메가치명타!\n물공 {att.ToIntString()}\n독 중독 {poison}";
                                 break;
                         }
                         //물리데미지 적용
@@ -749,15 +749,15 @@ public class ArenaManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"마공 {att}";
+                                action = $"마공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n마공 {att}";
+                                action = $"치명타!\n마공 {att.ToIntString()}";
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n마공 {att}";
+                                action = $"메가치명타!\n마공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -801,20 +801,20 @@ public class ArenaManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"물공 {att1} , 마공 {att2}\n흡혈 {blood}";
+                                action = $"물공 {att1.ToIntString()} , 마공 {att2.ToIntString()}\n흡혈 {blood}";
                                 break;
                             case 2:
                                 att1 *= 3;
                                 att2 *= 3;
                                 blood *= 3;
-                                action = $"치명타!\n물공 {att1} , 마공 {att2}\n흡혈 {blood}";
+                                action = $"치명타!\n물공 {att1.ToIntString()} , 마공 {att2.ToIntString()}\n흡혈 {blood}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att1 *= 9;
                                 att2 *= 9;
                                 blood *= 9;
-                                action = $"메가치명타!\n물공 {att1} , 마공 {att2}\n흡혈 {blood}";
+                                action = $"메가치명타!\n물공 {att1.ToIntString()} , 마공 {att2.ToIntString()}\n흡혈 {blood}";
                                 r = 1;
                                 break;
                         }
@@ -866,15 +866,15 @@ public class ArenaManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"마공 {att}";
+                                action = $"마공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n마공 {att}";
+                                action = $"치명타!\n마공 {att.ToIntString()}";
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"{item.NAME} 메가치명타\n마공 {att}";
+                                action = $"{item.NAME} 메가치명타\n마공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -907,15 +907,15 @@ public class ArenaManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -946,15 +946,15 @@ public class ArenaManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -987,16 +987,16 @@ public class ArenaManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 r = 1;
                                 break;
                         }
@@ -1046,16 +1046,16 @@ public class ArenaManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n물공 {att}";
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n물공 {att}";
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 r = 1;
                                 break;
                         }
@@ -1102,16 +1102,16 @@ public class ArenaManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"마공 {att}";
+                                action = $"마공 {att.ToIntString()}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n마공 {att}";
+                                action = $"치명타!\n마공 {att.ToIntString()}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n마공 {att}";
+                                action = $"메가치명타!\n마공 {att.ToIntString()}";
                                 r = 1;
                                 break;
                         }

@@ -6,6 +6,9 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance { get; private set; }
 
+    [Header("Upgrade Levels")]
+    public int[] upgradeLevels = new int[8]; // 0~7단계 관리
+
     // 강화 수치를 저장할 변수들
     public float maxHP = 0;
     public float physicalAtkBonus = 0; // 물리공격력 % 단위 (예: 0.25f = 25%)
@@ -39,12 +42,18 @@ public class PlayerManager : MonoBehaviour
         if(Keyboard.current.f7Key.wasPressedThisFrame == true)
         {
             GetChip(50000);
+            GameSceneManager.Instance.RestartScene();
         }
     }
 
     // 데이터를 PlayerPrefs에 저장 (강화 성공 시마다 호출 권장)
     public void SavePlayerData()
     {
+        for (int i = 0; i < upgradeLevels.Length; i++)
+        {
+            PlayerPrefs.SetInt($"UpgradeLevel_{i}", upgradeLevels[i]);
+        }
+
         PlayerPrefs.SetFloat("maxHP", maxHP);
         PlayerPrefs.SetFloat("PhysicalAtkBonus", physicalAtkBonus);
         PlayerPrefs.SetFloat("MagicAtkBonus", magicAtkBonus);
@@ -66,6 +75,12 @@ public class PlayerManager : MonoBehaviour
     // 데이터를 PlayerPrefs에서 로드
     public void LoadPlayerData()
     {
+        // 1. 단계 로드
+        for (int i = 0; i < upgradeLevels.Length; i++)
+        {
+            upgradeLevels[i] = PlayerPrefs.GetInt($"UpgradeLevel_{i}", 0);
+        }
+
         maxHP = PlayerPrefs.GetFloat("maxHP", 0);
         physicalAtkBonus = PlayerPrefs.GetFloat("PhysicalAtkBonus", 0);
         magicAtkBonus = PlayerPrefs.GetFloat("MagicAtkBonus", 0);
@@ -93,6 +108,7 @@ public class PlayerManager : MonoBehaviour
     {
         chip += count;
         print($"칩 획득 : {count}");
-        GameSceneManager.Instance.RestartScene();
+        //GameSceneManager.Instance.RestartScene();
+        SavePlayerData();
     }
 }

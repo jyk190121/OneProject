@@ -29,7 +29,8 @@ public class ModeManager : MonoBehaviour
 
     // 현재 강화 단계를 저장 (실제 서비스 시에는 PlayerManager나 데이터 매니저에서 가져와야 함)
     // 인덱스: 0 물리저항, 1 마법저항, 2 물공, 3 마공, 4 골드, 5 체력
-    private int[] upgradeLevels = new int[8];
+    //private int[] upgradeLevels = new int[8];
+    private int[] upgradeLevels => PlayerManager.Instance.upgradeLevels;
     private int[] maxLevels = { 4, 4, 4, 4, 4, 4, 1, 1 };
 
     // 가격표 데이터
@@ -124,9 +125,8 @@ public class ModeManager : MonoBehaviour
     //{ 
     //}
 
-
     // 공통 강화 시도 로직
-    void TryUpgrade(int index, System.Action upgradeAction)
+    void TryUpgrade(int index, Action upgradeAction)
     {
         popup.ShowConfirm(
                  $"해당 모드를 업그레이드 하시겠습니까",
@@ -134,7 +134,7 @@ public class ModeManager : MonoBehaviour
                  );
     }
 
-    void Excute(int index, System.Action upgradeAction)
+    void Excute(int index, Action upgradeAction)
     {
         if (upgradeLevels[index] >= maxLevels[index])
         {
@@ -144,22 +144,23 @@ public class ModeManager : MonoBehaviour
             //modePrices[index].text = "";
             return;
         }
-       
+
         int currentPrice = priceTables[index][upgradeLevels[index]];
 
         if (PlayerManager.Instance.chip >= currentPrice)
         {
             PlayerManager.Instance.chip -= currentPrice;
-            upgradeLevels[index]++;
+            PlayerManager.Instance.upgradeLevels[index]++;
             //modePrices[index].text = currentPrice.ToString();
-            chipCountTxt.text = PlayerManager.Instance.chip.ToString();
             upgradeAction.Invoke();
-            StartCoroutine(ShowFeedback(succesImg));
-
-            ModePriceUpdateUI(); // 여기서 전체 UI를 현재 단계에 맞게 새로고침
-
-            //PlayerManager.Instance.SavePlayerData(); // 저장 잊지 마세요!
+            chipCountTxt.text = PlayerManager.Instance.chip.ToString();
+            // 여기서 전체 UI를 현재 단계에 맞게 새로고침
+            ModePriceUpdateUI(); 
+             
+            // 저장
+            PlayerManager.Instance.SavePlayerData();
             //ModePriceUpdateUI();
+            StartCoroutine(ShowFeedback(succesImg));
         }
         else
         {
@@ -217,7 +218,7 @@ public class ModeManager : MonoBehaviour
 
         PlayerManager.Instance.hasRevive = true;
         StartCoroutine(ShowFeedback(succesImg));
-        modeBtns[6].interactable = false; // 1회성 구매 제한
+        modeBtns[6].interactable = false;
     }
 
     void Rings()
@@ -238,7 +239,7 @@ public class ModeManager : MonoBehaviour
             //modePrices[7].text = "";
             //modeBtns[7].interactable = false;
             ModePriceUpdateUI();
-            //PlayerManager.Instance.SavePlayerData();
+            PlayerManager.Instance.SavePlayerData();
         }
         else if (PlayerManager.Instance.chip >= 250 && !PlayerManager.Instance.hasRings)
         {
@@ -265,7 +266,7 @@ public class ModeManager : MonoBehaviour
         //    modePrices[i].text = priceTables[i][0].ToString();
         //}
 
-        for (int i = 0; i < modePrices.Length; i++)
+        for (int i = 0; i < modeBtns.Length; i++)
         {
             int currentLvl = upgradeLevels[i];
             int maxLvl = maxLevels[i];
@@ -284,11 +285,64 @@ public class ModeManager : MonoBehaviour
         }
     }
 
-    public void ShowItemInfo(string name, string description)
+    public void ShowItemInfo(int index, string name, string description, float per)
     {
-        modeNameText.text = name;
+        //int currentLvl = 0;
+        //int maxLvl = 1;
+        //string modePullName = "";
+        //string newDescription = "";
+        //string perStr = $"{per * 100}%";
+        //string playerHP = $"{100f + upgradeLevels[5] * 100f}";
+
+        //for (int i = 0; i < modePrices.Length; i++)
+        //{
+        //    currentLvl = upgradeLevels[i];
+        //    maxLvl = maxLevels[i];
+
+        //    if (currentLvl <= maxLvl)
+        //    {
+        //        modePullName = $"{name} : {currentLvl}단계";
+        //        newDescription = description;
+
+        //        if (i <= 4) newDescription = $"{description} {perStr}";
+        //        else if (i == 5) newDescription = $"{description} {playerHP}";
+        //    }
+        //    else
+        //    {
+        //        modePullName = "";
+        //        newDescription = "";
+        //    }
+        //}
+
+        // 1. 해당 인덱스의 현재 레벨과 최대 레벨 가져오기
+        int currentLvl = upgradeLevels[index];
+        int maxLvl = maxLevels[index];
+
+        // 2. 이름 구성 (예: 물리저항 : 2단계)
+        string modePullName = $"{name} : {currentLvl + 1}단계";
+        if (currentLvl >= maxLvl) modePullName = $"{name} : <color=red>최대단계</color>";
+
+        // 3. 설명문 구성
+        string newDescription = description;
+
+        // 저항력, 공격력, 골드 등 퍼센트 기반
+        if (index <= 4) 
+        {
+            string currentPer = ((currentLvl + 1) * per * 100).ToString("F0");
+            newDescription = $"{description} {currentPer}%";
+            if (currentLvl >= maxLvl) newDescription = $"{description} {(currentLvl * per * 100)}%";
+        }
+        else if (index == 5) // 체력 (단계별 100 단위 셋팅)
+        {
+            float currentHP = (currentLvl + 1) * 100f;
+            newDescription = $"{description} {currentHP}";
+            if (currentLvl >= maxLvl) newDescription = $"{description} {(currentLvl * 100f)}";
+        }
+
+        // 4. UI 반영
+        modeNameText.text = modePullName;
         descriptionText.color = Color.green;
-        descriptionText.text = description;
+        descriptionText.text = newDescription;
     }
 
     public void HideItemInfo()

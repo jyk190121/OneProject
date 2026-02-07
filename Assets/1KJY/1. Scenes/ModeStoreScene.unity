@@ -618,10 +618,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9b644c9ac184d4fa212192ba44c71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modeIndex: 6
   modeName: "\uBD80\uD65C\uAD8C"
   description: "\uC0AC\uB9DD \uC2DC \uBD80\uD65C 1\uD68C"
-  currentLevel: 0
-  maxLevel: 1
   per: 0
 --- !u!1 &247919227
 GameObject:
@@ -758,10 +757,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9b644c9ac184d4fa212192ba44c71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modeIndex: 5
   modeName: "\uC2DC\uC791\uCCB4\uB825"
-  description: "\uC2DC\uC791\uCCB4\uB825 \uC99D\uAC00"
-  currentLevel: 0
-  maxLevel: 4
+  description: "\uC2DC\uC791\uCCB4\uB825"
   per: 0
 --- !u!1 &249480164
 GameObject:
@@ -1503,10 +1501,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9b644c9ac184d4fa212192ba44c71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modeIndex: 2
   modeName: "\uBB3C\uB9AC\uACF5\uACA9\uB825"
   description: "\uBB3C\uB9AC\uACF5\uACA9\uB825 \uC99D\uAC00"
-  currentLevel: 0
-  maxLevel: 4
   per: 0.25
 --- !u!1 &469093785
 GameObject:
@@ -2460,10 +2457,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9b644c9ac184d4fa212192ba44c71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modeIndex: 1
   modeName: "\uB9C8\uBC95\uC800\uD56D"
   description: "\uB9C8\uBC95 \uD53C\uD574\uB7C9 \uAC10\uC18C"
-  currentLevel: 0
-  maxLevel: 4
   per: 0.05
 --- !u!1 &761916375
 GameObject:
@@ -2996,10 +2992,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9b644c9ac184d4fa212192ba44c71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modeIndex: 4
   modeName: "\uB3D9\uC804\uCD94\uAC00"
   description: "\uB77C\uC6B4\uB4DC\uBCC4 \uB3D9\uC804\uD68D\uB4DD\uB960 \uC99D\uAC00"
-  currentLevel: 0
-  maxLevel: 4
   per: 0.2
 --- !u!1 &1001418135
 GameObject:
@@ -3898,10 +3893,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9b644c9ac184d4fa212192ba44c71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modeIndex: 7
   modeName: "\uBC18\uC9C0\uC14B"
   description: "\uBAA8\uB4E0 \uC801 \uCCB4\uB825/\uBC29\uC5B4\uB3C4 \uC808\uBC18"
-  currentLevel: 0
-  maxLevel: 1
   per: 0
 --- !u!1 &1290788669
 GameObject:
@@ -4592,10 +4586,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9b644c9ac184d4fa212192ba44c71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modeIndex: 3
   modeName: "\uB9C8\uBC95\uACF5\uACA9\uB825"
   description: "\uB9C8\uBC95\uACF5\uACA9\uB825 \uC99D\uAC00"
-  currentLevel: 0
-  maxLevel: 4
   per: 0.25
 --- !u!1 &1445566629
 GameObject:
@@ -5598,10 +5591,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9b644c9ac184d4fa212192ba44c71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modeIndex: 0
   modeName: "\uBB3C\uB9AC\uC800\uD56D"
   description: "\uBB3C\uB9AC \uD53C\uD574\uB7C9 \uAC10\uC18C"
-  currentLevel: 0
-  maxLevel: 4
   per: 0.05
 --- !u!1 &1773593676
 GameObject:

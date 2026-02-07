@@ -142,7 +142,7 @@ public class AudioManager : MonoBehaviour
         sfxSource.Play();
 
         currentBGM = name;
-        print($"SFX 재생: {name}");
+        //print($"SFX 재생: {name}");
     }
 
 

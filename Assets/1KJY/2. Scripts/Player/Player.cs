@@ -40,8 +40,11 @@ public class Player : MonoBehaviour
         storeAtkMultiplier = 1.0f + pm.physicalAtkBonus;
         storeMatkMultiplier = 1.0f + pm.magicAtkBonus;
 
+        storeAtkResist = pm.physicalResist;
+        storeMatkResist = pm.magicResist;
+
         // 기본값 + 강화값
-        if(pm.maxHP == 0) maxHp = 50f;
+        if (pm.maxHP == 0) maxHp = 50f;
         else maxHp = pm.maxHP;
 
         hp = maxHp;
@@ -49,10 +52,9 @@ public class Player : MonoBehaviour
         //hp = 300;
         maxSh = 0;
         shild = 0;
-        att1 = 0;
-        att2 = 0;
+        att1 = 0f;
+        att2 = 0f;
         poison = 0;
-
 
         UpdateHpShildSet();
         UpdatePosionUI();
@@ -60,7 +62,6 @@ public class Player : MonoBehaviour
         UpdateEnhanceUI();
     }
 
-    //������Ʈ ����
     public void UpdateHpShildSet()
     {
         hpBarTxt.text = "♥ " + ((int)hp).ToString();

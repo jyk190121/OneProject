@@ -440,6 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7d6c2f22f1e63d46aaa5443d08e44e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeLevels: 0000000000000000000000000000000000000000000000000000000000000000
   maxHP: 0
   physicalAtkBonus: 0
   magicAtkBonus: 0
@@ -450,6 +451,7 @@ MonoBehaviour:
   hasRings: 0
   enemyHalf: 0
   chip: 0
+  reviveEffect: {fileID: 4408187615223728034, guid: c8da7cb24176e1540a90369114322ab0, type: 3}
 --- !u!1 &87799640
 GameObject:
   m_ObjectHideFlags: 0

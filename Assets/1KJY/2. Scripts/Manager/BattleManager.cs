@@ -2416,9 +2416,11 @@ public class BattleManager : MonoBehaviour
             playerRevive = true;
 
             //부활 연출
+            GameObject effect = Instantiate(PlayerManager.Instance.reviveEffect, Vector2.zero, Quaternion.identity);
 
+            yield return new WaitForSeconds(4f);
 
-            yield return new WaitForSeconds(6f);
+            Destroy(effect);
 
             player.HpShildSet();
 

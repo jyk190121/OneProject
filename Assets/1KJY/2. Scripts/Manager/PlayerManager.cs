@@ -20,6 +20,8 @@ public class PlayerManager : MonoBehaviour
     public bool enemyHalf = false;     // 반지셋 구매여부
     public int chip;                   // 모드구매 화폐
 
+    public GameObject reviveEffect;    // 부활 이펙트
+
     void Awake()
     {
         // 싱글톤 설정 및 씬 전환 시 파괴 방지

@@ -191,7 +191,7 @@ public class StoreManager : MonoBehaviour
     {
         itemManager.Init();
         //stageManager.ReloadChance = 3;
-        stageManager.ResetStage();
+        stageManager.Init();
 
         GameSceneManager.Instance.LoadSceneAsync("StageScene");
         AudioManager.audioManager.StopBGM();

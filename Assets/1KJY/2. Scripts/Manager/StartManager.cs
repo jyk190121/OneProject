@@ -60,7 +60,7 @@ public class StartManager : MonoBehaviour
         ItemManager.Instance.Init();
 
         //리로드 초기화
-        StageManager.Instance.ReloadChance = 3;
+        StageManager.Instance.Init();
 
         //게임 시작 시 포커스될 버튼
         newStartBtn.Select();

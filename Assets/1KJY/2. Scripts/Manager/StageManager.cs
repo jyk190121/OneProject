@@ -44,6 +44,11 @@ public class StageManager : MonoBehaviour
         Round = 1;
         ReloadChance = 3;
     }
+    public void Init()
+    {
+        Round = 1;
+        ReloadChance = 3;
+    }
 
     // 스테이지 클리어 시 호출
     public void UnlockNextStage(int stageNum)

@@ -1123,7 +1123,7 @@ public class ArenaManager : MonoBehaviour
                             print($"스턴 상태 정상동작? {r}");
                             if (r > (1f - item.ENHANCE_STUNED))
                             {
-                                stuned2 = true;
+                                stuned4 = true;
                                 nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";
                             }
                         }

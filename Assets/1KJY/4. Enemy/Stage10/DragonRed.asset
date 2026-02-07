@@ -16,10 +16,10 @@ MonoBehaviour:
   enemyPrefab: {fileID: 5650423630096164307, guid: ed7afb02a2246614da8d0e93b155ef48, type: 3}
   maxHp: 100000
   maxSh: 100000
-  minAtt1: 100
-  baseAtt1: 5000
-  minAtt2: 100
-  baseAtt2: 5000
+  minAtt1: 500
+  baseAtt1: 2000
+  minAtt2: 500
+  baseAtt2: 2000
   recovery: 10000
   heal: 10000
   type: A

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -1253,7 +1252,7 @@ public class BattleManager : MonoBehaviour
                             print($"스턴 상태 정상동작? {r}");
                             if (r > (1f - item.ENHANCE_STUNED))
                             {
-                                stuned2 = true;
+                                stuned4 = true;
                                 nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";
                             }
                         }
@@ -1881,6 +1880,13 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyTypeAction()
     {
         print($" 적타입 : {enemy.type} , 적행동 {actionEnemy}");
+        //최종보스는 '천둥망치' 로만 기절가능
+        if (enemy.NAME == "DragonRed")
+        {
+            stuned1 = false;
+            stuned2 = false;
+            stuned3 = false;
+        }
 
         if (enemy.type.Equals("E"))
         {

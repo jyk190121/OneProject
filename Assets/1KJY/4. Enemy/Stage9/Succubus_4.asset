@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
   m_Name: Succubus_4
   m_EditorClassIdentifier: 
-  enemyName: Succubus
+  enemyName: Succubus4
   enemyPrefab: {fileID: 2511095851095899296, guid: 0d91a1e718ea6d343be4026cdffa51c6, type: 3}
   maxHp: 80000
   maxSh: 5000

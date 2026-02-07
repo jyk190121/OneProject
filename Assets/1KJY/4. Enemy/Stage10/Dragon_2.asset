@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb83f1641b70e04696eeb2b95fd6181, type: 3}
   m_Name: Dragon_2
   m_EditorClassIdentifier: 
-  enemyName: DragonRed
+  enemyName: Dragon2
   enemyPrefab: {fileID: 5650423630096164307, guid: d4b9d6496fe7c4c4f99529d26635ef26, type: 3}
   maxHp: 60000
   maxSh: 60000
-  minAtt1: 10
+  minAtt1: 200
   baseAtt1: 1000
-  minAtt2: 10
+  minAtt2: 200
   baseAtt2: 1000
   recovery: 1000
   heal: 1000

@@ -30,31 +30,30 @@ public class ItemEnhance : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                     if(!selectItem)
                     {
                         itemExp = itemData.EXPLAIN;
+                        description = $"구매\n{itemExp}";
+                        itemInfo.ShowItemInfo(itemData.NAME, description);
                     }
                     else
                     {
                         itemExp = itemData.ENHANCE1_EXPLAIN;
+                        description = $"강화: +{itemData.ENHANCE + 1}\n{itemExp}";
+                        itemInfo.ShowItemInfo(itemData.NAME, description);
                     }
                     break;
                 case 1:
                     itemExp = itemData.ENHANCE2_EXPLAIN;
+                    description = $"강화: +{itemData.ENHANCE + 1}\n{itemExp}";
+                    itemInfo.ShowItemInfo(itemData.NAME, description);
                     break;
                 case 2:
                     itemExp = itemData.ENHANCE3_EXPLAIN;
+                    description = $"강화: +{itemData.ENHANCE + 1}\n{itemExp}";
+                    itemInfo.ShowItemInfo(itemData.NAME, description);
+                    break;
+                 case 3:
+                    description = "";
                     break;
             }
-
-            if (selectItem)
-            {
-                description = $"강화: +{itemData.ENHANCE + 1}\n{itemExp}";
-            }
-            //보유하지 않은 아이템일 때 (0)
-            else
-            {
-                description = $"구매\n{itemExp}";
-            }
-
-            itemInfo.ShowItemInfo(itemData.NAME, description);
         }
     }
 

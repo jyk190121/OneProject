@@ -23,6 +23,9 @@ public class ModeManager : MonoBehaviour
     //int modeEnhance;
     public TextMeshProUGUI chipCountTxt;
 
+    //모드정보
+    public TextMeshProUGUI modeNameText;
+    public TextMeshProUGUI descriptionText;
 
     // 현재 강화 단계를 저장 (실제 서비스 시에는 PlayerManager나 데이터 매니저에서 가져와야 함)
     // 인덱스: 0 물리저항, 1 마법저항, 2 물공, 3 마공, 4 골드, 5 체력
@@ -42,16 +45,16 @@ public class ModeManager : MonoBehaviour
         new int[] { 250 }               // 반지셋
     };
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         popup = GetComponent<Popup>();
         chipCountTxt.text = PlayerManager.Instance.chip.ToString();
 
-        //성공실패이미지는 끄자
+        //이미지
         succesImg.gameObject.SetActive(false);
         failImg.gameObject.SetActive(false);
+
+        HideItemInfo();
 
         //for(int i=0; i < modePrices.Length; i++)
         //{
@@ -280,4 +283,18 @@ public class ModeManager : MonoBehaviour
             }
         }
     }
+
+    public void ShowItemInfo(string name, string description)
+    {
+        modeNameText.text = name;
+        descriptionText.color = Color.green;
+        descriptionText.text = description;
+    }
+
+    public void HideItemInfo()
+    {
+        modeNameText.text = "";
+        descriptionText.text = "";
+    }
+
 }

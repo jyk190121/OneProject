@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     public float storeMatkMultiplier = 1.0f;
     public float storeAtkResist = 0f;           // 물리 저항
     public float storeMatkResist = 0f;          // 마법 저항
+    public float goldBonus = 0f;
 
     //새로하기
     public void HpShildSet()
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour
 
         storeAtkResist = pm.physicalResist;
         storeMatkResist = pm.magicResist;
+        goldBonus = pm.goldBonus;
 
         // 기본값 + 강화값
         if (pm.maxHP == 0) maxHp = 50f;

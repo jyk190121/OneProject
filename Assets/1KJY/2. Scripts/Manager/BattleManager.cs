@@ -2349,22 +2349,22 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        float goldBonus = stageManager.SelectedStage * (1f + PlayerManager.Instance.goldBonus);
+        float goldBonus = stageManager.SelectedStage * (1f + player.goldBonus);
 
         //보스 클리어 추가보상
         if(stageManager.Round == 5)
         {
-            itemManager.PlusGold((int)goldBonus * 500);
+            itemManager.PlusGold((int)(goldBonus * 500));
         }
         //빠른 클리어 보상
         if(turn < 5)
         {
-            itemManager.PlusGold(stageManager.Round * (int)goldBonus * 20);
+            itemManager.PlusGold((int)(stageManager.Round * goldBonus * 20));
         }
         //일반 보상
         else
         {
-            itemManager.PlusGold(stageManager.Round * (int)goldBonus * 5);
+            itemManager.PlusGold((int)(stageManager.Round * goldBonus * 5));
         }
 
         yield return new WaitForSeconds(1f);

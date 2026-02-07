@@ -1337,8 +1337,13 @@ public class ArenaManager : MonoBehaviour
                             if (item == matchedItems[i])
                             {
                                 int slotIndex = helmet % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                //// 슬롯의 위치에 이펙트 인덱스 설정
+                                //itemPos = spawnedSlots[slotIndex].transform.position;
+                                // 1. 기본 슬롯 위치 가져오기
+                                Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
+
+                                // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
+                                itemPos = new Vector3(slotPos.x, slotPos.y - 3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1405,8 +1410,14 @@ public class ArenaManager : MonoBehaviour
                             if (item == matchedItems[i])
                             {
                                 int slotIndex = ring2 % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                //// 슬롯의 위치에 이펙트 인덱스 설정
+                                //itemPos = spawnedSlots[slotIndex].transform.position;
+
+                                // 1. 기본 슬롯 위치 가져오기
+                                Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
+
+                                // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
+                                itemPos = new Vector3(slotPos.x, slotPos.y - 3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1470,8 +1481,13 @@ public class ArenaManager : MonoBehaviour
                             if (item == matchedItems[i])
                             {
                                 int slotIndex = ring3 % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                //// 슬롯의 위치에 이펙트 인덱스 설정
+                                //itemPos = spawnedSlots[slotIndex].transform.position;
+                                // 1. 기본 슬롯 위치 가져오기
+                                Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
+
+                                // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
+                                itemPos = new Vector3(slotPos.x, slotPos.y - 3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -2207,17 +2223,17 @@ public class ArenaManager : MonoBehaviour
         //적 죽음 애니메이션
         enemy.Death();
 
-        float goldBonus = scoreManager.round * (1f + PlayerManager.Instance.goldBonus);
+        float goldBonus = scoreManager.round * (1f + player.goldBonus);
 
         //빠른 클리어 보상
         if (turn < 5)
         {
-            itemManager.PlusGold((int)goldBonus  * 20);
+            itemManager.PlusGold((int)(goldBonus  * 20));
         }
         //일반 보상
         else
         {
-            itemManager.PlusGold((int)goldBonus * 5);
+            itemManager.PlusGold((int)(goldBonus * 5));
         }
 
         yield return new WaitForSeconds(1.5f);

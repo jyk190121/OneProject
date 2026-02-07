@@ -183,7 +183,6 @@ public class ModeManager : MonoBehaviour
     {
         // 단계별 5%씩 적용
         PlayerManager.Instance.physicalResist = upgradeLevels[0] * 0.05f;
-        Debug.Log($"물리저항 강화: {PlayerManager.Instance.physicalResist * 100}%");
     }
 
     void MagicResistance()
@@ -205,6 +204,7 @@ public class ModeManager : MonoBehaviour
     void BonusGold()
     {
         PlayerManager.Instance.goldBonus = upgradeLevels[4] * 0.20f;
+        Debug.Log($"골드추가: {PlayerManager.Instance.goldBonus * 100}%");
     }
 
     void StrongHP()

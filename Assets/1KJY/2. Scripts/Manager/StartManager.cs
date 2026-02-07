@@ -203,8 +203,10 @@ public class StartManager : MonoBehaviour
         //아이템, 스테이지 정보 초기화
         ItemManager.Instance.ResetItem();
         StageManager.Instance.ResetStage();
+        PlayerManager.Instance.ResetData();
 
-        gameSceneManager.LoadSceneAsync("StageScene");
+        //gameSceneManager.LoadSceneAsync("StageScene");
+        gameSceneManager.RestartScene();
     }
 
 

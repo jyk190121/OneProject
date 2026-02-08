@@ -1694,7 +1694,7 @@ public class BattleManager : MonoBehaviour
 
                     //// 부모와 자식을 모두 포함하여 ParticleSystemRenderer와 SpriteRenderer를 가져옵니다.
                     //ParticleSystemRenderer[] effectRenders = currentEffects[num].GetComponentsInChildren<ParticleSystemRenderer>();
-                    //SpriteRenderer[] goldEffectRenderers = currentEffects[num].GetComponentsInChildren<SpriteRenderer>();
+                    SpriteRenderer[] goldEffectRenderers = currentEffects[num].GetComponentsInChildren<SpriteRenderer>();
 
                     //// 모든 ParticleSystemRenderer의 sortingOrder를 500으로 변경
                     //foreach (var render in effectRenders)
@@ -1702,11 +1702,11 @@ public class BattleManager : MonoBehaviour
                     //    render.sortingOrder = 500;
                     //}
 
-                    //// 모든 SpriteRenderer의 sortingOrder를 500으로 변경
-                    //foreach (var render in goldEffectRenderers)
-                    //{
-                    //    render.sortingOrder = 500;
-                    //}
+                    // 모든 SpriteRenderer의 sortingOrder를 500으로 변경
+                    foreach (var render in goldEffectRenderers)
+                    {
+                        render.sortingOrder = 500;
+                    }
 
                     if (num < currentEffects.Length)
                     {

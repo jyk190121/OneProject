@@ -1559,15 +1559,15 @@ public class ArenaManager : MonoBehaviour
 
                     ////적 앞에 소환
                     //ParticleSystemRenderer effectRender = currentEffects[num].GetComponent<ParticleSystemRenderer>();
-                    //SpriteRenderer goldEffectRederer = currentEffects[num].GetComponent<SpriteRenderer>();
+                    SpriteRenderer goldEffectRederer = currentEffects[num].GetComponent<SpriteRenderer>();
                     //if (effectRender != null)
                     //{
                     //    effectRender.sortingOrder = 500;
                     //}
-                    //if (goldEffectRederer != null)
-                    //{
-                    //    goldEffectRederer.sortingOrder = 500;
-                    //}
+                    if (goldEffectRederer != null)
+                    {
+                        goldEffectRederer.sortingOrder = 500;
+                    }
 
                     SortingGroup group = currentEffects[num].GetComponent<SortingGroup>();
                     if (group != null)

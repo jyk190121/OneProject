@@ -66,7 +66,14 @@ public class Player : MonoBehaviour
 
     public void UpdateHpShildSet()
     {
+
+
         hpBarTxt.text = "♥ " + ((int)hp).ToString();
+        if (hp > 0 && hp <= 1f)
+        {
+            hpBarTxt.text = "♥ 1";
+        }
+
         shildBarTxt.text = "ⓞ " + ((int)shild).ToString();
 
         hpBar.fillAmount = hp / maxHp;

@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+using UnityEngine.Rendering; // 상단에 추가 필요
+
 /// <summary>
 /// 게임 흐름제어만
 /// 1. 분리작업 - 적 패턴 / 아이템 효과 
@@ -1673,16 +1675,38 @@ public class BattleManager : MonoBehaviour
                     //itemArray[num].GetComponent<SpriteRenderer>().sortingOrder = 11;
 
                     //적 앞에 소환
-                    ParticleSystemRenderer effectRender = currentEffects[num].GetComponent<ParticleSystemRenderer>();
-                    SpriteRenderer goldEffectRederer = currentEffects[num].GetComponent<SpriteRenderer>();
-                    if (effectRender != null)
+                    //ParticleSystemRenderer effectRender = currentEffects[num].GetComponent<ParticleSystemRenderer>();
+                    //SpriteRenderer goldEffectRederer = currentEffects[num].GetComponent<SpriteRenderer>();
+                    //if (effectRender != null)
+                    //{
+                    //    effectRender.sortingOrder = 500;
+                    //}
+                    //if (goldEffectRederer != null)
+                    //{
+                    //    goldEffectRederer.sortingOrder = 500;
+                    //}
+                    
+                    SortingGroup group = currentEffects[num].GetComponent<SortingGroup>();
+                    if (group != null)
                     {
-                        effectRender.sortingOrder = 500;
+                        group.sortingOrder = 500;
                     }
-                    if (goldEffectRederer != null)
-                    {
-                        goldEffectRederer.sortingOrder = 500;
-                    }
+
+                    //// 부모와 자식을 모두 포함하여 ParticleSystemRenderer와 SpriteRenderer를 가져옵니다.
+                    //ParticleSystemRenderer[] effectRenders = currentEffects[num].GetComponentsInChildren<ParticleSystemRenderer>();
+                    //SpriteRenderer[] goldEffectRenderers = currentEffects[num].GetComponentsInChildren<SpriteRenderer>();
+
+                    //// 모든 ParticleSystemRenderer의 sortingOrder를 500으로 변경
+                    //foreach (var render in effectRenders)
+                    //{
+                    //    render.sortingOrder = 500;
+                    //}
+
+                    //// 모든 SpriteRenderer의 sortingOrder를 500으로 변경
+                    //foreach (var render in goldEffectRenderers)
+                    //{
+                    //    render.sortingOrder = 500;
+                    //}
 
                     if (num < currentEffects.Length)
                     {

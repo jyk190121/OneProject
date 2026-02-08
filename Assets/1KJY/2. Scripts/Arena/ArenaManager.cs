@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+using UnityEngine.Rendering; // 상단에 추가 필요
+
 /// <summary>
 /// 게임 흐름제어만
 /// 1. 분리작업 - 적 패턴 / 아이템 효과 
@@ -1555,16 +1557,22 @@ public class ArenaManager : MonoBehaviour
                     //ScoreUI업데이트
                     scoreTxt.text = scoreManager.score.ToString();
 
-                    //적 앞에 소환
-                    ParticleSystemRenderer effectRender = currentEffects[num].GetComponent<ParticleSystemRenderer>();
-                    SpriteRenderer goldEffectRederer = currentEffects[num].GetComponent<SpriteRenderer>();
-                    if (effectRender != null)
+                    ////적 앞에 소환
+                    //ParticleSystemRenderer effectRender = currentEffects[num].GetComponent<ParticleSystemRenderer>();
+                    //SpriteRenderer goldEffectRederer = currentEffects[num].GetComponent<SpriteRenderer>();
+                    //if (effectRender != null)
+                    //{
+                    //    effectRender.sortingOrder = 500;
+                    //}
+                    //if (goldEffectRederer != null)
+                    //{
+                    //    goldEffectRederer.sortingOrder = 500;
+                    //}
+
+                    SortingGroup group = currentEffects[num].GetComponent<SortingGroup>();
+                    if (group != null)
                     {
-                        effectRender.sortingOrder = 500;
-                    }
-                    if (goldEffectRederer != null)
-                    {
-                        goldEffectRederer.sortingOrder = 500;
+                        group.sortingOrder = 500;
                     }
 
                     if (num < currentEffects.Length)

@@ -37,15 +37,15 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    //테스트용 치트
-    void Update()
-    {
-        if(Keyboard.current.f7Key.wasPressedThisFrame == true)
-        {
-            GetChip(500);
-            GameSceneManager.Instance.RestartScene();
-        }
-    }
+    ////테스트용 치트
+    //void Update()
+    //{
+    //    if(Keyboard.current.f7Key.wasPressedThisFrame == true)
+    //    {
+    //        GetChip(500);
+    //        GameSceneManager.Instance.RestartScene();
+    //    }
+    //}
 
     // 데이터를 PlayerPrefs에 저장 (강화 성공 시마다 호출 권장)
     public void SavePlayerData()

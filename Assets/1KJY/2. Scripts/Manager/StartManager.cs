@@ -45,6 +45,8 @@ public class StartManager : MonoBehaviour
 
     GameSceneManager gameSceneManager;
 
+    [SerializeField] Button hidenCheatBtn;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -86,6 +88,16 @@ public class StartManager : MonoBehaviour
         infoBtn.onClick.AddListener(ShowInfo);
         infoCloseBtn.onClick.AddListener(EnterGame);
         itemListBtn.onClick.AddListener(EnterItemList);
+
+        hidenCheatBtn.onClick.AddListener(CheatExcute);
+
+        // [추가] 이미 치트를 썼거나 특정 스테이지 이상이라면 버튼을 비활성화 상태로 시작
+        if (StageManager.Instance.UnlockedStage >= 11)
+        {
+            hidenCheatBtn.interactable = false;
+            // 또는 아예 안 보이게 하려면
+            // hidenCheatBtn.gameObject.SetActive(false);
+        }
 
         endImg.gameObject.SetActive(false);
         volSetImg.gameObject.SetActive(false);
@@ -207,6 +219,7 @@ public class StartManager : MonoBehaviour
 
         //gameSceneManager.LoadSceneAsync("StageScene");
         gameSceneManager.RestartScene();
+
     }
 
 
@@ -423,5 +436,36 @@ public class StartManager : MonoBehaviour
     {
         audioManager.PlaySFX("Button", sfxValue);
         gameSceneManager.LoadSceneAsync("ModeStoreScene");
+    }
+
+    void CheatExcute()
+    {
+        hidenCheatBtn.interactable = false;
+
+        PlayerManager.Instance.GetChip(500);
+        ItemManager.Instance.PlusGold(10000);
+        StageManager.Instance.UnlockNextStage(11);
+
+        //hidenCheatBtn.gameObject.SetActive(false);
+        hidenCheatBtn.onClick.RemoveListener(CheatExcute);
+
+        gameSceneManager.RestartScene();
+    }
+
+    private void OnDisable()
+    {
+        gameStartBtn.onClick.RemoveListener(GameStart);
+        newStartBtn.onClick.RemoveListener(NewGameStart);      
+        modeBtn.onClick.RemoveListener(ModeStore);
+        endBtn.onClick.RemoveListener(GameEndYorN);
+        endY.onClick.RemoveListener(EndGame);
+        endN.onClick.RemoveListener(EnterGame);
+
+        settingBtn.onClick.RemoveListener(AudioSet);
+        setCloseBtn.onClick.RemoveListener(EnterGame);
+        infoBtn.onClick.RemoveListener(ShowInfo);
+        infoCloseBtn.onClick.RemoveListener(EnterGame);
+        itemListBtn.onClick.RemoveListener(EnterItemList);
+
     }
 }

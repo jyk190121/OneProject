@@ -67,31 +67,14 @@ public class StageManager : MonoBehaviour
     }
 
 
-    private void Update()
-    {
-        //if(Keyboard.current.f2Key.wasPressedThisFrame == true)
-        //{
-        //    UnlockNextStage(5);
-        //}
-
-        //if (Keyboard.current.f3Key.wasPressedThisFrame == true)
-        //{
-        //    PlayerPrefs.SetInt("UnlockedStageIndex", 1);
-        //    PlayerPrefs.Save();
-
-        //    OnStageUnlocked?.Invoke(UnlockedStage);
-        //}
-        //if(Input.GetKeyDown(Key.F5))
-        //{
-        //    ResetStage();
-        //}
-
-        if(Input.GetKeyDown(Key.F3))
-        {
-            UnlockNextStage(10);
-            GameSceneManager.Instance.RestartScene();
-        }
-    }
+    //private void Update()
+    //{
+    //    if(Input.GetKeyDown(Key.F3))
+    //    {
+    //        UnlockNextStage(10);
+    //        GameSceneManager.Instance.RestartScene();
+    //    }
+    //}
 
     // 선택한 스테이지가 해금된 상태인지 (스테이지 씬에서 체크)
     //public bool SelectStage(int stageNum)

@@ -313,7 +313,8 @@ public class BattleManager : MonoBehaviour
 
         if(enemy.type.Equals("E"))
         {
-            if (actionEnemy <= 1) nextEnemyActionTxt.text = "마법공격";
+            if (actionEnemy <= 1 && enemy.NAME != "Vampire") nextEnemyActionTxt.text = "마법공격";
+            else if (actionEnemy <= 1 && enemy.NAME == "Vampire") nextEnemyActionTxt.text = "흡혈공격";
             else if (actionEnemy == 7) nextEnemyActionTxt.text = $"방어도 {enemy.recovery} 회복";
             else if (actionEnemy == 8) nextEnemyActionTxt.text = $"체력 {enemy.heal} 회복";
             else nextEnemyActionTxt.text = "물리공격";

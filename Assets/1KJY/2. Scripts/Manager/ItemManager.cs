@@ -246,31 +246,31 @@ public class ItemManager : MonoBehaviour
         newItems.Clear();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(Key.F1))
-        {
-            SetGold(2000);
-            GameSceneManager.Instance.RestartScene();
-        }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(Key.F1))
+    //    {
+    //        SetGold(2000);
+    //        GameSceneManager.Instance.RestartScene();
+    //    }
 
-        if (Input.GetKeyDown(Key.F2))
-        {
-            //모든 아이템 득
-            foreach (Item item in allItemDatas)
-            {
-                AddItem(item);
-                item.ENHANCE = 3;
-                GameSceneManager.Instance.RestartScene();
-            }
-        }
+    //    if (Input.GetKeyDown(Key.F2))
+    //    {
+    //        //모든 아이템 득
+    //        foreach (Item item in allItemDatas)
+    //        {
+    //            AddItem(item);
+    //            item.ENHANCE = 3;
+    //            GameSceneManager.Instance.RestartScene();
+    //        }
+    //    }
 
-        //if (Input.GetKeyDown(Key.F5))
-        //{
-        //    print("아이템 초기화");
-        //    ResetItem();
-        //}
-    }
+    //    //if (Input.GetKeyDown(Key.F5))
+    //    //{
+    //    //    print("아이템 초기화");
+    //    //    ResetItem();
+    //    //}
+    //}
 
     public int GetGold() { return gold; }
     public void SetGold(int gold) { this.gold = gold; }

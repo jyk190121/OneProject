@@ -237,10 +237,12 @@ public class ModeManager : MonoBehaviour
             PlayerManager.Instance.enemyHalf = true;
             StartCoroutine(ShowFeedback(succesImg));
             PlayerManager.Instance.upgradeLevels[7]++;
+            chipCountTxt.text = PlayerManager.Instance.chip.ToString();
             ModePriceUpdateUI();
             //modePrices[7].text = "";
             //modeBtns[7].interactable = false;
             PlayerManager.Instance.SavePlayerData();
+            
         }
         else if (PlayerManager.Instance.chip >= 250 && !PlayerManager.Instance.hasRings)
         {

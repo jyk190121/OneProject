@@ -2560,8 +2560,9 @@ public class BattleManager : MonoBehaviour
         if (player.hp >= player.maxHp) player.hp = player.maxHp;
 
         //AttDamage(blood);
-        enemy.hp -= blood;
-        
+        //enemy.hp -= blood;
+        enemy.hp = Mathf.Max(enemy.hp -= blood, 0);
+
         player.UpdateHpShildSet();
     }
 

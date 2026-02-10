@@ -1412,9 +1412,7 @@ public class ArenaManager : MonoBehaviour
                             if (item == matchedItems[i])
                             {
                                 int slotIndex = ring2 % spawnedSlots.Length;
-                                //// 슬롯의 위치에 이펙트 인덱스 설정
                                 //itemPos = spawnedSlots[slotIndex].transform.position;
-
                                 // 1. 기본 슬롯 위치 가져오기
                                 Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
 
@@ -1436,8 +1434,6 @@ public class ArenaManager : MonoBehaviour
                             case 1:
                                 action = $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"흡혈 {blood}";
-                                Shield(shild, plus_sh);
-                                Blood(blood);
                                 break;
                             case 2:
                                 shild *= 3;
@@ -1447,9 +1443,6 @@ public class ArenaManager : MonoBehaviour
                                 action = $"치명타!\n" +
                                          $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"흡혈 {blood}";
-
-                                Shield(shild, plus_sh);
-                                Blood(blood);
                                 break;
                             case 3:
                                 shild *= 9;
@@ -1459,13 +1452,14 @@ public class ArenaManager : MonoBehaviour
                                 action = $"메가치명타!\n" +
                                          $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"흡혈 {blood}";
-
-                                Shield(shild, plus_sh);
-                                Blood(blood);
-                                scoreManager.AddScore((int)blood);
                                 break;
 
                         }
+
+                        Shield(shild, plus_sh);
+                        Blood(blood);
+
+                        enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
 
@@ -2361,7 +2355,8 @@ public class ArenaManager : MonoBehaviour
         if (player.hp >= player.maxHp) player.hp = player.maxHp;
 
         //AttDamage(blood);
-        enemy.hp -= blood;
+        enemy.hp = Mathf.Max(enemy.hp -= blood, 0);
+
         player.UpdateHpShildSet();
 
         scoreManager.AddScore((int)blood);

@@ -28,6 +28,9 @@ public class ItemManager : MonoBehaviour
     [Header("보유 아이템 리스트")]
     [SerializeField] private List<Item> initialItems;
 
+    [Header("선택용 아이템 (최대 10개)")]
+    [SerializeField] List<Item> recentPurchasedItems = new List<Item>();
+
     public int gold;
 
     public static ItemManager Instance;
@@ -43,6 +46,16 @@ public class ItemManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        //if(recentPurchasedItems.Count == 0)
+        //{
+        //    recentPurchasedItems = resetItem;
+        //}
+
+        if (recentPurchasedItems.Count == 0)
+        {
+            recentPurchasedItems = new List<Item>(resetItem);
+        }
     }
 
     //현재 가지고 있는 아이템 리스트 넘겨줌
@@ -50,9 +63,17 @@ public class ItemManager : MonoBehaviour
     {
         return initialItems;
     }
+    //현재 가지고 있는 아이템 리스트 넘겨줌
+    public List<Item> RecentSelectItems()
+    {
+        return recentPurchasedItems;
+    }
+
     //업그레이드 상점에서 새로운 아이템 구매 시 추가
     public void AddItem(Item item)
     {
+        UpdateRecentItems(item);
+
         if (!selectItems.Contains(item))
         {
             SetSelectItems(item);
@@ -74,6 +95,23 @@ public class ItemManager : MonoBehaviour
         }
     }
 
+    void UpdateRecentItems(Item item)
+    {
+        int itemIndex = allItemDatas.IndexOf(item);
+
+        // 0~9 사이의 아이템이 아니라면 노출 리스트에 넣지 않음
+        if (itemIndex < 0 || itemIndex > 9) return;
+
+        if (!recentPurchasedItems.Contains(item))
+        {
+            recentPurchasedItems.Add(item);
+            SaveItems(); // 아이템 리스트 전체 저장
+        }
+
+        // 만약 "구매 순서"가 아니라 "allItemDatas의 인덱스 순서"로 보여주고 싶다면 정렬
+        recentPurchasedItems.Sort((a, b) => allItemDatas.IndexOf(a).CompareTo(allItemDatas.IndexOf(b)));
+    }
+
     //아이템 판매
     public void SellItem(Item item, int price)
     {
@@ -88,35 +126,70 @@ public class ItemManager : MonoBehaviour
     // 아이템 리스트를 문자열로 변환하여 저장
     void SaveItems()
     {
-        List<string> nameList = new List<string>();
-        foreach (Item item in initialItems)
-        {
-            nameList.Add(item.NAME); // ID가 불안정하다면 NAME으로 저장
-        }
+        // 1. 전체 보유 아이템 저장
+        string inventoryData = string.Join(",", initialItems.ConvertAll(x => x.NAME));
+        PlayerPrefs.SetString("SavedInventory", inventoryData);
 
-        // 이름들을 "사과,포도,검" 형태의 문자열로 변환
-        string saveData = string.Join(",", nameList);
-        PlayerPrefs.SetString("SavedInventory", saveData);
+        // 2. [핵심] 최근 구매/선택용 10개 아이템 저장
+        string recentData = string.Join(",", recentPurchasedItems.ConvertAll(x => x.NAME));
+        PlayerPrefs.SetString("RecentPurchasedItems", recentData);
+
         PlayerPrefs.Save();
+
+        //List<string> nameList = new List<string>();
+        //foreach (Item item in initialItems)
+        //{
+        //    nameList.Add(item.NAME);
+        //    //recentPurchasedItems.Add(item);
+        //}
+
+        //// 이름들을 "사과,포도,검" 형태의 문자열로 변환
+        //string saveData = string.Join(",", nameList);
+        //PlayerPrefs.SetString("SavedInventory", saveData);
+        //PlayerPrefs.Save();
     }
     private void LoadItems()
     {
-        if (!PlayerPrefs.HasKey("SavedInventory")) return;
+        //if (!PlayerPrefs.HasKey("SavedInventory")) return;
 
-        string saveData = PlayerPrefs.GetString("SavedInventory");
-        if (string.IsNullOrEmpty(saveData)) return;
+        //string saveData = PlayerPrefs.GetString("SavedInventory");
+        //if (string.IsNullOrEmpty(saveData)) return;
 
-        string[] names = saveData.Split(',');
-        initialItems.Clear();
+        //string[] names = saveData.Split(',');
+        //initialItems.Clear();
 
-        foreach (string name in names)
+        //foreach (string name in names)
+        //{
+        //    // 전체 데이터베이스(allItemDatas)에서 이름이 같은 아이템을 찾아 추가
+        //    Item foundItem = allItemDatas.Find(x => x.NAME == name);
+        //    if (foundItem != null)
+        //    {
+        //        Init();
+        //        initialItems.Add(foundItem);
+        //    }
+        //}
+
+        // 1. 전체 보유 아이템 로드
+        if (PlayerPrefs.HasKey("SavedInventory"))
         {
-            // 전체 데이터베이스(allItemDatas)에서 이름이 같은 아이템을 찾아 추가
-            Item foundItem = allItemDatas.Find(x => x.NAME == name);
-            if (foundItem != null)
+            string[] names = PlayerPrefs.GetString("SavedInventory").Split(',');
+            initialItems.Clear();
+            foreach (string name in names)
             {
-                Init();
-                initialItems.Add(foundItem);
+                Item found = allItemDatas.Find(x => x.NAME == name);
+                if (found != null) initialItems.Add(found);
+            }
+        }
+
+        // 2. [핵심] 최근 구매/선택용 10개 아이템 로드
+        if (PlayerPrefs.HasKey("RecentPurchasedItems"))
+        {
+            string[] recentNames = PlayerPrefs.GetString("RecentPurchasedItems").Split(',');
+            recentPurchasedItems.Clear();
+            foreach (string name in recentNames)
+            {
+                Item found = allItemDatas.Find(x => x.NAME == name);
+                if (found != null) recentPurchasedItems.Add(found);
             }
         }
 
@@ -200,6 +273,7 @@ public class ItemManager : MonoBehaviour
     public void ResetItem()
     {
         initialItems.Clear();
+        recentPurchasedItems.Clear();
         Init();
 
         //초기 아이템 설정

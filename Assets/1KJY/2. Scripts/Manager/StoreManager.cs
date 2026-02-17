@@ -38,13 +38,7 @@ public class StoreManager : MonoBehaviour
         stageManager = FindAnyObjectByType<StageManager>();
         popup = GetComponent<Popup>();
 
-        if (itemManager != null)
-        {
-            //아이템 구매 시에도 업데이트 필요
-            UpdateUI();
-            //items = itemManager.CurrentItems();
-            //goldTxt.text = itemManager.GetGold().ToString();
-        }
+        if (itemManager != null) UpdateUI();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -190,7 +184,6 @@ public class StoreManager : MonoBehaviour
     void ExecuteNewGame()
     {
         itemManager.Init();
-        //stageManager.ReloadChance = 3;
         stageManager.Init();
 
         GameSceneManager.Instance.LoadSceneAsync("StageScene");

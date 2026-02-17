@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
@@ -6,11 +7,13 @@ using UnityEngine.UI;
 public class ReloadItem : MonoBehaviour
 {
     public Image failImg;
+    public TextMeshProUGUI failTxt;
     public Button failCheckBtn;
     Button reloadBtn;
     Popup popup;        //리로드 할건지 (3회)
     int chance;
     StageManager stageManager;
+    ItemManager itemManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,6 +21,7 @@ public class ReloadItem : MonoBehaviour
         if (stageManager == null)
         {
             stageManager = FindAnyObjectByType<StageManager>();
+            itemManager = FindAnyObjectByType<ItemManager>();
         }
         popup = GetComponent<Popup>();
         reloadBtn = GetComponent<Button>();
@@ -30,23 +34,44 @@ public class ReloadItem : MonoBehaviour
     {
         if (chance > 0)
         {
+            int reloadPrice = 0;
+            switch (chance)
+            {
+                case 2:
+                    reloadPrice = 500;
+                    break;
+                case 1:
+                    reloadPrice = 5000;
+                    break;
+            }
+
             //아이템 리로드할건지 팝업노출
             popup.ShowConfirm(
-                $"아이템 다시 불러오시겠습니까?\n<color=red>(남은기회 {chance}번)</color>",
-                  () => ExecuteNewGame() // 'Yes'를 누르면 실행될 람다식(Action)
+                $"<color=blue>비용 {reloadPrice}골드</color>\n아이템 다시 불러오시겠습니까?\n<color=red>(이번라운드 남은기회 {chance}번)</color>",
+                  () => {
+                          if (itemManager.gold >= reloadPrice)
+                          {
+                              ExecuteNewGame(reloadPrice);
+                          }
+                          else
+                          {
+                              failTxt.text = "보유금액이 부족하다";
+                              failImg.gameObject.SetActive(true);
+                          }
+                        }
                   );
-
         }
         else
         {
-            //아이템 리로드 기회없음 이미지 노출
+            failTxt.text = "남은 기회가 없다";
             failImg.gameObject.SetActive( true );
         }
     }
 
-    void ExecuteNewGame()
+    void ExecuteNewGame(int reloadPrice)
     {
         StageManager.Instance.ReloadChance--;
+        itemManager.MinusGold(reloadPrice);
         GameSceneManager.Instance.RestartScene();
     }
 }

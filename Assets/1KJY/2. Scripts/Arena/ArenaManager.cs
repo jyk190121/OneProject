@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-
 using UnityEngine.Rendering; // 상단에 추가 필요
+using UnityEngine.UI;
 
 /// <summary>
 /// 게임 흐름제어만
@@ -27,7 +27,7 @@ using UnityEngine.Rendering; // 상단에 추가 필요
 ///   7. 아레나 모드
 ///   - 점수 표시
 /// </summary>
-public class ArenaManager : MonoBehaviour
+public class ArenaManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public Image hpBar;
     public Image shildBar;
@@ -64,6 +64,7 @@ public class ArenaManager : MonoBehaviour
     ScoreManager scoreManager;
     EnemyArenaManager enemyManager;
     ItemManager itemManager;
+    StageManager stageManager;
 
     public GameObject goldParent;               //골드 프리팹 생성할 위치
     public GameObject goldPrefab;               //캔버스에 보여줄 프리팹(골드)
@@ -78,6 +79,12 @@ public class ArenaManager : MonoBehaviour
 
     //부활권 사용여부
     bool playerRevive = false;
+
+    //슬롯 멈춤 체크용
+    Coroutine spinStopCoroutine;
+
+    //버튼 터치중 체크
+    bool isPointerDown = false;
 
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
@@ -128,10 +135,27 @@ public class ArenaManager : MonoBehaviour
             Keyboard key = Keyboard.current;
             if (key == null) return;
 
+            //if (key.enterKey.wasPressedThisFrame && playerSlotCheck ||
+            //    key.spaceKey.wasPressedThisFrame && playerSlotCheck)
+            //{
+            //    SpinSlotbySlotStop();
+            //}
+
             if (key.enterKey.wasPressedThisFrame && playerSlotCheck ||
-                key.spaceKey.wasPressedThisFrame && playerSlotCheck)
+                key.spaceKey.wasPressedThisFrame && playerSlotCheck ||
+               Mouse.current.leftButton.wasPressedThisFrame && playerSlotCheck)
             {
-                SpinSlotbySlotStop();
+                spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStop());
+            }
+            else if (key.enterKey.wasReleasedThisFrame && playerSlotCheck ||
+                key.spaceKey.wasReleasedThisFrame && playerSlotCheck ||
+               Mouse.current.leftButton.wasReleasedThisFrame && playerSlotCheck)
+            {
+                if (spinStopCoroutine != null)
+                {
+                    StopCoroutine(spinStopCoroutine);
+                    spinStopCoroutine = null;
+                }
             }
 
             // 플레이어 턴
@@ -308,6 +332,51 @@ public class ArenaManager : MonoBehaviour
             }
         }
     }
+    IEnumerator CoroutineSpinSlotbySlotStop()
+    {
+        // 키를 누르고 있는 동안 무한 반복
+        while (true)
+        {
+            SpinSlotbySlotStop();
+
+            if (IsAllSlotsStopped()) yield break;
+
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    // 모든 슬롯이 멈췄는지 체크하는 함수
+    bool IsAllSlotsStopped()
+    {
+        foreach (var slot in spawnedSlots)
+        {
+            if (slot.isSpinning) return false;
+        }
+        return true;
+    }
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        // 클릭된 오브젝트가 stopBtn인지 확인 (또는 이 스크립트를 버튼에 직접 붙여도 됨)
+        if (eventData.pointerEnter != stopBtn.gameObject) return;
+        if (!playerSlotCheck) return;
+
+        isPointerDown = true;
+        if (spinStopCoroutine == null)
+        {
+            spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStop());
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        isPointerDown = false;
+        if (spinStopCoroutine != null)
+        {
+            StopCoroutine(spinStopCoroutine);
+            spinStopCoroutine = null;
+        }
+    }
+
 
     // 애니메이션 효과 or 파티클 생성 + 데미지 계산
     IEnumerator ItemEffect(string[] items)
@@ -2284,7 +2353,7 @@ public class ArenaManager : MonoBehaviour
             StartPlayerTurn();
             SpinStart();
 
-            //StopAllCoroutines();
+            if(stageManager != null) stageManager.ReloadChance = 3;
 
             yield break;
         }
@@ -2392,10 +2461,10 @@ public class ArenaManager : MonoBehaviour
         slotParent = GameObject.FindWithTag("Slot");
 
         // 매니저 참조 및 리스트 초기화
-
         itemManager = ItemManager.Instance;
         enemyManager = FindAnyObjectByType<EnemyArenaManager>();
         scoreManager = FindAnyObjectByType<ScoreManager>();
+        stageManager = FindAnyObjectByType<StageManager>();
         player = FindFirstObjectByType<Player>();
 
         allItemDatas = itemManager.allItemDatas;
@@ -2440,7 +2509,6 @@ public class ArenaManager : MonoBehaviour
 
         SpinStart();
 
-
         if (stopBtn != null)
         {
             stopBtn.onClick.RemoveAllListeners();
@@ -2461,7 +2529,8 @@ public class ArenaManager : MonoBehaviour
             AudioManager.audioManager.StopBGM();
             AudioManager.audioManager.PlayBGM("Battle", value);
         }
-        //AudioManager.audioManager.PlayBGM("Battle", value);
+
+        if (stageManager != null) stageManager.ReloadChance = 3;
 
         Debug.Log("씬 오브젝트들 초기화 완료");
     }

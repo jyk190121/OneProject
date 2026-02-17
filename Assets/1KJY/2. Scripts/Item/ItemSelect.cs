@@ -27,7 +27,7 @@ public class ItemSelect : MonoBehaviour
     {
         itemManager = FindAnyObjectByType<ItemManager>();
 
-        items = itemManager.CurrentItems();
+        items = itemManager.RecentSelectItems();
 
         if(itemManager.GetSelectItems() != null)
         {

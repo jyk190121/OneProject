@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-using UnityEngine.Rendering; // 상단에 추가 필요
+using UnityEngine.Rendering; // 이팩트 랜더링 설정
 
 /// <summary>
 /// 게임 흐름제어만
@@ -27,7 +28,7 @@ using UnityEngine.Rendering; // 상단에 추가 필요
 ///   7. 아레나 모드
 ///   - 점수 표시
 /// </summary>
-public class BattleManager : MonoBehaviour
+public class BattleManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     
     List<Item> allItemDatas;
@@ -86,6 +87,9 @@ public class BattleManager : MonoBehaviour
 
     //슬롯 멈춤 체크용
     Coroutine spinStopCoroutine;
+
+    //버튼 터치중 체크
+    bool isPointerDown = false;
 
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
@@ -359,7 +363,7 @@ public class BattleManager : MonoBehaviour
             if (IsAllSlotsStopped()) yield break;
 
             // 일정 시간 대기 (이게 있어야 "눌리는 느낌"이 납니다)
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
         }
     }
 
@@ -372,6 +376,30 @@ public class BattleManager : MonoBehaviour
         }
         return true;
     }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        // 클릭된 오브젝트가 stopBtn인지 확인 (또는 이 스크립트를 버튼에 직접 붙여도 됨)
+        if (eventData.pointerEnter != stopBtn.gameObject) return;
+        if (!playerSlotCheck) return;
+
+        isPointerDown = true;
+        if (spinStopCoroutine == null)
+        {
+            spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStop());
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        isPointerDown = false;
+        if (spinStopCoroutine != null)
+        {
+            StopCoroutine(spinStopCoroutine);
+            spinStopCoroutine = null;
+        }
+    }
+
 
     // 애니메이션 효과 or 파티클 생성 + 데미지 계산
     IEnumerator ItemEffect(string[] items)
@@ -2474,7 +2502,7 @@ public class BattleManager : MonoBehaviour
         //AudioManager.audioManager.PlayBGM("Intro");
 
         stageManager.Round = 1;
-        stageManager.ReloadChance = 3;
+        if (stageManager != null) stageManager.ReloadChance = 3;
 
         GameSceneManager.Instance.LoadScene("GameOverScene");
         //SceneManager.LoadScene("StartScene");
@@ -2666,12 +2694,13 @@ public class BattleManager : MonoBehaviour
             AudioManager.audioManager.PlayBGM(targetBGM, value);
         }
 
+        if (stageManager != null) stageManager.ReloadChance = 3;
+
         Debug.Log("씬 오브젝트들 초기화 완료");
     }
     void CheckBtn()
     {
         itemManager.Init();
-        stageManager.ReloadChance = 1;
         victoryCanvas.gameObject.SetActive(false);
         GameSceneManager.Instance.LoadSceneAsync("StartScene");
     }

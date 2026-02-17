@@ -28,7 +28,7 @@ using UnityEngine.Rendering; // 이팩트 랜더링 설정
 ///   7. 아레나 모드
 ///   - 점수 표시
 /// </summary>
-public class BattleManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class BattleManager : MonoBehaviour
 {
     
     List<Item> allItemDatas;
@@ -394,23 +394,21 @@ public class BattleManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         return true;
     }
 
-    // 1. 포인터 다운 시 호출 (버튼에 EventTrigger로 연결)
-    public void OnPointerDown(PointerEventData eventData)
+    // 누르는 순간 호출
+    public void OnStopBtnDown()
     {
         if (!playerSlotCheck) return;
 
         isPointerDown = true;
-        // 기존에 돌고 있던 코루틴이 있다면 중지 후 새로 시작
+        // 기존 코루틴이 돌고 있다면 중복 방지를 위해 정지
         if (spinStopCoroutine != null) StopCoroutine(spinStopCoroutine);
         spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStopMO());
     }
 
-    // 2. 포인터 업 시 호출 (버튼에 EventTrigger로 연결)
-    public void OnPointerUp(PointerEventData eventData)
+    // 떼는 순간 호출
+    public void OnStopBtnUp()
     {
         isPointerDown = false;
-        // 손을 떼더라도 코루틴 내에서 while(isPointerDown) 조건으로 제어하거나 
-        // 여기서 즉시 멈추고 싶다면 아래 유지
         if (spinStopCoroutine != null)
         {
             StopCoroutine(spinStopCoroutine);
@@ -2684,7 +2682,23 @@ public class BattleManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         if (stopBtn != null)
         {
             stopBtn.onClick.RemoveAllListeners();
-            stopBtn.onClick.AddListener(SpinSlotbySlotStop);
+            //stopBtn.onClick.AddListener(SpinSlotbySlotStop);
+            // EventTrigger 컴포넌트가 버튼에 있어야 합니다.
+            EventTrigger trigger = stopBtn.gameObject.GetComponent<EventTrigger>();
+            if (trigger == null) trigger = stopBtn.gameObject.AddComponent<EventTrigger>();
+
+            // PointerDown (누르기 시작)
+            EventTrigger.Entry downEntry = new EventTrigger.Entry();
+            downEntry.eventID = EventTriggerType.PointerDown;
+            downEntry.callback.AddListener((data) => { OnStopBtnDown(); });
+            trigger.triggers.Add(downEntry);
+
+            // PointerUp (손을 뗌)
+            EventTrigger.Entry upEntry = new EventTrigger.Entry();
+            upEntry.eventID = EventTriggerType.PointerUp;
+            upEntry.callback.AddListener((data) => { OnStopBtnUp(); });
+            trigger.triggers.Add(upEntry);
+
         }
 
         //// 플레이어 턴부터 시작

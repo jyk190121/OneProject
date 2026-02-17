@@ -52,9 +52,6 @@ public class BattleManager : MonoBehaviour
     bool playerSlotCheck;
     bool isEnemyturnning;
 
-    //bool cri1;              //ġ��Ÿ
-    //bool cri2;              //�ް�ġ��Ÿ
-
     public bool stuned1;    //대검
     public bool stuned2;    //고급도끼
     public bool stuned3;    //해골도끼
@@ -86,6 +83,9 @@ public class BattleManager : MonoBehaviour
 
     //부활권 사용여부
     bool playerRevive = false;
+
+    //슬롯 멈춤 체크용
+    Coroutine spinStopCoroutine;
 
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
@@ -137,11 +137,29 @@ public class BattleManager : MonoBehaviour
             Keyboard key = Keyboard.current;
             if (key == null) return;
 
+            //if (key.enterKey.wasPressedThisFrame && playerSlotCheck ||
+            //    key.spaceKey.wasPressedThisFrame && playerSlotCheck)
+            //{
+            //    SpinSlotbySlotStop();
+            //}
+
             if (key.enterKey.wasPressedThisFrame && playerSlotCheck ||
-                key.spaceKey.wasPressedThisFrame && playerSlotCheck)
+                key.spaceKey.wasPressedThisFrame && playerSlotCheck ||
+               Mouse.current.leftButton.wasPressedThisFrame && playerSlotCheck)
             {
-                SpinSlotbySlotStop();
+                spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStop());
             }
+            else if(key.enterKey.wasReleasedThisFrame && playerSlotCheck ||
+                key.spaceKey.wasReleasedThisFrame && playerSlotCheck ||
+               Mouse.current.leftButton.wasReleasedThisFrame && playerSlotCheck)
+            {
+                if (spinStopCoroutine != null)
+                {
+                    StopCoroutine(spinStopCoroutine);
+                    spinStopCoroutine = null;
+                }
+            }
+
 
             // 플레이어 턴
             if (spawnedSlots[spawnedSlots.Length - 1].isSpinning == false && playerSlotCheck)
@@ -163,72 +181,6 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-
-    //// 콤보 확인
-    //string ComboCount(string[] itmes)
-    //{
-    //    string lastItem = null;
-
-    //    foreach (string item in itmes)
-    //    {
-    //        if (itemDict.TryGetValue(item, out int equalsCount))
-    //        {
-    //            if (item == lastItem && lastItem != null)
-    //            {
-    //                itemDict[item]++;
-    //            }
-    //            else
-    //            {
-    //                itemDict[item] = 1;
-    //            }
-    //        }
-    //        lastItem = item;
-    //    }
-
-    //    // 치명타, 메가치명타 여부 확인
-    //    for (int i = 0; i < items.Length; i++)
-    //    {
-    //        if (itemDict.TryGetValue(items[i], out int equalsCount))
-    //        {
-    //            if (equalsCount >= 3 && equalsCount != 5)
-    //            {
-    //                print($"{items[i]} 치명타 ");
-    //                cri1 = true;
-    //                return items[i];
-    //            }
-
-    //            if (equalsCount == 5)
-    //            {
-    //                print($"{items[i]} 메가치명타");
-    //                cri2 = true;
-    //                return items[i];
-    //            }
-    //        }
-    //    }
-
-    //    // 콤보 횟수 초기화
-    //    for (int i = 0; i < items.Length; i++)
-    //    {
-    //        itemDict[items[i]] = 1;
-    //    }
-
-    //    return null;
-    //}
-
-    //void ComboCri(string item)
-    //{
-    //    if (cri1 == true)
-    //    {
-    //        itemDict[item] = 3;
-    //    }
-    //    else if (cri2 == true)
-    //    {
-    //        itemDict[item] = 5;
-    //    }
-    //}
-
-  
-
 
     // 플레이어 슬롯 스피너 생성
     void SpinSlotCreate()
@@ -394,6 +346,31 @@ public class BattleManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator CoroutineSpinSlotbySlotStop()
+    {
+        // 키를 누르고 있는 동안 무한 반복
+        while (true)
+        {
+            SpinSlotbySlotStop();
+
+            // 전부 다 멈췄는지 확인 (더 이상 실행할 필요가 없으면 탈출)
+            if (IsAllSlotsStopped()) yield break;
+
+            // 일정 시간 대기 (이게 있어야 "눌리는 느낌"이 납니다)
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    // 모든 슬롯이 멈췄는지 체크하는 함수
+    bool IsAllSlotsStopped()
+    {
+        foreach (var slot in spawnedSlots)
+        {
+            if (slot.isSpinning) return false;
+        }
+        return true;
     }
 
     // 애니메이션 효과 or 파티클 생성 + 데미지 계산
@@ -2657,7 +2634,6 @@ public class BattleManager : MonoBehaviour
         StartPlayerTurn();
 
         SpinStart();
-
 
         if (stopBtn != null)
         {

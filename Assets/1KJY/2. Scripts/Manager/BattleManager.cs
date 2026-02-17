@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 using UnityEngine.Rendering; // 이팩트 랜더링 설정
@@ -88,9 +88,6 @@ public class BattleManager : MonoBehaviour
     //슬롯 멈춤 체크용
     Coroutine spinStopCoroutine;
 
-    //버튼 터치중 체크
-    bool isPointerDown = false;
-
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
         {"고급도끼", 0},
@@ -138,24 +135,19 @@ public class BattleManager : MonoBehaviour
         {
             StatusTurn();
 
-            Keyboard key = Keyboard.current;
-            if (key == null) return;
-
             //if (key.enterKey.wasPressedThisFrame && playerSlotCheck ||
             //    key.spaceKey.wasPressedThisFrame && playerSlotCheck)
             //{
             //    SpinSlotbySlotStop();
             //}
 
-            if (key.enterKey.wasPressedThisFrame && playerSlotCheck ||
-                key.spaceKey.wasPressedThisFrame && playerSlotCheck ||
-               Mouse.current.leftButton.wasPressedThisFrame && playerSlotCheck)
+            if (Keyboard.current.enterKey.wasPressedThisFrame && playerSlotCheck ||
+                Keyboard.current.spaceKey.wasPressedThisFrame && playerSlotCheck)
             {
-                spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStopPC());
+                spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStop());
             }
-            else if(key.enterKey.wasReleasedThisFrame && playerSlotCheck ||
-                key.spaceKey.wasReleasedThisFrame && playerSlotCheck ||
-               Mouse.current.leftButton.wasReleasedThisFrame && playerSlotCheck)
+            else if (Keyboard.current.enterKey.wasReleasedThisFrame && playerSlotCheck ||
+                Keyboard.current.spaceKey.wasReleasedThisFrame && playerSlotCheck)
             {
                 if (spinStopCoroutine != null)
                 {
@@ -164,25 +156,24 @@ public class BattleManager : MonoBehaviour
                 }
             }
 
+            //// 플레이어 턴
+            //if (spawnedSlots[spawnedSlots.Length - 1].isSpinning == false && playerSlotCheck)
+            //{
+            //    //SpinStart();
 
-            // 플레이어 턴
-            if (spawnedSlots[spawnedSlots.Length - 1].isSpinning == false && playerSlotCheck)
-            {
-                //SpinStart();
+            //    // ComboCount 계산
+            //    //ComboCri(ComboCount(items));
 
-                // ComboCount 계산
-                //ComboCri(ComboCount(items));
+            //    // 플레이어 아이템 효과 발동 및 생성
+            //    StartCoroutine(ItemEffect(items));
 
-                // 플레이어 아이템 효과 발동 및 생성
-                StartCoroutine(ItemEffect(items));
+            //    // 중복 실행 방지 (아이템이 다 돌았는지 체크)
+            //    playerSlotCheck = false;
 
-                // 중복 실행 방지 (아이템이 다 돌았는지 체크)
-                playerSlotCheck = false;
+            //    // 스톱 버튼 비활성화
+            //    stopBtn.gameObject.SetActive(false);
 
-                // 스톱 버튼 비활성화
-                stopBtn.gameObject.SetActive(false);
-
-            }
+            //}
         }
     }
 
@@ -326,33 +317,27 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 0; i < spawnedSlots.Length; i++)
         {
-            if (spawnedSlots[i] == null || spawnedSlots[i].spriteRenderer == null || spawnedSlots[i].spriteRenderer.sprite == null) continue;
+            //if (spawnedSlots[i] == null || spawnedSlots[i].spriteRenderer == null || spawnedSlots[i].spriteRenderer.sprite == null) continue;
+            if (spawnedSlots[i] == null) continue;
 
-            if (playerTurn)
+            if (spawnedSlots[i].isSpinning)
             {
                 string currentItemName = spawnedSlots[i].spriteRenderer.sprite.name;
-
-                // 회전 중인 슬롯이 있다면 멈춤
-                if (spawnedSlots[i].isSpinning)
-                {
-                    spawnedSlots[i].isSpinning = false;
-                    spawnedSlots[i].StopSpin();
-                    items[i] = currentItemName;
-                    break; // 한 번에 하나씩만 멈춤
-                }
+                spawnedSlots[i].isSpinning = false;
+                spawnedSlots[i].StopSpin();
+                items[i] = currentItemName;
                 // 마지막 슬롯까지 다 멈췄다면
-                else if (i == spawnedSlots.Length - 1)
+                if (i == spawnedSlots.Length - 1)
                 {
                     Debug.Log("전부 다 멈춤");
-                    items[i] = currentItemName;
-                    spawnedSlots[i].StopSpin();
-
+                    PlayerTurn();
                 }
+                break; // 한 번에 하나씩만 멈춤
             }
         }
     }
 
-    IEnumerator CoroutineSpinSlotbySlotStopPC()
+    IEnumerator CoroutineSpinSlotbySlotStop()
     {
         // 키를 누르고 있는 동안 무한 반복
         while (true)
@@ -361,27 +346,26 @@ public class BattleManager : MonoBehaviour
 
             if (IsAllSlotsStopped()) yield break;
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
         }
     }
 
-    IEnumerator CoroutineSpinSlotbySlotStopMO()
-    {
-        while (isPointerDown) // 플래그를 조건으로 사용
-        {
-            SpinSlotbySlotStop();
+    //IEnumerator CoroutineSpinSlotbySlotStopMO()
+    //{
+    //    while (isPointerDown) // 플래그를 조건으로 사용
+    //    {
+    //        SpinSlotbySlotStop();
 
-            if (IsAllSlotsStopped())
-            {
-                // 모든 슬롯이 멈추면 즉시 루프 탈출
-                isPointerDown = false;
-                yield break;
-            }
+    //        if (IsAllSlotsStopped())
+    //        {
+    //            // 모든 슬롯이 멈추면 즉시 루프 탈출
+    //            isPointerDown = false;
+    //            yield break;
+    //        }
 
-            // 대기 시간을 0.1~0.2초로 줄여 반응성 향상
-            yield return new WaitForSeconds(0.15f);
-        }
-    }
+    //        yield return new WaitForSeconds(0.3f);
+    //    }
+    //}
 
 
     // 모든 슬롯이 멈췄는지 체크하는 함수
@@ -399,22 +383,32 @@ public class BattleManager : MonoBehaviour
     {
         if (!playerSlotCheck) return;
 
-        isPointerDown = true;
         // 기존 코루틴이 돌고 있다면 중복 방지를 위해 정지
         if (spinStopCoroutine != null) StopCoroutine(spinStopCoroutine);
-        spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStopMO());
+        spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStop());
     }
 
     // 떼는 순간 호출
     public void OnStopBtnUp()
     {
-        isPointerDown = false;
         if (spinStopCoroutine != null)
         {
             StopCoroutine(spinStopCoroutine);
             spinStopCoroutine = null;
         }
     }
+
+    void PlayerTurn()
+    {
+        if (!playerSlotCheck) return;
+
+        playerSlotCheck = false; // 중복 실행 방지
+        stopBtn.gameObject.SetActive(false);
+
+        // 여기서 아이템 효과를 실행해야 확실하게 적 턴으로 넘어갑니다.
+        StartCoroutine(ItemEffect(items));
+    }
+
 
 
     // 애니메이션 효과 or 파티클 생성 + 데미지 계산

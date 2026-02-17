@@ -151,7 +151,7 @@ public class BattleManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
                 key.spaceKey.wasPressedThisFrame && playerSlotCheck ||
                Mouse.current.leftButton.wasPressedThisFrame && playerSlotCheck)
             {
-                spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStop());
+                spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStopPC());
             }
             else if(key.enterKey.wasReleasedThisFrame && playerSlotCheck ||
                 key.spaceKey.wasReleasedThisFrame && playerSlotCheck ||
@@ -352,20 +352,37 @@ public class BattleManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         }
     }
 
-    IEnumerator CoroutineSpinSlotbySlotStop()
+    IEnumerator CoroutineSpinSlotbySlotStopPC()
     {
         // 키를 누르고 있는 동안 무한 반복
         while (true)
         {
             SpinSlotbySlotStop();
 
-            // 전부 다 멈췄는지 확인 (더 이상 실행할 필요가 없으면 탈출)
             if (IsAllSlotsStopped()) yield break;
 
-            // 일정 시간 대기 (이게 있어야 "눌리는 느낌"이 납니다)
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
+
+    IEnumerator CoroutineSpinSlotbySlotStopMO()
+    {
+        while (isPointerDown) // 플래그를 조건으로 사용
+        {
+            SpinSlotbySlotStop();
+
+            if (IsAllSlotsStopped())
+            {
+                // 모든 슬롯이 멈추면 즉시 루프 탈출
+                isPointerDown = false;
+                yield break;
+            }
+
+            // 대기 시간을 0.1~0.2초로 줄여 반응성 향상
+            yield return new WaitForSeconds(0.15f);
+        }
+    }
+
 
     // 모든 슬롯이 멈췄는지 체크하는 함수
     bool IsAllSlotsStopped()
@@ -377,22 +394,23 @@ public class BattleManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         return true;
     }
 
+    // 1. 포인터 다운 시 호출 (버튼에 EventTrigger로 연결)
     public void OnPointerDown(PointerEventData eventData)
     {
-        // 클릭된 오브젝트가 stopBtn인지 확인 (또는 이 스크립트를 버튼에 직접 붙여도 됨)
-        if (eventData.pointerEnter != stopBtn.gameObject) return;
         if (!playerSlotCheck) return;
 
         isPointerDown = true;
-        if (spinStopCoroutine == null)
-        {
-            spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStop());
-        }
+        // 기존에 돌고 있던 코루틴이 있다면 중지 후 새로 시작
+        if (spinStopCoroutine != null) StopCoroutine(spinStopCoroutine);
+        spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStopMO());
     }
 
+    // 2. 포인터 업 시 호출 (버튼에 EventTrigger로 연결)
     public void OnPointerUp(PointerEventData eventData)
     {
         isPointerDown = false;
+        // 손을 떼더라도 코루틴 내에서 while(isPointerDown) 조건으로 제어하거나 
+        // 여기서 즉시 멈추고 싶다면 아래 유지
         if (spinStopCoroutine != null)
         {
             StopCoroutine(spinStopCoroutine);

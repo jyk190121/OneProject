@@ -19,6 +19,10 @@ public class StageManager : MonoBehaviour
     public int SelectedStage { get; set; }          // 실제 플레이 중인 스테이지
     public int Round { get; set; }                  // 라운드정보
 
+    public int ClearRound { get; set; }                  // 깬 스테이지 갯수
+
+    public int ReloadChance {  get; set; }          //리로드 기회
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -40,12 +44,18 @@ public class StageManager : MonoBehaviour
         UnlockedStage = PlayerPrefs.GetInt("UnlockedStageIndex", 1);
         //스테이지 선택 시 항상 1라운드부터 시작
         Round = 1;
+        ReloadChance = 3;
+    }
+    public void Init()
+    {
+        ClearRound = 0;
+        Round = 1;
+        ReloadChance = 3;
     }
 
     // 스테이지 클리어 시 호출
     public void UnlockNextStage(int stageNum)
     {
-        //print("호출되나");
         if (stageNum > UnlockedStage)
         {
             UnlockedStage = stageNum;
@@ -57,31 +67,14 @@ public class StageManager : MonoBehaviour
     }
 
 
-    private void Update()
-    {
-        //if(Keyboard.current.f2Key.wasPressedThisFrame == true)
-        //{
-        //    UnlockNextStage(5);
-        //}
-
-        //if (Keyboard.current.f3Key.wasPressedThisFrame == true)
-        //{
-        //    PlayerPrefs.SetInt("UnlockedStageIndex", 1);
-        //    PlayerPrefs.Save();
-
-        //    OnStageUnlocked?.Invoke(UnlockedStage);
-        //}
-        //if(Input.GetKeyDown(Key.F5))
-        //{
-        //    ResetStage();
-        //}
-
-        if(Input.GetKeyDown(Key.F3))
-        {
-            UnlockNextStage(10);
-            GameSceneManager.Instance.RestartScene();
-        }
-    }
+    //private void Update()
+    //{
+    //    if(Input.GetKeyDown(Key.F3))
+    //    {
+    //        UnlockNextStage(10);
+    //        GameSceneManager.Instance.RestartScene();
+    //    }
+    //}
 
     // 선택한 스테이지가 해금된 상태인지 (스테이지 씬에서 체크)
     //public bool SelectStage(int stageNum)
@@ -94,6 +87,8 @@ public class StageManager : MonoBehaviour
     public void ResetStage()
     {
         UnlockedStage = 1;
+        Round = 1;
+        ReloadChance = 3;
         PlayerPrefs.SetInt("UnlockedStageIndex", UnlockedStage);
         PlayerPrefs.Save();
     }

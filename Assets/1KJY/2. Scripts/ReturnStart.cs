@@ -21,6 +21,7 @@ public class ReturnStart : MonoBehaviour
     }
     public void StartSceneLoadingCall()
     {
+        AudioManager.audioManager.StopBGM();
         GameSceneManager.Instance.LoadSceneAsync("StartScene");
     }
 

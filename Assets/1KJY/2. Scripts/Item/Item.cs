@@ -79,6 +79,17 @@ public class Item : ScriptableObject
     [TextArea(minLines: 1, maxLines: 10)]
     public string EXPLAIN;
 
+    [Header("1강화")]
+    [TextArea(minLines: 1, maxLines: 10)]
+    public string ENHANCE1_EXPLAIN;
+    [Header("2강화")]
+    [TextArea(minLines: 1, maxLines: 10)]
+    public string ENHANCE2_EXPLAIN;
+    [Header("3강화")]
+    [TextArea(minLines: 1, maxLines: 10)]
+    public string ENHANCE3_EXPLAIN;
+
+
     public void SetID(int newID)
     {
         id = newID;

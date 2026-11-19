@@ -27,7 +27,7 @@ public class ItemSelect : MonoBehaviour
     {
         itemManager = FindAnyObjectByType<ItemManager>();
 
-        items = itemManager.CurrentItems();
+        items = itemManager.RecentSelectItems();
 
         if(itemManager.GetSelectItems() != null)
         {
@@ -224,7 +224,6 @@ public class ItemSelect : MonoBehaviour
             // 업그레이드 상점으로 이동
             GameSceneManager.Instance.LoadSceneAsync("UpgradeStoreScene");
         }
-        print(stageNum);
     }
     void UpdateKeyboardOutline(RectTransform targetRect)
     {

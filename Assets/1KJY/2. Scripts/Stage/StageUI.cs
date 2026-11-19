@@ -36,6 +36,11 @@ public class StageUI : MonoBehaviour
         //stageManager = FindAnyObjectByType<StageManager>();
         unlockedStageIndex = StageManager.Instance.UnlockedStage;
         print($"해금된 스테이지는 {unlockedStageIndex}");
+        if (AudioManager.audioManager.GetCurrentBGM() == "")
+        {
+            AudioManager.audioManager.StopBGM();
+            AudioManager.audioManager.PlayBGM("Intro");
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -168,7 +173,14 @@ public class StageUI : MonoBehaviour
         bool isLocked = stageNum > unlockedStageIndex;
 
         //받아온 스테이지 선택된 상태
-        stageText.text = $"스테이지 {stageNum}";
+        if(stageNum != 10)
+        {
+            stageText.text = $"스테이지 {stageNum}";
+        }
+        else
+        {
+            stageText.text = $"스테이지 Final";
+        }
         // --- 유저용 UI 테두리 처리 ---
         if (selectionOutline != null)
         {
@@ -211,7 +223,7 @@ public class StageUI : MonoBehaviour
         if (!isLocked)
         {
             StageManager.Instance.SelectedStage = stageNum;
-            if(stageNum != 1) ItemManager.Instance.SetGold(stageNum * 20);
+            if(stageNum != 1) ItemManager.Instance.SetGold(stageNum * 500);
             //Debug.Log($"{stageManager.SelectedStage}번 스테이지로 진입합니다.");
             GameSceneManager.Instance.LoadSceneAsync("ItemSelectScene");
         }

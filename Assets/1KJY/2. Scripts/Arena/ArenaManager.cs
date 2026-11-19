@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
+using UnityEngine.Rendering; // 상단에 추가 필요
 using UnityEngine.UI;
 
 /// <summary>
@@ -63,6 +64,7 @@ public class ArenaManager : MonoBehaviour
     ScoreManager scoreManager;
     EnemyArenaManager enemyManager;
     ItemManager itemManager;
+    StageManager stageManager;
 
     public GameObject goldParent;               //골드 프리팹 생성할 위치
     public GameObject goldPrefab;               //캔버스에 보여줄 프리팹(골드)
@@ -74,6 +76,12 @@ public class ArenaManager : MonoBehaviour
     public TextMeshProUGUI roundTxt;
     public TextMeshProUGUI scoreTxt;
     int turn;
+
+    //부활권 사용여부
+    bool playerRevive = false;
+
+    //슬롯 멈춤 체크용
+    Coroutine spinStopCoroutine;
 
     Dictionary<string, int> itemDict = new Dictionary<string, int>()
     {
@@ -116,33 +124,23 @@ public class ArenaManager : MonoBehaviour
 
     void Update()
     {
-
         if (player != null && enemy != null && stopBtn != null)
         {
             StatusTurn();
 
-            Keyboard key = Keyboard.current;
-            if (key == null) return;
-
-            if (key.enterKey.wasPressedThisFrame && playerSlotCheck ||
-                key.spaceKey.wasPressedThisFrame && playerSlotCheck)
+            if(Keyboard.current.enterKey.wasPressedThisFrame && playerSlotCheck ||
+                Keyboard.current.spaceKey.wasPressedThisFrame && playerSlotCheck)
             {
-                SpinSlotbySlotStop();
+                spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStop());
             }
-
-            // 플레이어 턴
-            if (spawnedSlots[spawnedSlots.Length - 1].isSpinning == false && playerSlotCheck)
+            else if (Keyboard.current.enterKey.wasReleasedThisFrame && playerSlotCheck ||
+                Keyboard.current.spaceKey.wasReleasedThisFrame && playerSlotCheck)
             {
-
-                // 플레이어 아이템 효과 발동 및 생성
-                StartCoroutine(ItemEffect(items));
-
-                // 중복 실행 방지 (아이템이 다 돌았는지 체크)
-                playerSlotCheck = false;
-
-                // 스톱 버튼 비활성화
-                stopBtn.gameObject.SetActive(false);
-
+                if (spinStopCoroutine != null)
+                {
+                    StopCoroutine(spinStopCoroutine);
+                    spinStopCoroutine = null;
+                }
             }
         }
     }
@@ -195,6 +193,19 @@ public class ArenaManager : MonoBehaviour
             }
         }
     }
+    void SpinStop()
+    {
+        // 슬롯 회전 시작
+        foreach (SlotSpinner s in spawnedSlots)
+        {
+            if (s != null)
+            {
+                s.isSpinning = false;
+                s.StopSpin();
+            }
+        }
+    }
+
     void StartPlayerTurn()
     {
         // 1. 플레이어 슬롯 돌리기 준비
@@ -255,8 +266,6 @@ public class ArenaManager : MonoBehaviour
 
     }
 
-
-
     void SpinSlotbySlotStop()
     {
         AudioManager.audioManager.PlaySFX("Button");
@@ -266,30 +275,96 @@ public class ArenaManager : MonoBehaviour
 
         for (int i = 0; i < spawnedSlots.Length; i++)
         {
-            if (spawnedSlots[i] == null || spawnedSlots[i].spriteRenderer == null || spawnedSlots[i].spriteRenderer.sprite == null) continue;
+            //if (spawnedSlots[i] == null || spawnedSlots[i].spriteRenderer == null || spawnedSlots[i].spriteRenderer.sprite == null) continue;
+            if (spawnedSlots[i] == null) continue;
 
-            if (playerTurn)
+            if (spawnedSlots[i].isSpinning)
             {
-                string currentItemName = spawnedSlots[i].spriteRenderer.sprite.name;
-
                 // 회전 중인 슬롯이 있다면 멈춤
                 if (spawnedSlots[i].isSpinning)
                 {
+                    string currentItemName = spawnedSlots[i].spriteRenderer.sprite.name;
                     spawnedSlots[i].isSpinning = false;
                     spawnedSlots[i].StopSpin();
                     items[i] = currentItemName;
+                    // 마지막 슬롯까지 다 멈췄다면
+                    if (i == spawnedSlots.Length - 1)
+                    {
+                        Debug.Log("전부 다 멈춤");
+                        PlayerTurn();
+                    }
                     break; // 한 번에 하나씩만 멈춤
-                }
-                // 마지막 슬롯까지 다 멈췄다면
-                else if (i == spawnedSlots.Length - 1)
-                {
-                    Debug.Log("전부 다 멈춤");
-                    items[i] = currentItemName;
-                    spawnedSlots[i].StopSpin();
-
                 }
             }
         }
+    }
+    IEnumerator CoroutineSpinSlotbySlotStop()
+    {
+        // 키를 누르고 있는 동안 무한 반복
+        while (true)
+        {
+            SpinSlotbySlotStop();
+
+            if (IsAllSlotsStopped()) yield break;
+
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+    //IEnumerator CoroutineSpinSlotbySlotStopMO()
+    //{
+    //    while (isPointerDown) // 플래그를 조건으로 사용
+    //    {
+    //        SpinSlotbySlotStop();
+
+    //        if (IsAllSlotsStopped())
+    //        {
+    //            // 모든 슬롯이 멈추면 즉시 루프 탈출
+    //            isPointerDown = false;
+    //            yield break;
+    //        }
+
+    //        yield return new WaitForSeconds(0.3f);
+    //    }
+    //}
+
+    // 모든 슬롯이 멈췄는지 체크하는 함수
+    bool IsAllSlotsStopped()
+    {
+        foreach (var slot in spawnedSlots)
+        {
+            if (slot.isSpinning) return false;
+        }
+        return true;
+    }
+    // 누르는 순간 호출
+    public void OnStopBtnDown()
+    {
+        if (!playerSlotCheck) return;
+
+        // 기존 코루틴이 돌고 있다면 중복 방지를 위해 정지
+        if (spinStopCoroutine != null) StopCoroutine(spinStopCoroutine);
+        spinStopCoroutine = StartCoroutine(CoroutineSpinSlotbySlotStop());
+    }
+
+    // 떼는 순간 호출
+    public void OnStopBtnUp()
+    {
+        if (spinStopCoroutine != null)
+        {
+            StopCoroutine(spinStopCoroutine);
+            spinStopCoroutine = null;
+        }
+    }
+    void PlayerTurn()
+    {
+        if (!playerSlotCheck) return;
+
+        playerSlotCheck = false; // 중복 실행 방지
+        stopBtn.gameObject.SetActive(false);
+
+        // 여기서 아이템 효과를 실행해야 확실하게 적 턴으로 넘어갑니다.
+        StartCoroutine(ItemEffect(items));
     }
 
     // 애니메이션 효과 or 파티클 생성 + 데미지 계산
@@ -337,24 +412,24 @@ public class ArenaManager : MonoBehaviour
                 else item.COUNT = 3;
 
 
-                if (itemDict[item.NAME] >= 0 &&
-                  itemDict[item.NAME] < 3)
-                {
-                    item.COUNT = 1;
-                }
-                else if (itemDict[item.NAME] >= 3 &&
-                         itemDict[item.NAME] < 5)
-                {
-                    item.COUNT = 2;
-                }
-                else if (itemDict[item.NAME] == 5)
-                {
-                    item.COUNT = 3;
-                }
-                else
-                {
-                    item.COUNT = 0;
-                }
+                //if (itemDict[item.NAME] >= 0 &&
+                //  itemDict[item.NAME] < 3)
+                //{
+                //    item.COUNT = 1;
+                //}
+                //else if (itemDict[item.NAME] >= 3 &&
+                //         itemDict[item.NAME] < 5)
+                //{
+                //    item.COUNT = 2;
+                //}
+                //else if (itemDict[item.NAME] == 5)
+                //{
+                //    item.COUNT = 3;
+                //}
+                //else
+                //{
+                //    item.COUNT = 0;
+                //}
 
                 if (itemDict.TryGetValue(item.NAME, out int equalsCount))
                 {
@@ -368,34 +443,35 @@ public class ArenaManager : MonoBehaviour
                         // 이펙트 프리팹 생성 (Instantiate 코드 추가 필요)
                         if (item.EFFECT != null)
                         {
-                           itemPrefab = item.EFFECT;
+                            itemPrefab = item.EFFECT;
                         }
 
                         // 3. 연출을 위한 대기 시간 부여 (핵심!)
                         yield return new WaitForSeconds(0.8f);
 
                         itemPos = player.hpBar.transform.position;
+                        float apple = item.ENHANCE_HP;
 
                         switch (item.COUNT)
                         {
                             // 일반
                             case 1:
-                                action = $"체력 {item.ENHANCE_HP} 회복";
-                                Apple(item.ENHANCE_HP);
+                                action = $"체력 {apple} 회복";
                                 break;
 
                             // 치명타
                             case 2:
-                                action = $"치명타!\n체력 {item.ENHANCE_HP * 3} 회복";
-                                Apple(item.ENHANCE_HP * 3);
+                                apple *= 3;
+                                action = $"치명타!\n체력 {apple} 회복";
                                 break;
                             // 메가치명타
                             case 3:
-                                action = $"메가치명타!\n체력 {item.ENHANCE_HP * 9} 회복";
-                                Apple(item.ENHANCE_HP * 9);
+                                apple *= 3;
+                                action = $"메가치명타!\n체력 {apple} 회복";
                                 break;
                         }
 
+                        Apple(apple);
                         yield return new WaitForSeconds(0.5f);
                     }
                     if (item.NAME.Equals("포도"))
@@ -407,24 +483,25 @@ public class ArenaManager : MonoBehaviour
                             itemPrefab = item.EFFECT;
                         }
 
+                        float grape = item.ENHANCE_PLUS_HP;
                         yield return new WaitForSeconds(0.8f);
 
                         switch (item.COUNT)
                         {
                             // 일반
                             case 1:
-                                action = $"최대 체력 {item.ENHANCE_PLUS_HP} 증가";
-                                Grape(item.ENHANCE_PLUS_HP);
+                                action = $"최대 체력 {grape} 증가";
                                 break;
                             case 2:
-                                action = $"치명타!\n최대 체력 {item.ENHANCE_PLUS_HP * 3} 증가";
-                                Grape(item.ENHANCE_PLUS_HP * 3);
+                                grape *= 3;
+                                action = $"치명타!\n최대 체력 {grape} 증가";
                                 break;
                             case 3:
-                                action = $"메가치명타!\n최대 체력 {item.ENHANCE_PLUS_HP * 9} 증가";
-                                Grape(item.ENHANCE_PLUS_HP * 9);
+                                grape *= 9;
+                                action = $"메가치명타!\n최대 체력 {grape} 증가";
                                 break;
                         }
+                        Grape(grape);
                         yield return new WaitForSeconds(0.5f);
                     }
 
@@ -437,27 +514,30 @@ public class ArenaManager : MonoBehaviour
                             itemPrefab = item.EFFECT;
                         }
 
+                        float strowHp = item.ENHANCE_HP;
+                        float strowMaxHp = item.ENHANCE_PLUS_HP;
+
                         yield return new WaitForSeconds(0.8f);
 
                         switch (item.COUNT)
                         {
                             // 일반
                             case 1:
-                                action = $"체력 {item.ENHANCE_HP} 회복\n최대 체력 {item.ENHANCE_PLUS_HP} 증가";
-                                Apple(item.ENHANCE_HP);
-                                Grape(item.ENHANCE_PLUS_HP);
+                                action = $"체력 {strowHp} 회복\n최대 체력 {strowMaxHp} 증가";
                                 break;
                             case 2:
-                                action = $"치명타!\n체력 {item.ENHANCE_HP * 3} 회복\n최대 체력 {item.ENHANCE_PLUS_HP * 3} 증가";
-                                Apple(item.ENHANCE_HP * 3);
-                                Grape(item.ENHANCE_PLUS_HP * 3);
+                                strowHp *= 3;
+                                strowMaxHp *= 3;
+                                action = $"치명타!\n체력 {strowHp} 회복\n최대 체력 {strowMaxHp} 증가";
                                 break;
                             case 3:
-                                action = $"메가치명타!\n체력 {item.ENHANCE_HP * 9} 회복\n최대 체력 {item.ENHANCE_PLUS_HP * 9} 증가";
-                                Apple(item.ENHANCE_HP * 9);
-                                Grape(item.ENHANCE_PLUS_HP * 9);
+                                strowHp *= 9;
+                                strowMaxHp *= 9;
+                                action = $"메가치명타!\n체력 {strowHp} 회복\n최대 체력 {strowMaxHp} 증가";
                                 break;
                         }
+                        Grape(strowMaxHp);
+                        Apple(strowHp);
                         yield return new WaitForSeconds(0.5f);
                     }
 
@@ -475,27 +555,24 @@ public class ArenaManager : MonoBehaviour
                         float hp = item.ENHANCE_HP;
                         float shild = item.ENHANCE_SHILD;
 
-
                         switch (item.COUNT)
                         {
                             // 일반
                             case 1:
                                 action = $"체력 {hp} 회복\n방어도 {shild} 회복";
-                                Meat(hp, shild);
                                 break;
                             case 2:
                                 hp *= 3;
                                 shild *= 3;
                                 action = $"치명타!\n체력 {hp} 회복\n방어도 {shild} 회복";
-                                Meat(hp, shild);
                                 break;
                             case 3:
                                 hp *= 9;
                                 shild *= 9;
                                 action = $"메가치명타!\n체력 {hp} 회복\n방어도 {shild} 회복";
-                                Meat(hp, shild);
                                 break;
                         }
+                        Meat(hp, shild);
                         yield return new WaitForSeconds(0.5f);
                     }
 
@@ -518,29 +595,35 @@ public class ArenaManager : MonoBehaviour
                             }
                         }
 
+                        float plus_att1 = item.ENHANCE_PLUSATK;
+                        float plus_att2 = item.ENHANCE_PLUSMATK;
+
                         switch (item.COUNT)
                         {
                             // 일반
                             case 1:
-                                action = $"물공 {item.ENHANCE_PLUSATK}\n마공 {item.ENHANCE_PLUSMATK} 증가";
-                                Energy(item.ENHANCE_PLUSATK, item.ENHANCE_PLUSMATK);
+                                action = $"물공 {plus_att1}\n마공 {plus_att2} 증가";
                                 break;
 
                             case 2:
-                                action = $"치명타!\n물공 {item.ENHANCE_PLUSATK * 3}\n마공 {item.ENHANCE_PLUSMATK * 3} 증가";
-                                Energy(item.ENHANCE_PLUSATK * 3, item.ENHANCE_PLUSMATK * 3);
+                                plus_att1 *= 3;
+                                plus_att2 *= 3;
+                                action = $"치명타!\n물공 {plus_att1}\n마공 {plus_att2} 증가";
                                 break;
 
                             case 3:
-                                action = $"메가치명타!\n물공 {item.ENHANCE_PLUSATK * 9}\n마공 {item.ENHANCE_PLUSMATK * 9} 증가";
-                                Energy(item.ENHANCE_PLUSATK * 9, item.ENHANCE_PLUSMATK * 9);
+                                plus_att1 *= 9;
+                                plus_att2 *= 9;
+                                action = $"메가치명타!\n물공 {plus_att1}\n마공 {plus_att2} 증가";
                                 break;
                         }
+
+                        Energy(plus_att1, plus_att2);
                         player.UpdateEnhanceUI();
                         yield return new WaitForSeconds(0.5f);
                     }
 
-                    if (item.NAME.Equals("물리에너지") || item.NAME.Equals("물리에너지대"))
+                    if (item.NAME.Equals("물리에너지") || item.NAME.Equals("물리에너지(대)"))
                     {
                         for (int i = 0; i < matchedItems.Count; i++)
                         {
@@ -559,29 +642,32 @@ public class ArenaManager : MonoBehaviour
                             }
                         }
 
+                        float plus_att1 = item.ENHANCE_PLUSATK;
+
                         switch (item.COUNT)
                         {
                             // 일반
                             case 1:
-                                action = $"물공 {item.ENHANCE_PLUSATK} 증가";
-                                Energy(item.ENHANCE_PLUSATK, 0);
+                                action = $"물공 {plus_att1} 증가";
                                 break;
 
                             case 2:
-                                action = $"치명타!\n물공 {item.ENHANCE_PLUSATK * 3} 증가";
-                                Energy(item.ENHANCE_PLUSATK * 3, 0);
+                                plus_att1 *= 3;
+                                action = $"치명타!\n물공 {plus_att1} 증가";
                                 break;
 
                             case 3:
-                                action = $"메가치명타!\n물공 {item.ENHANCE_PLUSATK * 9} 증가";
-                                Energy(item.ENHANCE_PLUSATK * 9, 0);
+                                plus_att1 *= 9;
+                                action = $"메가치명타!\n물공 {plus_att1} 증가";
                                 break;
                         }
+
+                        Energy(plus_att1, 0);
                         player.UpdateEnhanceUI();
                         yield return new WaitForSeconds(0.5f);
                     }
-                    
-                    if (item.NAME.Equals("마법에너지") || item.NAME.Equals("마법에너지대"))
+
+                    if (item.NAME.Equals("마법에너지") || item.NAME.Equals("마법에너지(대)"))
                     {
                         for (int i = 0; i < matchedItems.Count; i++)
                         {
@@ -600,30 +686,31 @@ public class ArenaManager : MonoBehaviour
                             }
                         }
 
-                        print($"{item.NAME} 의 갯수 ?: {item.COUNT}");
+                        //print($"{item.NAME} 의 갯수 ?: {item.COUNT}");
+                        float plus_att2 = item.ENHANCE_PLUSMATK;
 
                         switch (item.COUNT)
                         {
                             // 일반
                             case 1:
-                                action = $"마공 {item.ENHANCE_PLUSMATK} 증가";
-                                Energy(0, item.ENHANCE_PLUSMATK);
+                                action = $"마공 {plus_att2} 증가";
                                 break;
 
                             case 2:
-                                action = $"치명타!\n마공 {item.ENHANCE_PLUSMATK * 3} 증가";
-                                Energy(0, item.ENHANCE_PLUSMATK * 3);
+                                plus_att2 *= 3;
+                                action = $"치명타!\n마공 {plus_att2} 증가";
                                 break;
 
                             case 3:
-                                action = $"메가치명타!\n마공 {item.ENHANCE_PLUSMATK * 9} 증가";
-                                Energy(0, item.ENHANCE_PLUSMATK * 9);
+                                plus_att2 *= 9;
+                                action = $"메가치명타!\n마공 {plus_att2} 증가";
                                 break;
                         }
+
+                        Energy(0, plus_att2);
                         player.UpdateEnhanceUI();
                         yield return new WaitForSeconds(0.5f);
                     }
-
 
                     if (item.NAME.Equals("독약"))
                     {
@@ -636,27 +723,27 @@ public class ArenaManager : MonoBehaviour
 
                         yield return new WaitForSeconds(0.8f);
 
+                        float poison = item.ENHANCE_POISON;
+
                         //print("독 데미지 12");
                         switch (item.COUNT)
                         {
                             //일반
                             case 1:
-                                action = $"독 중독 {item.ENHANCE_POISON}";
-                                //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
-                                player.poison += item.ENHANCE_POISON;
-                                player.UpdatePosionUI();
+                                action = $"독 중독 {poison}";
                                 break;
                             case 2:
-                                action = $"치명타!\n독 중독 {item.ENHANCE_POISON * 3}";
-                                player.poison += (item.ENHANCE_POISON * 3);
-                                player.UpdatePosionUI();
+                                poison *= 3;
+                                action = $"치명타!\n독 중독 {poison}";
                                 break;
                             case 3:
-                                action = $"메가치명타!\n독 중독  {item.ENHANCE_POISON * 9}";
-                                player.poison += (item.ENHANCE_POISON * 9);
-                                player.UpdatePosionUI();
+                                poison *= 9;
+                                action = $"메가치명타!\n독 중독 {poison}";
                                 break;
                         }
+
+                        player.poison += poison;
+                        player.UpdatePosionUI();
                         yield return new WaitForSeconds(0.5f);
                     }
 
@@ -674,53 +761,63 @@ public class ArenaManager : MonoBehaviour
                         //물공 10~25
                         //독 중독5
                         float att = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) + player.att1;
+
+                        if (player.storeAtkMultiplier > 1f)
+                        {
+                            att *= player.storeAtkMultiplier;
+                        }
+
+                        float poison = item.ENHANCE_POISON;
+
                         switch (item.COUNT)
                         {
                             //일반
                             case 1:
-                                action = $"물공 {att}\n독 중독 {item.ENHANCE_POISON}";
-                                //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
-                                player.poison += item.ENHANCE_POISON;
-                                player.UpdatePosionUI();
+                                action = $"물공 {att.ToIntString()}\n독 중독 {poison}";
                                 break;
                             case 2:
                                 att *= 3;
-                                action = $"치명타!\n물공 {att}\n독 중독 {item.ENHANCE_POISON * 3}";
-                                player.poison += (item.ENHANCE_POISON * 3);
-                                player.UpdatePosionUI();
+                                poison *= 3;
+                                action = $"치명타!\n물공 {att.ToIntString()}\n독 중독 {poison}";
                                 break;
                             case 3:
                                 att *= 9;
-                                action = $"메가치명타!\n물공 {att}\n독 중독 {item.ENHANCE_POISON * 9}";
-                                player.poison += (item.ENHANCE_POISON * 9);
-                                player.UpdatePosionUI();
+                                poison *= 9;
+                                action = $"메가치명타!\n물공 {att.ToIntString()}\n독 중독 {poison}";
                                 break;
                         }
                         //물리데미지 적용
-                        AttDamage(att);
+                        ApplyPhysicalDamageToEnemy(att);
 
-                        enemy.UpdateHpShildSet();
+                        player.poison += poison;
+                        player.UpdatePosionUI();
+
+                        //enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("마법검"))
                     {
                         //print("마법 공격 30");
-                        float att = 0;
+                        float att = item.ENHANCE_MATK + player.att2;
+
+                        if (player.storeMatkMultiplier > 1f)
+                        {
+                            att *= player.storeMatkMultiplier;
+                        }
 
                         switch (item.COUNT)
                         {
                             case 1:
-                                att = player.att2 + item.ENHANCE_MATK;
-                                action = $"마공 {att}";
+                                action = $"마공 {att.ToIntString()}";
                                 break;
                             case 2:
-                                att = player.att2 + (item.ENHANCE_MATK * 3);
-                                action = $"치명타!\n마공 {att}";
+                                att *= 3;
+                                action = $"치명타!\n마공 {att.ToIntString()}";
                                 break;
                             case 3:
-                                att = player.att2 + (item.ENHANCE_MATK * 9);
-                                action = $"메가치명타!\n마공 {att}";
+                                att *= 9;
+                                action = $"메가치명타!\n마공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -733,36 +830,51 @@ public class ArenaManager : MonoBehaviour
 
                         yield return new WaitForSeconds(0.8f);
 
-                        enemy.hp -= att;
+                        ApplyMagicDamageToEnemy(att);
+                        //enemy.hp -= att;
+                        //scoreManager.AddScore((int)att);
 
-                        enemy.UpdateHpShildSet();
+                        //enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("해골도끼"))
                     {
                         //print("공격 20 공격 20");
-                        float att1 = 0;
-                        float att2 = 0;
+                        float att1 = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) + player.att1;
+
+                        if (player.storeAtkMultiplier > 1f)
+                        {
+                            att1 *= player.storeAtkMultiplier;
+                        }
+
+                        float att2 = Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) + player.att2;
+
+                        if (player.storeMatkMultiplier > 1f)
+                        {
+                            att2 *= player.storeMatkMultiplier;
+                        }
+
+                        float blood = item.ENHANCE_BLOOD;
                         float r = (Random.Range(0f, 1f));
 
                         switch (item.COUNT)
                         {
                             case 1:
-                                att1 = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) + player.att1;
-                                att2 = Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) + player.att2;
-                                action = $"물공 {att1} , 마공 {att2}";
+                                action = $"물공 {att1.ToIntString()} , 마공 {att2.ToIntString()}\n흡혈 {blood}";
                                 break;
                             case 2:
-                                att1 = (Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) * 3) + player.att1;
-                                att2 = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 3) + player.att2;
-                                action = $"치명타!\n물공 {att1} , 마공 {att2}";
+                                att1 *= 3;
+                                att2 *= 3;
+                                blood *= 3;
+                                action = $"치명타!\n물공 {att1.ToIntString()} , 마공 {att2.ToIntString()}\n흡혈 {blood}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
-                                att1 = (Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) * 9) + player.att1;
-                                att2 = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 9) + player.att2;
-                                action = $"메가치명타!\n물공 {att1} , 마공 {att2}";
+                                att1 *= 9;
+                                att2 *= 9;
+                                blood *= 9;
+                                action = $"메가치명타!\n물공 {att1.ToIntString()} , 마공 {att2.ToIntString()}\n흡혈 {blood}";
                                 r = 1;
                                 break;
                         }
@@ -774,12 +886,10 @@ public class ArenaManager : MonoBehaviour
                             // 1 - 스턴확률(0.2라면 0.8)보다 r이 크면 성공
                             if (r > (1f - item.ENHANCE_STUNED))
                             {
-                                stuned1 = true;
+                                stuned3 = true;
                                 nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";
                             }
                         }
-
-                        itemPos = Vector3.up;
 
                         if (item.EFFECT != null)
                         {
@@ -788,35 +898,43 @@ public class ArenaManager : MonoBehaviour
 
                         yield return new WaitForSeconds(0.8f);
 
+                        //흡혈데미지 적용
+                        Blood(blood);
+
                         //물리데미지 적용
-                        AttDamage(att1);
+                        ApplyPhysicalDamageToEnemy(att1);
 
                         //마법데미지 적용
-                        enemy.hp -= att2;
-                        scoreManager.AddScore((int)att2);
+                        //enemy.hp -= att2;
+                        //scoreManager.AddScore((int)att2);
+                        ApplyMagicDamageToEnemy(att2);
 
-                        enemy.UpdateHpShildSet();
+                        //enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("마법봉"))
                     {
                         //print("공격 10");
-                        float att = 0;
+                        float att = item.ENHANCE_MATK + player.att2;
+
+                        if (player.storeMatkMultiplier > 1f)
+                        {
+                            att *= player.storeMatkMultiplier;
+                        }
 
                         switch (item.COUNT)
                         {
                             case 1:
-                                att = item.ENHANCE_MATK + player.att2;
-                                action = $"마공 {att}";
+                                action = $"마공 {att.ToIntString()}";
                                 break;
                             case 2:
-                                att = (item.ENHANCE_MATK * 3) + player.att2;
-                                action = $"치명타!\n마공 {att}";
+                                att *= 3;
+                                action = $"치명타!\n마공 {att.ToIntString()}";
                                 break;
                             case 3:
-                                att = (item.ENHANCE_MATK * 9) + player.att2;
-                                action = $"{item.NAME} 메가치명타\n마공 {att}";
+                                att *= 9;
+                                action = $"{item.NAME} 메가치명타\n마공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -830,29 +948,34 @@ public class ArenaManager : MonoBehaviour
                         yield return new WaitForSeconds(0.8f);
 
                         //마법데미지
-                        enemy.hp -= att;
-                        scoreManager.AddScore((int)att);
-
-                        enemy.UpdateHpShildSet();
+                        ApplyMagicDamageToEnemy(att);
+                        //enemy.hp -= att;
+                        //scoreManager.AddScore((int)att);
+                        //enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
                     if (item.NAME.Equals("일반검"))
                     {
                         //print("물공 10");
-                        float att = 0;
+                        float att = item.ENHANCE_ATK + player.att1;
+
+                        if (player.storeAtkMultiplier > 1f)
+                        {
+                            att *= player.storeAtkMultiplier;
+                        }
+
                         switch (item.COUNT)
                         {
                             case 1:
-                                att = item.ENHANCE_ATK + player.att1;
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
-                                att = (item.ENHANCE_ATK * 3) + player.att1;
-                                action = $"치명타!\n물공 {att}";
+                                att *= 3;
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 break;
                             case 3:
-                                att = (item.ENHANCE_ATK * 9) + player.att1; ;
-                                action = $"메가치명타!\n물공 {att}";
+                                att *= 9;
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -865,29 +988,33 @@ public class ArenaManager : MonoBehaviour
 
                         yield return new WaitForSeconds(0.8f);
 
-                        AttDamage(att);
+                        ApplyPhysicalDamageToEnemy(att);
 
-                        enemy.UpdateHpShildSet();
+                        //enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
                     if (item.NAME.Equals("일반도끼"))
                     {
                         //print("공격20 물리");
-                        float att = 0;
+                        float att = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) + player.att1;
+
+                        if (player.storeAtkMultiplier > 1f)
+                        {
+                            att *= player.storeAtkMultiplier;
+                        }
 
                         switch (item.COUNT)
                         {
                             case 1:
-                                att = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) + player.att1;
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
-                                att = (Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) * 3) + player.att1;
-                                action = $"치명타!\n물공 {att}";
+                                att *= 3;
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 break;
                             case 3:
-                                att = (Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) * 9) + player.att1;
-                                action = $"메가치명타!\n물공 {att}";
+                                att *= 9;
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 break;
                         }
 
@@ -900,31 +1027,36 @@ public class ArenaManager : MonoBehaviour
 
                         yield return new WaitForSeconds(0.8f);
 
-                        AttDamage(att);
+                        ApplyPhysicalDamageToEnemy(att);
 
-                        enemy.UpdateHpShildSet();
+                        //enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
                     if (item.NAME.Equals("대검"))
                     {
                         //print("공격30 물리");
-                        float att = 0;
+                        float att = item.ENHANCE_ATK + player.att1;
+
+                        if (player.storeAtkMultiplier > 1f)
+                        {
+                            att *= player.storeAtkMultiplier;
+                        }
+
                         float r = (Random.Range(0f, 1f));
 
                         switch (item.COUNT)
                         {
                             case 1:
-                                att = item.ENHANCE_ATK + player.att1;
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
-                                att = (item.ENHANCE_ATK * 3) + player.att1;
-                                action = $"치명타!\n물공 {att}";
-                                r = 1;
+                                att *= 3;
+                                action = $"치명타!\n물공 {att.ToIntString()}";
+                                r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
-                                att = (item.ENHANCE_ATK * 9) + player.att1;
-                                action = $"메가치명타!\n물공 {att}";
+                                att *= 9;
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 r = 1;
                                 break;
                         }
@@ -934,7 +1066,7 @@ public class ArenaManager : MonoBehaviour
                         //이미 스턴 상태이면 해제되지 않도록
                         if (!stuned1)
                         {
-                            print($"스턴 상태 정상동작? {r}");
+                            //print($"스턴 상태 정상동작? {r}");
                             // 1 - 스턴확률(0.2라면 0.8)보다 r이 크면 성공
                             if (r > (1f - item.ENHANCE_STUNED))
                             {
@@ -954,31 +1086,36 @@ public class ArenaManager : MonoBehaviour
                         yield return new WaitForSeconds(0.8f);
 
                         //물리데미지
-                        AttDamage(att);
+                        ApplyPhysicalDamageToEnemy(att);
 
-                        enemy.UpdateHpShildSet();
+                        //enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
                     if (item.NAME.Equals("고급도끼"))
                     {
                         //print("공격40 물리");
-                        float att = 0;
+                        float att = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) + player.att1;
+
+                        if (player.storeAtkMultiplier > 1f)
+                        {
+                            att *= player.storeAtkMultiplier;
+                        }
+
                         float r = (Random.Range(0f, 1f));
 
                         switch (item.COUNT)
                         {
                             case 1:
-                                att = Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) + player.att1;
-                                action = $"물공 {att}";
+                                action = $"물공 {att.ToIntString()}";
                                 break;
                             case 2:
-                                att = (Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) * 3) + player.att1;
-                                action = $"치명타!\n물공 {att}";
+                                att *= 3;
+                                action = $"치명타!\n물공 {att.ToIntString()}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
-                                att = (Random.Range(item.ENHANCE_MINATK, item.ENHANCE_ATK) * 9) + player.att1;
-                                action = $"메가치명타!\n물공 {att}";
+                                att *= 9;
+                                action = $"메가치명타!\n물공 {att.ToIntString()}";
                                 r = 1;
                                 break;
                         }
@@ -1005,9 +1142,9 @@ public class ArenaManager : MonoBehaviour
 
                         yield return new WaitForSeconds(0.8f);
 
-                        AttDamage(att);
+                        ApplyPhysicalDamageToEnemy(att);
 
-                        enemy.UpdateHpShildSet();
+                        //enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
 
@@ -1015,22 +1152,26 @@ public class ArenaManager : MonoBehaviour
                     {
                         //마공 30~100
                         float r = (Random.Range(0f, 1f));
-                        float att = 0;
+                        float att = Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) + player.att2;
+
+                        if (player.storeMatkMultiplier > 1f)
+                        {
+                            att *= player.storeMatkMultiplier;
+                        }
 
                         switch (item.COUNT)
                         {
                             case 1:
-                                att = Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) + player.att2;
-                                action = $"마공 {att}";
+                                action = $"마공 {att.ToIntString()}";
                                 break;
                             case 2:
-                                att = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 3) + player.att2;
-                                action = $"치명타!\n마공 {att}";
+                                att *= 3;
+                                action = $"치명타!\n마공 {att.ToIntString()}";
                                 r = Random.Range(0.35f, 1);
                                 break;
                             case 3:
-                                att = (Random.Range(item.ENHANCE_MINMATK, item.ENHANCE_MATK) * 9) + player.att2;
-                                action = $"메가치명타!\n마공 {att}";
+                                att *= 9;
+                                action = $"메가치명타!\n마공 {att.ToIntString()}";
                                 r = 1;
                                 break;
                         }
@@ -1042,11 +1183,10 @@ public class ArenaManager : MonoBehaviour
                             print($"스턴 상태 정상동작? {r}");
                             if (r > (1f - item.ENHANCE_STUNED))
                             {
-                                stuned2 = true;
+                                stuned4 = true;
                                 nextEnemyActionTxt.text = "<color=yellow>기절상태</color>";
                             }
                         }
-
 
                         if (item.EFFECT != null)
                         {
@@ -1056,10 +1196,11 @@ public class ArenaManager : MonoBehaviour
                         yield return new WaitForSeconds(0.8f);
 
                         //마법데미지
-                        enemy.hp -= att;
-                        scoreManager.AddScore((int)att);
+                        //enemy.hp -= att;
+                        //scoreManager.AddScore((int)att);
+                        //enemy.UpdateHpShildSet();
 
-                        enemy.UpdateHpShildSet();
+                        ApplyMagicDamageToEnemy(att);
                         yield return new WaitForSeconds(0.5f);
                     }
 
@@ -1071,19 +1212,16 @@ public class ArenaManager : MonoBehaviour
                         {
                             case 1:
                                 action = $"방어도 {shild} 회복\n최대 방어도 {plus_sh}";
-                                Shield(shild, plus_sh);
                                 break;
                             case 2:
                                 shild *= 3;
                                 plus_sh *= 3;
                                 action = $"치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
-                                Shield(shild, plus_sh);
                                 break;
                             case 3:
                                 shild *= 9;
                                 plus_sh *= 9;
                                 action = $"메가치명타!\n방어도 {shild} 회복\n최대 방어도 {plus_sh}";
-                                Shield(shild, plus_sh);
                                 break;
                         }
 
@@ -1094,6 +1232,7 @@ public class ArenaManager : MonoBehaviour
                             itemPrefab = item.EFFECT;
                         }
 
+                        Shield(shild, plus_sh);
                         yield return new WaitForSeconds(0.8f);
 
                     }
@@ -1106,28 +1245,26 @@ public class ArenaManager : MonoBehaviour
                         {
                             case 1:
                                 action = $"방어도 {shild} 회복\n방어도 {shildMax} 증가";
-                                Shield(shild, shildMax);
                                 break;
                             case 2:
                                 shild *= 3;
                                 shildMax *= 3;
                                 action = $"치명타!\n방어도 {shild} 회복\n방어도 {shildMax} 증가";
-                                Shield(shild, shildMax);
                                 break;
                             case 3:
                                 shild *= 9;
                                 shildMax *= 9;
                                 action = $"메가치명타!\n방어도 {shild} 회복\n방어도 {shildMax} 증가";
-                                Shield(shild, shildMax);
                                 break;
                         }
-
                         itemPos = player.shildBar.transform.position;
 
                         if (item.EFFECT != null)
                         {
                             itemPrefab = item.EFFECT;
                         }
+
+                        Shield(shild, shildMax);
 
                         yield return new WaitForSeconds(0.8f);
 
@@ -1244,7 +1381,7 @@ public class ArenaManager : MonoBehaviour
                         yield return new WaitForSeconds(0.5f);
                     }
 
-                    if (item.NAME.Equals("마법투구"))
+                    if (item.NAME.Equals("마법투구") || item.NAME.Equals("마법반지"))
                     {
                         //증가치
                         float att1 = item.ENHANCE_PLUSATK;
@@ -1260,8 +1397,13 @@ public class ArenaManager : MonoBehaviour
                             if (item == matchedItems[i])
                             {
                                 int slotIndex = helmet % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                //// 슬롯의 위치에 이펙트 인덱스 설정
+                                //itemPos = spawnedSlots[slotIndex].transform.position;
+                                // 1. 기본 슬롯 위치 가져오기
+                                Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
+
+                                // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
+                                itemPos = new Vector3(slotPos.x, -3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1279,9 +1421,6 @@ public class ArenaManager : MonoBehaviour
                                 action = $"물공 {att1},마공 {att2} 증가\n" +
                                          $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(att1, att2, hp, plus_hp, shild, plus_sh);
-
                                 break;
                             case 2:
                                 att1 *= 3;
@@ -1295,9 +1434,6 @@ public class ArenaManager : MonoBehaviour
                                          $"물공 {att1},마공 {att2} 증가\n" +
                                          $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(att1, att2, hp, plus_hp, shild, plus_sh);
-
                                 break;
                             case 3:
                                 att1 *= 9;
@@ -1310,76 +1446,13 @@ public class ArenaManager : MonoBehaviour
                                          $"물공 {att1},마공 {att2} 증가\n" +
                                          $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
                                          $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(att1, att2, hp, plus_hp, shild, plus_sh);
-
                                 break;
                         }
 
-                        yield return new WaitForSeconds(0.5f);
-                    }
+                        Magic(att1, att2, hp, plus_hp, shild, plus_sh);
 
-                    if (item.NAME.Equals("마법반지"))
-                    {
-                        //증가치
-                        float hp = item.ENHANCE_HP;
-                        float plus_hp = item.ENHANCE_PLUS_HP;
-                        float shild = item.ENHANCE_SHILD;
-                        float plus_sh = item.ENHANCE_PLUS_SHILD;
+                        player.UpdateEnhanceUI();
 
-                        for (int i = 0; i < matchedItems.Count; i++)
-                        {
-                            if (item == matchedItems[i])
-                            {
-                                int slotIndex = ring1 % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
-
-                                if (item.EFFECT != null)
-                                {
-                                    itemPrefab = item.EFFECT;
-                                }
-
-                                yield return new WaitForSeconds(0.8f);
-                                break;
-                            }
-                        }
-
-                        switch (item.COUNT)
-                        {
-                            case 1:
-                                action = $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
-                                         $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(0, 0, hp, plus_hp, shild, plus_sh);
-
-                                break;
-                            case 2:
-                                hp *= 3;
-                                plus_hp *= 3;
-                                shild *= 3;
-                                plus_sh *= 3;
-
-                                action = $"치명타!\n" +
-                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
-                                         $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(0, 0, hp, plus_hp, shild, plus_sh);
-
-                                break;
-                            case 3:
-                                hp *= 9;
-                                plus_hp *= 9;
-                                shild *= 9;
-                                plus_sh *= 9;
-                                action = $"메가치명타!\n" +
-                                         $"최대체력{plus_hp}, 최대방어도{plus_sh}증가\n" +
-                                         $"체력{hp}, 방어도{shild} 회복";
-
-                                Magic(0, 0, hp, plus_hp, shild, plus_sh);
-
-                                break;
-                        }
                         yield return new WaitForSeconds(0.5f);
                     }
 
@@ -1397,8 +1470,12 @@ public class ArenaManager : MonoBehaviour
                             if (item == matchedItems[i])
                             {
                                 int slotIndex = ring2 % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                //itemPos = spawnedSlots[slotIndex].transform.position;
+                                // 1. 기본 슬롯 위치 가져오기
+                                Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
+
+                                // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
+                                itemPos = new Vector3(slotPos.x, -3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1415,8 +1492,6 @@ public class ArenaManager : MonoBehaviour
                             case 1:
                                 action = $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"흡혈 {blood}";
-                                Shield(shild, plus_sh);
-                                Blood(blood);
                                 break;
                             case 2:
                                 shild *= 3;
@@ -1426,9 +1501,6 @@ public class ArenaManager : MonoBehaviour
                                 action = $"치명타!\n" +
                                          $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"흡혈 {blood}";
-
-                                Shield(shild, plus_sh);
-                                Blood(blood);
                                 break;
                             case 3:
                                 shild *= 9;
@@ -1438,31 +1510,38 @@ public class ArenaManager : MonoBehaviour
                                 action = $"메가치명타!\n" +
                                          $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
                                          $"흡혈 {blood}";
-
-                                Shield(shild, plus_sh);
-                                Blood(blood);
                                 break;
 
                         }
+
+                        Shield(shild, plus_sh);
+                        Blood(blood);
+
+                        enemy.UpdateHpShildSet();
                         yield return new WaitForSeconds(0.5f);
                     }
 
                     if (item.NAME.Equals("독반지"))
                     {
                         //증가치
-                        float shild = item.ENHANCE_SHILD;
-                        float plus_sh = item.ENHANCE_PLUS_SHILD;
+                        float hp = item.ENHANCE_HP;
+                        float plus_hp = item.ENHANCE_PLUS_HP;
 
                         //독
-                        //float poison = item.ENHANCE_POISON;
+                        float poison = item.ENHANCE_POISON;
 
                         for (int i = 0; i < matchedItems.Count; i++)
                         {
                             if (item == matchedItems[i])
                             {
                                 int slotIndex = ring3 % spawnedSlots.Length;
-                                // 슬롯의 위치에 이펙트 인덱스 설정
-                                itemPos = spawnedSlots[slotIndex].transform.position;
+                                //// 슬롯의 위치에 이펙트 인덱스 설정
+                                //itemPos = spawnedSlots[slotIndex].transform.position;
+                                // 1. 기본 슬롯 위치 가져오기
+                                Vector3 slotPos = spawnedSlots[slotIndex].transform.position;
+
+                                // 2. 변경점 적용: Y축 -3.3, Z축은 0 (혹은 원하는 절대값)으로 설정
+                                itemPos = new Vector3(slotPos.x, -3.3f, 0f);
 
                                 if (item.EFFECT != null)
                                 {
@@ -1477,44 +1556,39 @@ public class ArenaManager : MonoBehaviour
                         switch (item.COUNT)
                         {
                             case 1:
-                                action = $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
-                                         $"독 중독 {item.ENHANCE_POISON}";
-                                Shield(shild, plus_sh);
-
-                                //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
-                                player.poison += item.ENHANCE_POISON;
-                                player.UpdatePosionUI();
+                                action = $"최대체력{plus_hp} 증가, 체력{hp} 회복\n" +
+                                         $"독 중독 {poison}";
                                 break;
                             case 2:
-                                shild *= 3;
-                                plus_sh *= 3;
+                                hp *= 3;
+                                plus_hp *= 3;
+                                poison *= 3;
 
                                 action = $"치명타!\n" +
-                                         $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
-                                         $"독 중독 {item.ENHANCE_POISON}";
+                                         $"최대체력{plus_hp} 증가, 체력{hp} 회복\n" +
+                                         $"독 중독 {poison}";
 
-                                Shield(shild, plus_sh);
-                                //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
-                                player.poison += (item.ENHANCE_POISON * 3);
-                                player.UpdatePosionUI();
                                 break;
                             case 3:
-                                shild *= 9;
-                                plus_sh *= 9;
+                                hp *= 9;
+                                plus_hp *= 9;
+                                poison *= 9;
 
                                 action = $"메가치명타!\n" +
-                                         $"최대방어도{plus_sh} 증가, 방어도{shild} 회복\n" +
-                                         $"독 중독 {item.ENHANCE_POISON}";
+                                         $"최대체력{plus_hp} 증가, 체력{hp} 회복\n" +
+                                         $"독 중독 {poison}";
 
-                                Shield(shild, plus_sh);
-                                //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
-                                player.poison += (item.ENHANCE_POISON * 9);
-                                player.UpdatePosionUI();
                                 break;
                         }
+
+                        Grape(plus_hp);
+                        Apple(hp);
+
+                        //독 데미지 부여 (매 턴마다 적에게 데미지를 입힌다)
+                        player.poison += (poison);
+                        player.UpdatePosionUI();
                         yield return new WaitForSeconds(0.5f);
                     }
-
 
                     //itemDict[item.NAME] = 1;
                     energy1++;
@@ -1535,16 +1609,22 @@ public class ArenaManager : MonoBehaviour
                     //ScoreUI업데이트
                     scoreTxt.text = scoreManager.score.ToString();
 
-                    //적 앞에 소환
-                    ParticleSystemRenderer effectRender = currentEffects[num].GetComponent<ParticleSystemRenderer>();
+                    ////적 앞에 소환
+                    //ParticleSystemRenderer effectRender = currentEffects[num].GetComponent<ParticleSystemRenderer>();
                     SpriteRenderer goldEffectRederer = currentEffects[num].GetComponent<SpriteRenderer>();
-                    if (effectRender != null)
-                    {
-                        effectRender.sortingOrder = 500;
-                    }
+                    //if (effectRender != null)
+                    //{
+                    //    effectRender.sortingOrder = 500;
+                    //}
                     if (goldEffectRederer != null)
                     {
                         goldEffectRederer.sortingOrder = 500;
+                    }
+
+                    SortingGroup group = currentEffects[num].GetComponent<SortingGroup>();
+                    if (group != null)
+                    {
+                        group.sortingOrder = 500;
                     }
 
                     if (num < currentEffects.Length)
@@ -1612,7 +1692,7 @@ public class ArenaManager : MonoBehaviour
     {
         if (playerTurn)
         {
-            string enemyStatus = $"<color=white>적 체력 : {enemy.hp} \n적 방어도 : {enemy.shild}";
+            string enemyStatus = $"<color=white>적 체력 : {(int)enemy.hp} \n적 방어도 : {(int)enemy.shild}";
             statusTxt.color = Color.green;
             statusTxt.text = $"{action}\n\n{enemyStatus}";
         }
@@ -1684,6 +1764,8 @@ public class ArenaManager : MonoBehaviour
         //플레이어의 독데미지 적용 시점
         if (player.poison > 0)
         {
+            yield return new WaitForSeconds(1.8f);
+
             GameObject enemyEffect = Instantiate(enemyManager.enemyEffets[2]);
             enemyEffect.transform.position = enemy.transform.position;
             enemy.hp -= player.poison;
@@ -1747,37 +1829,41 @@ public class ArenaManager : MonoBehaviour
 
                 yield return null;
             }
-
-            if (actionEnemy <= 1)
-            {
-                //특수공격
-                EnemySpecialAttack();
-            }
-            //방어도 회복(7)
-            else if (actionEnemy == 7)
-            {
-                EnemyShildRecover();
-            }
-            //체력 회복(8)
-            else if (actionEnemy == 8)
-            {
-                EnemyHealing();
-
-                //독 회복
-                if (player.poison > 4)
-                {
-                    player.poison -= 4f;
-                    if (player.poison <= 0)
-                    {
-                        player.poison = 0;
-                    }
-                }
-            }
             else
             {
-                //일반공격
-                EnemyAttack();
+                if (actionEnemy <= 1)
+                {
+                    //특수공격
+                    EnemySpecialAttack();
+                }
+                //방어도 회복(7)
+                else if (actionEnemy == 7)
+                {
+                    EnemyShildRecover();
+                }
+                //체력 회복(8)
+                else if (actionEnemy == 8)
+                {
+                    EnemyHealing();
+
+                    //독 회복
+                    if (player.poison > 4)
+                    {
+                        player.poison -= 4f;
+                        if (player.poison <= 0)
+                        {
+                            player.poison = 0;
+                        }
+                    }
+                }
+                else
+                {
+                    //일반공격
+                    EnemyAttack();
+                }
             }
+
+
         }
 
         else if (enemy.type.Equals("D"))
@@ -1798,51 +1884,55 @@ public class ArenaManager : MonoBehaviour
 
                 yield return null;
             }
-
-            if (actionEnemy <= 1)
-            {
-                //마법공격
-                if (stuned1 || stuned2 || stuned3 || stuned4)
-                {
-                    stuned1 = false;
-                    stuned2 = false;
-                    stuned3 = false;
-                    stuned4 = false;
-                }
-                else
-                {
-                    EnemySpecialAttack();
-                }
-
-                yield return new WaitForSeconds(1f);
-
-                EnemySpecialAttack();
-
-            }
-            //방어도 회복(7)
-            else if (actionEnemy == 7)
-            {
-                EnemyShildRecover();
-            }
-            ////체력 회복(8)
-            //else if (actionEnemy == 8)
-            //{
-            //    EnemyHealing();
-
-            //    //독 회복
-            //    if (player.poison > 4)
-            //    {
-            //        player.poison -= 4f;
-            //        if (player.poison <= 0)
-            //        {
-            //            player.poison = 0;
-            //        }
-            //    }
-            //}
             else
             {
-                //마법공격
-                EnemySpecialAttack();
+                if (actionEnemy <= 1)
+                {
+                    //마법공격
+                    if (stuned1 || stuned2 || stuned3 || stuned4)
+                    {
+                        enemy.Stuned();
+
+                        stuned1 = false;
+                        stuned2 = false;
+                        stuned3 = false;
+                        stuned4 = false;
+
+                    }
+                    else
+                    {
+                        EnemySpecialAttack();
+                    }
+                    yield return new WaitForSeconds(1.5f);
+
+                    EnemySpecialAttack();
+
+                }
+                //방어도 회복(7)
+                else if (actionEnemy == 7)
+                {
+                    EnemyShildRecover();
+                }
+                ////체력 회복(8)
+                //else if (actionEnemy == 8)
+                //{
+                //    EnemyHealing();
+
+                //    //독 회복
+                //    if (player.poison > 4)
+                //    {
+                //        player.poison -= 4f;
+                //        if (player.poison <= 0)
+                //        {
+                //            player.poison = 0;
+                //        }
+                //    }
+                //}
+                else
+                {
+                    //마법공격
+                    EnemySpecialAttack();
+                }
             }
         }
         else if (enemy.type.Equals("C"))
@@ -1863,52 +1953,57 @@ public class ArenaManager : MonoBehaviour
 
                 yield return null;
             }
-
-            if (actionEnemy <= 1)
+            else
             {
-                //마법공격
-                if (stuned1 || stuned2 || stuned3 || stuned4)
+                if (actionEnemy <= 1)
                 {
-                    stuned1 = false;
-                    stuned2 = false;
-                    stuned3 = false;
-                    stuned4 = false;
+                    //마법공격
+                    if (stuned1 || stuned2 || stuned3 || stuned4)
+                    {
+                        enemy.Stuned();
+
+                        stuned1 = false;
+                        stuned2 = false;
+                        stuned3 = false;
+                        stuned4 = false;
+
+                    }
+                    else
+                    {
+                        EnemySpecialAttack();
+                    }
+                    yield return new WaitForSeconds(1.5f);
+
+                    EnemySpecialAttack();
+
+                }
+                ////방어도 회복(7)
+                //else if (actionEnemy == 7)
+                //{
+                //    EnemyShildRecover();
+                //}
+                //체력 회복(8)
+                else if (actionEnemy == 8)
+                {
+                    EnemyHealing();
+
+                    //독 회복
+                    if (player.poison > 4)
+                    {
+                        player.poison -= 4f;
+                        if (player.poison <= 0)
+                        {
+                            player.poison = 0;
+                        }
+                    }
                 }
                 else
                 {
+                    //마법공격
                     EnemySpecialAttack();
                 }
-
-                yield return new WaitForSeconds(1f);
-
-                EnemySpecialAttack();
-
             }
-            ////방어도 회복(7)
-            //else if (actionEnemy == 7)
-            //{
-            //    EnemyShildRecover();
-            //}
-            //체력 회복(8)
-            else if (actionEnemy == 8)
-            {
-                EnemyHealing();
 
-                //독 회복
-                if (player.poison > 4)
-                {
-                    player.poison -= 4f;
-                    if (player.poison <= 0)
-                    {
-                        player.poison = 0;
-                    }
-                }
-            }
-            else
-            {
-                //마법공격
-                EnemySpecialAttack();
-            }
         }
         else if (enemy.type.Equals("B"))
         {
@@ -1928,51 +2023,55 @@ public class ArenaManager : MonoBehaviour
 
                 yield return null;
             }
-
-            if (actionEnemy <= 1)
-            {
-                //물리공격
-                if (stuned1 || stuned2 || stuned3 || stuned4)
-                {
-                    stuned1 = false;
-                    stuned2 = false;
-                    stuned3 = false;
-                    stuned4 = false;
-                }
-                else
-                {
-                    EnemyAttack();
-                }
-
-                yield return new WaitForSeconds(1f);
-
-                EnemyAttack();
-
-            }
-            ////방어도 회복(7)
-            //else if (actionEnemy == 7)
-            //{
-            //    EnemyShildRecover();
-            //}
-            //체력 회복(8)
-            else if (actionEnemy == 8)
-            {
-                EnemyHealing();
-
-                //독 회복
-                if (player.poison > 4)
-                {
-                    player.poison -= 4f;
-                    if (player.poison <= 0)
-                    {
-                        player.poison = 0;
-                    }
-                }
-            }
             else
             {
-                //물리공격
-                EnemyAttack();
+                if (actionEnemy <= 1)
+                {
+                    //물리공격
+                    if (stuned1 || stuned2 || stuned3 || stuned4)
+                    {
+                        enemy.Stuned();
+
+                        stuned1 = false;
+                        stuned2 = false;
+                        stuned3 = false;
+                        stuned4 = false;
+
+                    }
+                    else
+                    {
+                        EnemyAttack();
+                    }
+                    yield return new WaitForSeconds(1.5f);
+
+                    EnemyAttack();
+
+                }
+                //방어도 회복(7)
+                else if (actionEnemy == 7)
+                {
+                    EnemyShildRecover();
+                }
+                ////체력 회복(8)
+                //else if (actionEnemy == 8)
+                //{
+                //    EnemyHealing();
+
+                //    //독 회복
+                //    if (player.poison > 4)
+                //    {
+                //        player.poison -= 4f;
+                //        if (player.poison <= 0)
+                //        {
+                //            player.poison = 0;
+                //        }
+                //    }
+                //}
+                else
+                {
+                    //물리공격
+                    EnemyAttack();
+                }
             }
         }
         else if (enemy.type.Equals("A"))
@@ -1993,51 +2092,55 @@ public class ArenaManager : MonoBehaviour
 
                 yield return null;
             }
-
-            if (actionEnemy <= 1)
+            else
             {
-                //물리공격
-                if (stuned1 || stuned2 || stuned3 || stuned4)
+                if (actionEnemy <= 1)
                 {
-                    stuned1 = false;
-                    stuned2 = false;
-                    stuned3 = false;
-                    stuned4 = false;
+                    //물리공격
+                    if (stuned1 || stuned2 || stuned3 || stuned4)
+                    {
+                        enemy.Stuned();
+
+                        stuned1 = false;
+                        stuned2 = false;
+                        stuned3 = false;
+                        stuned4 = false;
+
+                    }
+                    else
+                    {
+                        EnemyAttack();
+                    }
+                    yield return new WaitForSeconds(1.5f);
+
+                    EnemyAttack();
+
+                }
+                ////방어도 회복(7)
+                //else if (actionEnemy == 7)
+                //{
+                //    EnemyShildRecover();
+                //}
+                //체력 회복(8)
+                else if (actionEnemy == 8)
+                {
+                    EnemyHealing();
+
+                    //독 회복
+                    if (player.poison > 4)
+                    {
+                        player.poison -= 4f;
+                        if (player.poison <= 0)
+                        {
+                            player.poison = 0;
+                        }
+                    }
                 }
                 else
                 {
+                    //마법공격
                     EnemyAttack();
                 }
-
-                yield return new WaitForSeconds(1f);
-
-                EnemyAttack();
-
-            }
-            ////방어도 회복(7)
-            //else if (actionEnemy == 7)
-            //{
-            //    EnemyShildRecover();
-            //}
-            //체력 회복(8)
-            else if (actionEnemy == 8)
-            {
-                EnemyHealing();
-
-                //독 회복
-                if (player.poison > 4)
-                {
-                    player.poison -= 4f;
-                    if (player.poison <= 0)
-                    {
-                        player.poison = 0;
-                    }
-                }
-            }
-            else
-            {
-                //마법공격
-                EnemyAttack();
             }
         }
     }
@@ -2053,28 +2156,30 @@ public class ArenaManager : MonoBehaviour
         string action = $"물리공격 {enemyDam}";
         Status(action);
 
-        if (player.shild >= enemyDam)
-        {
-            player.shild -= enemyDam;
-        }
-        else if (player.shild < enemyDam)
-        {
-            player.hp -= (enemyDam - player.shild);
-            player.shild = 0;
-        }
-        else
-        {
-            player.hp -= enemyDam;
-        }
+        TakeDamageFromEnemy(enemyDam, false);
 
-        player.UpdateHpShildSet();
+        //if (player.shild >= enemyDam)
+        //{
+        //    player.shild -= enemyDam;
+        //}
+        //else if (player.shild < enemyDam)
+        //{
+        //    player.hp -= (enemyDam - player.shild);
+        //    player.shild = 0;
+        //}
+        //else
+        //{
+        //    player.hp -= enemyDam;
+        //}
 
-        if (player.hp <= 0)
-        {
-            //플레이어 사망 (패배)
-            StartCoroutine(playerDeath());
-            return;
-        }
+        //player.UpdateHpShildSet();
+
+        //if (player.hp <= 0)
+        //{
+        //    //플레이어 사망 (패배)
+        //    StartCoroutine(playerDeath());
+        //    return;
+        //}
     }
     private void EnemySpecialAttack()
     {
@@ -2086,14 +2191,16 @@ public class ArenaManager : MonoBehaviour
         string action = $"마법공격 {(int)enemyDam}";
         Status(action);
 
-        player.hp -= enemyDam;
-        player.UpdateHpShildSet();
-        if (player.hp <= 0)
-        {
-            //플레이어 사망 (패배)
-            StartCoroutine(playerDeath());
-            return;
-        }
+        TakeDamageFromEnemy(enemyDam, true);
+
+        //player.hp -= enemyDam;
+        //player.UpdateHpShildSet();
+        //if (player.hp <= 0)
+        //{
+        //    //플레이어 사망 (패배)
+        //    StartCoroutine(playerDeath());
+        //    return;
+        //}
     }
     private void EnemyShildRecover()
     {
@@ -2176,15 +2283,17 @@ public class ArenaManager : MonoBehaviour
         //적 죽음 애니메이션
         enemy.Death();
 
+        float goldBonus = scoreManager.round * (1f + player.goldBonus);
+
         //빠른 클리어 보상
-        if(turn < 5)
+        if (turn < 5)
         {
-            itemManager.PlusGold(scoreManager.round * 20);
+            itemManager.PlusGold((int)(goldBonus  * 20));
         }
         //일반 보상
         else
         {
-            itemManager.PlusGold(scoreManager.round * 5);
+            itemManager.PlusGold((int)(goldBonus * 5));
         }
 
         yield return new WaitForSeconds(1.5f);
@@ -2211,11 +2320,39 @@ public class ArenaManager : MonoBehaviour
 
     IEnumerator playerDeath()
     {
+        SpinStop();
+
+        if (PlayerManager.Instance.hasRevive && !playerRevive)
+        {
+            playerRevive = true;
+
+            //부활 연출
+            GameObject effect = Instantiate(PlayerManager.Instance.reviveEffect, Vector2.zero, Quaternion.identity);
+
+            yield return new WaitForSeconds(4f);
+
+            Destroy(effect);
+            player.HpShildSet();
+
+            enemyTurn = false;
+            playerTurn = true;
+
+            DetermineEnemyNextAction();
+
+            StartPlayerTurn();
+            SpinStart();
+
+            if(stageManager != null) stageManager.ReloadChance = 3;
+
+            yield break;
+        }
+
+
         //player.Death();
         playerTurn = false;
         enemyTurn = false;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2.5f);
         GameSceneManager.Instance.LoadScene("GameOverScene");
     }
 
@@ -2275,30 +2412,34 @@ public class ArenaManager : MonoBehaviour
         player.hp += blood;
         if (player.hp >= player.maxHp) player.hp = player.maxHp;
 
-        AttDamage(blood);
+        //AttDamage(blood);
+        enemy.hp = Mathf.Max(enemy.hp -= blood, 0);
+
         player.UpdateHpShildSet();
+
+        scoreManager.AddScore((int)blood);
     }
 
-    void AttDamage(float att1)
-    {
-        if (enemy.shild > 0 && enemy.shild >= att1)
-        {
-            enemy.shild -= att1;
-        }
-        else if (enemy.shild > 0 && enemy.shild < att1)
-        {
-            enemy.hp -= (att1 - enemy.shild);
-            enemy.shild = 0;
-        }
-        else
-        {
-            enemy.hp -= att1;
-        }
+    //void AttDamage(float att1)
+    //{
+    //    if (enemy.shild > 0 && enemy.shild >= att1)
+    //    {
+    //        enemy.shild -= att1;
+    //    }
+    //    else if (enemy.shild > 0 && enemy.shild < att1)
+    //    {
+    //        enemy.hp -= (att1 - enemy.shild);
+    //        enemy.shild = 0;
+    //    }
+    //    else
+    //    {
+    //        enemy.hp -= att1;
+    //    }
 
-        scoreManager.AddScore((int)att1);
-    }
+    //    scoreManager.AddScore((int)att1);
+    //}
 
-    
+
     void InitializeSceneObjects()
     {
 
@@ -2309,11 +2450,10 @@ public class ArenaManager : MonoBehaviour
         slotParent = GameObject.FindWithTag("Slot");
 
         // 매니저 참조 및 리스트 초기화
-
         itemManager = ItemManager.Instance;
         enemyManager = FindAnyObjectByType<EnemyArenaManager>();
         scoreManager = FindAnyObjectByType<ScoreManager>();
-
+        stageManager = FindAnyObjectByType<StageManager>();
         player = FindFirstObjectByType<Player>();
 
         allItemDatas = itemManager.allItemDatas;
@@ -2358,11 +2498,25 @@ public class ArenaManager : MonoBehaviour
 
         SpinStart();
 
-
         if (stopBtn != null)
         {
             stopBtn.onClick.RemoveAllListeners();
-            stopBtn.onClick.AddListener(SpinSlotbySlotStop);
+            //stopBtn.onClick.AddListener(SpinSlotbySlotStop);
+            // EventTrigger 컴포넌트가 버튼에 있어야 합니다.
+            EventTrigger trigger = stopBtn.gameObject.GetComponent<EventTrigger>();
+            if (trigger == null) trigger = stopBtn.gameObject.AddComponent<EventTrigger>();
+
+            // PointerDown (누르기 시작)
+            EventTrigger.Entry downEntry = new EventTrigger.Entry();
+            downEntry.eventID = EventTriggerType.PointerDown;
+            downEntry.callback.AddListener((data) => { OnStopBtnDown(); });
+            trigger.triggers.Add(downEntry);
+
+            // PointerUp (손을 뗌)
+            EventTrigger.Entry upEntry = new EventTrigger.Entry();
+            upEntry.eventID = EventTriggerType.PointerUp;
+            upEntry.callback.AddListener((data) => { OnStopBtnUp(); });
+            trigger.triggers.Add(upEntry);
         }
 
         //// 플레이어 턴부터 시작
@@ -2373,9 +2527,88 @@ public class ArenaManager : MonoBehaviour
         if (AudioManager.audioManager == null) return;
         float value = AudioManager.audioManager.bgmVolume;
 
-        print("볼륨값" + value);
-        AudioManager.audioManager.PlayBGM("Battle", value);
+        //print("볼륨값" + value); 
+        if (AudioManager.audioManager.GetCurrentBGM() != "Battle")
+        {
+            AudioManager.audioManager.StopBGM();
+            AudioManager.audioManager.PlayBGM("Battle", value);
+        }
+
+        if (stageManager != null) stageManager.ReloadChance = 3;
 
         Debug.Log("씬 오브젝트들 초기화 완료");
+    }
+
+    //물공 증강수치적용
+    void ApplyPhysicalDamageToEnemy(float att)
+    {
+        //if (player.storeAtkMultiplier > 1f)
+        //{
+        //    att *= player.storeAtkMultiplier;
+        //}
+
+        //float finalDamage = att;
+
+        enemy.shild -= att;
+        if (enemy.shild < 0)
+        {
+            enemy.hp += enemy.shild;
+            enemy.shild = 0;
+        }
+        enemy.UpdateHpShildSet();
+
+        scoreManager.AddScore((int)att);
+    }
+
+    //마공 증강수치적용
+    void ApplyMagicDamageToEnemy(float att)
+    {
+        //if (player.storeMatkMultiplier > 1f)
+        //{
+        //    att *= player.storeMatkMultiplier;
+        //}
+
+        //float finalDamage = att;
+
+        enemy.hp -= att;
+        enemy.UpdateHpShildSet();
+
+        scoreManager.AddScore((int)att);
+    }
+
+    // 물리/마법 저항적용
+    public void TakeDamageFromEnemy(float damage, bool isMagic)
+    {
+        float finalDamage = 0;
+
+        if (isMagic)
+        {
+            // 마법 저항력 % 감소 또는 고정치 감소 적용
+            // 예: 데미지의 20%를 줄여줌 (storeMatkResist가 0.2f일 경우)
+            finalDamage = damage * (1f - player.storeMatkResist);
+            player.hp -= Mathf.Max(0, finalDamage);
+        }
+        else
+        {
+            // 물리 저항력 적용
+            finalDamage = damage * (1f - player.storeAtkResist);
+
+            // 실드 먼저 깎기
+            player.shild -= Mathf.Max(0, finalDamage);
+            if (player.shild < 0)
+            {
+                player.hp += player.shild;
+                player.shild = 0;
+            }
+        }
+
+        player.UpdateHpShildSet();
+
+        if (player.hp <= 0)
+        {
+            //플레이어 사망 (패배)
+            StartCoroutine(playerDeath());
+            return;
+        }
     }
 }
